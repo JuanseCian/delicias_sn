@@ -6,8 +6,10 @@ use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +20,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin Delicias',
+                'password' => Hash::make('admin123'),
+            ],
+        );
+        $admin->forceFill(['email_verified_at' => now()])->save();
+
         $categories = collect([
             ['name' => 'Tortas', 'slug' => 'tortas', 'lead_time_hours' => 72, 'order' => 1],
             ['name' => 'Cupcakes', 'slug' => 'cupcakes', 'lead_time_hours' => 48, 'order' => 2],

@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 
@@ -9,28 +8,47 @@ export default function AuthSimpleLayout({
     description,
 }: AuthLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
-            <div className="w-full max-w-sm">
+        <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-[#FBF5EE] p-5 text-[#3B2A2A] sm:p-8">
+            <div className="pointer-events-none absolute top-12 -left-24 h-72 w-72 rounded-full bg-[#F4D9D5] opacity-70 blur-3xl" />
+            <div className="pointer-events-none absolute -right-20 -bottom-32 h-96 w-96 rounded-full bg-[#C98B8B] opacity-20 blur-3xl" />
+            <div className="relative z-10 w-full max-w-lg">
                 <div className="flex flex-col gap-8">
-                    <div className="flex flex-col items-center gap-4">
+                    <div className="flex flex-col items-center gap-5 text-center">
                         <Link
                             href={home()}
-                            className="flex flex-col items-center gap-2 font-medium"
+                            className="group flex items-center gap-3 font-medium"
                         >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
-                            </div>
-                            <span className="sr-only">{title}</span>
+                            <img
+                                src="/img/icono_delicias.png"
+                                alt="Delicias Sn"
+                                className="h-12 w-12 rounded-full object-cover transition-transform group-hover:rotate-6"
+                            />
+                            <span className="font-display text-3xl text-[#6B2D3C]">
+                                Delicias{' '}
+                                <span className="font-script text-4xl font-normal text-[#C98B8B]">
+                                    Sn
+                                </span>
+                            </span>
                         </Link>
 
-                        <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">{title}</h1>
-                            <p className="text-center text-sm text-muted-foreground">
+                        <div className="space-y-2">
+                            <h1 className="font-display text-4xl font-semibold tracking-tight text-[#6B2D3C] sm:text-5xl">
+                                {title}
+                            </h1>
+                            <p className="text-base text-[#3B2A2A]/65">
                                 {description}
                             </p>
                         </div>
                     </div>
-                    {children}
+                    <div className="rounded-[2rem] border border-white/70 bg-white p-7 shadow-[0_18px_55px_rgba(107,45,60,0.11)] sm:p-10">
+                        {children}
+                    </div>
+                    <Link
+                        href={home()}
+                        className="text-center text-xs font-semibold tracking-[0.14em] text-[#6B2D3C]/60 uppercase transition hover:text-[#6B2D3C]"
+                    >
+                        ← Volver a la landing
+                    </Link>
                 </div>
             </div>
         </div>

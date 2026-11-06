@@ -1,11 +1,13 @@
 <?php
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 test('a product image can be uploaded and removed from the private panel', function () {
     $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
     Storage::fake('public');
     $product = Product::firstOrFail();
 
