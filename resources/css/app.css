@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Jost:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&display=swap');
+@import 'tailwindcss';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-script: 'Pinyon Script', cursive;
+    --font-poster: 'Anton', Impact, sans-serif;
+    --color-crema: #fbf5ee;
+    --color-blush: #f4d9d5;
+    --color-rosa-viejo: #c98b8b;
+    --color-bordo: #6b2d3c;
+    --color-caramelo: #c68b59;
+    --color-ink: #3b2a2a;
+    --color-mist: #eadfd7;
+    --shadow-soft: 0 18px 55px rgba(107, 45, 60, 0.11);
+    --shadow-card: 0 9px 28px rgba(59, 42, 42, 0.08);
+    --radius-4xl: 2.25rem;
+}
+
+:root {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #fbf5ee;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+    outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    box-shadow: 0 0 0 3px rgba(201, 139, 139, 0.45);
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+@layer components {
+    .eyebrow {
+        color: #c98b8b;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.19em;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .section-kicker {
+        align-items: center;
+        color: #c98b8b;
+        display: inline-flex;
+        font-size: 0.72rem;
+        font-weight: 700;
+        gap: 0.65rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+
+    .section-kicker::before {
+        background: #c98b8b;
+        content: '';
+        height: 1px;
+        width: 2rem;
+    }
+
+    .btn-primary {
+        align-items: center;
+        background: #6b2d3c;
+        border-radius: 999px;
+        color: #fff;
+        display: inline-flex;
+        font-size: 0.85rem;
+        font-weight: 700;
+        gap: 0.55rem;
+        justify-content: center;
+        padding: 0.9rem 1.4rem;
+        transition:
+            background 180ms ease,
+            transform 180ms ease,
+            box-shadow 180ms ease;
+    }
+
+    .btn-primary:hover {
+        background: #3b2a2a;
+        box-shadow: 0 8px 22px rgba(59, 42, 42, 0.16);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        align-items: center;
+        border: 1px solid rgba(107, 45, 60, 0.22);
+        border-radius: 999px;
+        color: #6b2d3c;
+        display: inline-flex;
+        font-size: 0.85rem;
+        font-weight: 700;
+        gap: 0.55rem;
+        justify-content: center;
+        padding: 0.9rem 1.4rem;
+        transition:
+            background 180ms ease,
+            border 180ms ease,
+            transform 180ms ease;
+    }
+
+    .btn-secondary:hover {
+        background: #f4d9d5;
+        border-color: #c98b8b;
+        transform: translateY(-2px);
+    }
+
+    .whatsapp-float {
+        align-items: center;
+        background: #2f9e62;
+        border: 4px solid #fbf5ee;
+        border-radius: 999px;
+        bottom: 1.25rem;
+        box-shadow: 0 10px 25px rgba(47, 158, 98, 0.28);
+        color: #fff;
+        display: flex;
+        font-size: 0.78rem;
+        font-weight: 700;
+        gap: 0.4rem;
+        padding: 0.7rem 0.85rem;
+        position: fixed;
+        right: 1rem;
+        transition: transform 180ms ease;
+        z-index: 45;
+    }
+
+    .whatsapp-float:hover {
+        transform: translateY(-3px) scale(1.03);
+    }
+
+    .hero-cake-card {
+        background: radial-gradient(circle at 30% 25%, #fff 0 4%, transparent 4.5%), radial-gradient(circle at 75% 70%, rgba(255, 255, 255, .8) 0 7%, transparent 7.5%), linear-gradient(145deg, #f4d9d5 0%, #c98b8b 100%);
+        min-height: 28rem;
+        padding: 1.5rem;
+    }
+
+    .hero-cake-mark {
+        align-items: center;
+        background: rgba(251, 245, 238, .72);
+        border: 1px solid rgba(107, 45, 60, .2);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        height: 74%;
+        justify-content: center;
+        margin: auto;
+        transform: rotate(-6deg);
+        width: 74%;
+    }
+
+    .custom-cake-panel {
+        background: radial-gradient(circle at 25% 22%, rgba(255, 255, 255, .72) 0 5%, transparent 5.5%), radial-gradient(circle at 75% 70%, rgba(255, 255, 255, .45) 0 9%, transparent 9.5%), linear-gradient(145deg, #f9e6df, #d59a9a);
+    }
+
+    .custom-cupcake-panel {
+        background: radial-gradient(circle at 50% 35%, #fff 0 12%, transparent 12.5%), linear-gradient(145deg, #c68b59, #6b2d3c);
+    }
+
+    .product-image-frame {
+        align-items: center;
+        background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, .8) 0 5%, transparent 5.5%), linear-gradient(145deg, #f4d9d5, #fbf5ee);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .product-modal-image {
+        background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .65) 0 7%, transparent 7.5%), linear-gradient(145deg, #f4d9d5, #c98b8b);
+    }
+
+    .featured-product-frame {
+        align-items: center;
+        background: linear-gradient(145deg, #f4d9d5, #c68b59);
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .product-thumb {
+        align-items: center;
+        background: linear-gradient(145deg, #f4d9d5, #fbf5ee);
+        border-radius: 1rem;
+        display: flex;
+        flex-shrink: 0;
+        height: 5rem;
+        justify-content: center;
+        overflow: hidden;
+        width: 5rem;
+    }
+
+    .product-thumb-dark {
+        background: rgba(255, 255, 255, .12);
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+            opacity 700ms ease,
+            transform 700ms ease;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 640px) {
+    .whatsapp-float {
+        bottom: 1.75rem;
+        right: 1.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
