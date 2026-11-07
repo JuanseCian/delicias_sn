@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['order_id', 'product_id', 'product_size_id', 'quantity', 'unit_price', 'note'])]
+#[Fillable(['order_id', 'product_id', 'product_size_id', 'product_color_id', 'quantity', 'unit_price', 'note'])]
 class OrderItem extends Model
 {
     use HasFactory;
@@ -30,5 +30,10 @@ class OrderItem extends Model
     public function size(): BelongsTo
     {
         return $this->belongsTo(ProductSize::class, 'product_size_id');
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(ProductColor::class, 'product_color_id');
     }
 }

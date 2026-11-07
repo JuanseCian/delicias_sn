@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductSize;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
@@ -22,8 +23,11 @@ class OrderCalculator
                 ->where('id', $item['product_size_id'])
                 ->where('product_id', $item['product_id'])
                 ->first();
+            $color = ! empty($item['color_id'])
+                ? ProductColor::query()->where('id', $item['color_id'])->where('product_id', $item['product_id'])->first()
+                : null;
 
-            if (! $product || ! $size) {
+            if (! $product || ! $size || (! empty($item['color_id']) && ! $color)) {
                 throw ValidationException::withMessages([
                     'items' => 'Uno de los productos elegidos ya no está disponible.',
                 ]);
@@ -31,9 +35,16 @@ class OrderCalculator
 
             $quantity = (int) $item['quantity'];
 
+            if ($quantity > $size->quantity) {
+                throw ValidationException::withMessages([
+                    'items' => 'No hay cantidad disponible para uno de los tamaños elegidos.',
+                ]);
+            }
+
             return [
                 'product' => $product,
                 'size' => $size,
+                'color' => $color,
                 'quantity' => $quantity,
                 'note' => $item['note'] ?? null,
                 'unit_price' => $size->price,

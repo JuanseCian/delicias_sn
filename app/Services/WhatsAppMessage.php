@@ -16,6 +16,10 @@ class WhatsAppMessage
             'Seña (50%): '.format_price($order->deposit),
         ];
 
+        foreach ($order->items as $item) {
+            $lines[] = '• '.$item->product->name.' · '.$item->size->label.($item->color ? ' · '.$item->color->name : '').' · x'.$item->quantity;
+        }
+
         return implode("\n", $lines);
     }
 

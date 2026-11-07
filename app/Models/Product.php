@@ -29,6 +29,11 @@ class Product extends Model
         return $this->hasMany(ProductSize::class);
     }
 
+    public function colors(): HasMany
+    {
+        return $this->hasMany(ProductColor::class)->orderBy('sort_order');
+    }
+
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class, 'product_ingredient');

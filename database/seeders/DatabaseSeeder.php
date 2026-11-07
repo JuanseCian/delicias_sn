@@ -104,8 +104,17 @@ class DatabaseSeeder extends Seeder
                 foreach ($data['sizes'] as $size) {
                     $product->sizes()->updateOrCreate(
                         ['label' => $size['label']],
-                        ['price' => $size['price']],
+                        ['price' => $size['price'], 'quantity' => $size['quantity'] ?? 10],
                     );
+                }
+
+                $product->colors()->delete();
+                if ($data['slug'] === 'torta-personalizada') {
+                    $product->colors()->createMany([
+                        ['name' => 'Rosa empolvado', 'hex' => '#C98B8B', 'sort_order' => 1],
+                        ['name' => 'Bordó', 'hex' => '#6B2D3C', 'sort_order' => 2],
+                        ['name' => 'Caramelo', 'hex' => '#C68B59', 'sort_order' => 3],
+                    ]);
                 }
 
                 $product->ingredients()->sync(collect($data['ingredients'])->map(fn (string $name): int => $ingredients[$name]->id)->all());

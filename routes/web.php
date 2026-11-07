@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductAdminController;
 use App\Http\Controllers\ProductImageController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,11 @@ Route::get('/pedidos/{code}/confirmado', [OrderController::class, 'confirmed'])-
 
 Route::middleware(['auth', 'verified'])->prefix('gestion-delicias-sn-privada')->name('private.')->group(function () {
     Route::get('/productos', [ProductImageController::class, 'index'])->name('products.index');
+    Route::get('/productos/nuevo', [ProductAdminController::class, 'create'])->name('products.create');
+    Route::post('/productos', [ProductAdminController::class, 'store'])->name('products.store');
+    Route::get('/productos/{product}/editar', [ProductAdminController::class, 'edit'])->name('products.edit');
+    Route::put('/productos/{product}', [ProductAdminController::class, 'update'])->name('products.update');
+    Route::delete('/productos/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
     Route::post('/productos/{product}/imagen', [ProductImageController::class, 'store'])->name('products.image.store');
     Route::delete('/productos/{product}/imagen', [ProductImageController::class, 'destroy'])->name('products.image.destroy');
 });

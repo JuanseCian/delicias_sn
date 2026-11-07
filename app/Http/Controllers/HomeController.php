@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function __invoke(): View
     {
-        $products = Product::with(['category', 'sizes', 'ingredients', 'allergens'])
+        $products = Product::with(['category', 'sizes', 'colors', 'ingredients', 'allergens'])
             ->where('active', true)
             ->get();
 
@@ -27,7 +27,8 @@ class HomeController extends Controller
             'storage_instructions' => $product->storage_instructions,
             'is_custom' => $product->is_custom,
             'lead_time_hours' => $product->lead_time_hours,
-            'sizes' => $product->sizes->map(fn ($size): array => ['id' => $size->id, 'label' => $size->label, 'price' => $size->price])->values(),
+            'sizes' => $product->sizes->map(fn ($size): array => ['id' => $size->id, 'label' => $size->label, 'price' => $size->price, 'quantity' => $size->quantity])->values(),
+            'colors' => $product->colors->map(fn ($color): array => ['id' => $color->id, 'name' => $color->name, 'hex' => $color->hex])->values(),
             'ingredients' => $product->ingredients->map(fn ($ingredient): array => ['name' => $ingredient->name, 'origin' => $ingredient->origin])->values(),
             'allergens' => $product->allergens->pluck('name')->values(),
         ])->values();

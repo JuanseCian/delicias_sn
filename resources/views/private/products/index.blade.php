@@ -1,61 +1,30 @@
 @extends('layouts.private')
 
-@section('title', 'Cargar imágenes · Delicias Sn')
+@section('title', 'Catálogo · Delicias Sn')
 
 @section('content')
-<main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-    <header class="flex flex-col justify-between gap-5 border-b border-bordo/10 pb-8 sm:flex-row sm:items-end">
-        <div>
-            <p class="eyebrow">Gestión privada</p>
-            <h1 class="mt-2 font-display text-4xl text-bordo sm:text-5xl">Imágenes de productos</h1>
-            <p class="mt-3 max-w-xl text-sm leading-6 text-ink/60">Cargá las fotos reales de cada producto. Las imágenes se guardan en `storage/app/public/products` y se muestran automáticamente en la landing.</p>
-        </div>
-        <a href="{{ route('home') }}" class="btn-secondary self-start">Ver landing <span aria-hidden="true">↗</span></a>
-    </header>
+<main class="min-h-screen bg-[#F5F1EC] px-4 py-6 text-[#263238] sm:px-6 lg:px-10">
+    <div class="mx-auto max-w-7xl">
+        <header class="flex flex-col justify-between gap-5 rounded-[1.75rem] border border-[#263238]/10 bg-white p-6 shadow-[0_10px_30px_rgba(38,50,56,0.07)] sm:flex-row sm:items-end sm:p-8">
+            <div><p class="text-xs font-bold tracking-[0.18em] text-[#64747A] uppercase">Administración de catálogo</p><h1 class="mt-2 text-3xl font-bold tracking-tight text-[#263238] sm:text-4xl">Productos</h1><p class="mt-2 max-w-2xl text-sm leading-6 text-[#263238]/65">Creá y editá lo que aparece en la landing. Cada tamaño, cantidad, color e imagen se guarda en la base de datos.</p></div>
+            <div class="flex gap-2"><a href="{{ route('dashboard') }}" class="rounded-xl border border-[#263238]/15 px-4 py-3 text-sm font-semibold text-[#263238]/70 transition hover:bg-[#F5F1EC]">Dashboard</a><a href="{{ route('private.products.create') }}" class="rounded-xl bg-[#263238] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#455A64]">+ Nuevo producto</a></div>
+        </header>
 
-    @if (session('success'))
-        <div class="mt-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-800" role="status">{{ session('success') }}</div>
-    @endif
+        @if (session('success'))<div class="mt-5 rounded-xl border border-[#A5C8A8] bg-[#EEF8EF] px-4 py-3 text-sm font-semibold text-[#315D38]" role="status">{{ session('success') }}</div>@endif
+        @if (session('error'))<div class="mt-5 rounded-xl border border-[#E3B2A8] bg-[#FFF1EE] px-4 py-3 text-sm font-semibold text-[#8A3C2E]" role="alert">{{ session('error') }}</div>@endif
 
-    @if ($errors->any())
-        <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
-            @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3"><div class="rounded-2xl border border-[#263238]/10 bg-white p-5"><p class="text-xs font-bold tracking-[0.12em] text-[#64747A] uppercase">Productos</p><p class="mt-2 text-3xl font-bold text-[#263238]">{{ $products->count() }}</p></div><div class="rounded-2xl border border-[#263238]/10 bg-white p-5"><p class="text-xs font-bold tracking-[0.12em] text-[#64747A] uppercase">Con imagen</p><p class="mt-2 text-3xl font-bold text-[#315D38]">{{ $products->whereNotNull('image')->count() }}</p></div><div class="rounded-2xl border border-[#263238]/10 bg-white p-5"><p class="text-xs font-bold tracking-[0.12em] text-[#64747A] uppercase">Sin imagen</p><p class="mt-2 text-3xl font-bold text-[#A85C22]">{{ $products->whereNull('image')->count() }}</p></div></div>
+
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            @foreach ($products as $product)
+                <article class="overflow-hidden rounded-[1.5rem] border border-[#263238]/10 bg-white shadow-[0_8px_24px_rgba(38,50,56,0.06)]">
+                    <div class="flex aspect-[1.35] items-center justify-center overflow-hidden bg-[#E9EFF0]">
+                        @if ($product->image)<img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }}" class="h-full w-full object-cover">@else<span class="text-center text-[#64747A]"><span class="block text-4xl">○</span><span class="mt-1 block text-xs font-semibold">Sin imagen cargada</span></span>@endif
+                    </div>
+                    <div class="p-5"><div class="flex items-start justify-between gap-3"><div><p class="text-xs font-bold tracking-[0.1em] text-[#64747A] uppercase">{{ $product->category->name }}</p><h2 class="mt-1 text-xl font-bold text-[#263238]">{{ $product->name }}</h2></div><span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase {{ $product->active ? 'bg-[#EEF8EF] text-[#315D38]' : 'bg-[#F0F1F1] text-[#64747A]' }}">{{ $product->active ? 'Activo' : 'Oculto' }}</span></div><p class="mt-3 line-clamp-2 text-sm leading-5 text-[#263238]/60">{{ $product->short_description }}</p><div class="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#64747A]"><span class="rounded-lg bg-[#F5F1EC] px-2.5 py-1.5">{{ $product->sizes->count() }} tamaños</span><span class="rounded-lg bg-[#F5F1EC] px-2.5 py-1.5">{{ $product->colors->count() }} colores</span><span class="rounded-lg bg-[#F5F1EC] px-2.5 py-1.5">{{ $product->sizes->sum('quantity') }} unidades</span></div><div class="mt-5 flex gap-2 border-t border-[#263238]/10 pt-4"><a href="{{ route('private.products.edit', $product) }}" class="flex-1 rounded-xl bg-[#E9EFF0] px-3 py-2.5 text-center text-sm font-bold text-[#263238] transition hover:bg-[#D8E2E4]">Editar producto</a><form action="{{ route('private.products.destroy', $product) }}" method="POST" onsubmit="return confirm('¿Querés eliminar este producto?')">@csrf @method('DELETE')<button type="submit" class="rounded-xl px-3 py-2.5 text-sm font-semibold text-[#A85C22] transition hover:bg-[#FFF1EE]" aria-label="Eliminar {{ $product->name }}">Eliminar</button></form></div></div>
+                </article>
             @endforeach
         </div>
-    @endif
-
-    <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach ($products as $product)
-            <article class="overflow-hidden rounded-3xl bg-white shadow-card">
-                <div class="flex aspect-[1.35] items-center justify-center overflow-hidden bg-gradient-to-br from-blush via-crema to-mist">
-                    @if ($product->image)
-                        <img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
-                    @else
-                        <div class="text-center text-bordo/65"><span class="font-script text-5xl">sin foto</span><p class="mt-1 text-[10px] font-bold uppercase tracking-[0.15em]">lista para cargar</p></div>
-                    @endif
-                </div>
-                <div class="p-5">
-                    <p class="eyebrow">{{ $product->category->name }}</p>
-                    <h2 class="mt-2 font-display text-2xl text-bordo">{{ $product->name }}</h2>
-                    <form action="{{ route('private.products.image.store', $product) }}" method="POST" enctype="multipart/form-data" class="mt-5">
-                        @csrf
-                        <label class="block">
-                            <span class="text-xs font-bold uppercase tracking-[0.1em] text-bordo">Foto JPG, PNG o WEBP · máx. 5 MB</span>
-                            <input type="file" name="image" accept="image/jpeg,image/png,image/webp" required class="mt-2 block w-full cursor-pointer rounded-2xl border border-dashed border-bordo/20 bg-crema p-3 text-xs text-ink/60 file:mr-3 file:rounded-full file:border-0 file:bg-blush file:px-3 file:py-2 file:text-xs file:font-bold file:text-bordo">
-                        </label>
-                        <button type="submit" class="btn-primary mt-3 w-full">{{ $product->image ? 'Reemplazar imagen' : 'Cargar imagen' }}</button>
-                    </form>
-                    @if ($product->image)
-                        <form action="{{ route('private.products.image.destroy', $product) }}" method="POST" class="mt-2">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full rounded-full px-4 py-2 text-xs font-bold text-rosa-viejo transition hover:bg-blush">Quitar imagen</button>
-                        </form>
-                    @endif
-                </div>
-            </article>
-        @endforeach
     </div>
 </main>
 @endsection

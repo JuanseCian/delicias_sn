@@ -9,23 +9,27 @@ declare global {
 type Product = {
     id: number;
     name: string;
-    image: string;
+    image: string | null;
     category: string;
     short_description?: string;
     description?: string;
     storage_instructions?: string;
     lead_time_hours?: number;
     sizes: ProductSizeOption[];
+    colors: ProductColorOption[];
     ingredients?: { name: string; origin: string }[];
     allergens?: string[];
 };
 
-type ProductSizeOption = { id: number; label: string; price: number };
+type ProductSizeOption = { id: number; label: string; price: number; quantity: number };
+
+type ProductColorOption = { id: number; name: string; hex: string };
 
 type CartItem = {
     key: string;
     product_id: number;
     size_id: number;
+    color_id?: number | null;
     quantity: number;
     note: string;
 };
@@ -60,6 +64,7 @@ Alpine.data(
         filter: 'all',
         selectedProduct: null as Product | null,
         selectedSize: 0,
+        selectedColor: 0,
         detailQuantity: 1,
         detailNote: '',
         checkout: {
@@ -164,6 +169,12 @@ Alpine.data(
             );
         },
 
+        colorFor(item: { product_id: number; color_id?: number | null }) {
+            return this.productFor(item.product_id)?.colors?.find(
+                (color: ProductColorOption) => color.id === Number(item.color_id),
+            );
+        },
+
         itemTotal(item: CartItem) {
             return (this.sizeFor(item)?.price || 0) * item.quantity;
         },
@@ -175,6 +186,7 @@ Alpine.data(
         openProduct(productId: number) {
             this.selectedProduct = this.productFor(productId) || null;
             this.selectedSize = this.selectedProduct?.sizes[0]?.id || 0;
+            this.selectedColor = this.selectedProduct?.colors?.[0]?.id || 0;
             this.detailQuantity = 1;
             this.detailNote = '';
         },
@@ -185,19 +197,23 @@ Alpine.data(
 
         addSelectedToCart() {
             if (!this.selectedProduct || !this.selectedSize) return;
-            const key = `${this.selectedProduct.id}-${this.selectedSize}-${encodeURIComponent(this.detailNote.trim().toLowerCase())}`;
+            const size = this.sizeFor({ product_id: this.selectedProduct.id, size_id: this.selectedSize });
+            if (!size || size.quantity < this.detailQuantity) return;
+            const key = `${this.selectedProduct.id}-${this.selectedSize}-${this.selectedColor || 0}-${encodeURIComponent(this.detailNote.trim().toLowerCase())}`;
             const existing = this.cart.find(
                 (item: CartItem) =>
                     item.key === key && item.note === this.detailNote,
             );
 
             if (existing) {
+                if (existing.quantity + this.detailQuantity > size.quantity) return;
                 existing.quantity += this.detailQuantity;
             } else {
                 this.cart.push({
                     key,
                     product_id: this.selectedProduct.id,
                     size_id: this.selectedSize,
+                    color_id: this.selectedColor || null,
                     quantity: this.detailQuantity,
                     note: this.detailNote,
                 });
@@ -213,7 +229,8 @@ Alpine.data(
                 (cartItem: CartItem) => cartItem.key === key,
             );
             if (!item) return;
-            item.quantity = Math.max(1, Math.min(50, item.quantity + amount));
+            const maxQuantity = this.sizeFor(item)?.quantity || 1;
+            item.quantity = Math.max(1, Math.min(maxQuantity, item.quantity + amount));
             this.persist();
         },
 
@@ -252,8 +269,9 @@ Alpine.data(
                 ...this.cart.map((item: CartItem) => {
                     const product = this.productFor(item.product_id);
                     const size = this.sizeFor(item);
+                    const color = this.colorFor(item);
                     const note = item.note ? ` · Nota: ${item.note}` : '';
-                    return `• ${product?.name} · ${size?.label} · x${item.quantity}${note}`;
+                    return `• ${product?.name} · ${size?.label}${color ? ` · ${color.name}` : ''} · x${item.quantity}${note}`;
                 }),
                 '',
                 `Total: ${money(this.subtotal)}`,
@@ -290,6 +308,58 @@ Alpine.data(
         },
     }),
 );
+
+type EditorSize = {
+    id?: number | string;
+    label: string;
+    price: number | string;
+    quantity: number | string;
+    uid?: string;
+};
+
+type EditorColor = {
+    id?: number | string;
+    name: string;
+    hex: string;
+    uid?: string;
+};
+
+Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
+    category_id: initial.category_id || '',
+    name: initial.name || '',
+    short_description: initial.short_description || '',
+    description: initial.description || '',
+    storage_instructions: initial.storage_instructions || '',
+    is_featured: Boolean(initial.is_featured),
+    is_custom: Boolean(initial.is_custom),
+    active: initial.active !== false,
+    ingredients: initial.ingredients || [],
+    allergens: initial.allergens || [],
+    sizes: (initial.sizes?.length ? initial.sizes : [{ label: '', price: '', quantity: 10 }]).map((size: EditorSize, index: number) => ({
+        ...size,
+        uid: size.uid || `size-${index}-${Date.now()}`,
+    })),
+    colors: (initial.colors || []).map((color: EditorColor, index: number) => ({
+        ...color,
+        uid: color.uid || `color-${index}-${Date.now()}`,
+    })),
+
+    addSize() {
+        this.sizes.push({ label: '', price: '', quantity: 10, uid: `size-${Date.now()}` });
+    },
+
+    removeSize(index: number) {
+        if (this.sizes.length > 1) this.sizes.splice(index, 1);
+    },
+
+    addColor() {
+        this.colors.push({ name: '', hex: '#C98B8B', uid: `color-${Date.now()}` });
+    },
+
+    removeColor(index: number) {
+        this.colors.splice(index, 1);
+    },
+}));
 
 window.Alpine = Alpine;
 Alpine.start();

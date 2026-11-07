@@ -54,6 +54,7 @@ class OrderController extends Controller
                 $order->items()->create([
                     'product_id' => $item['product']->id,
                     'product_size_id' => $item['size']->id,
+                    'product_color_id' => $item['color']?->id,
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['unit_price'],
                     'note' => $item['note'],
@@ -68,7 +69,7 @@ class OrderController extends Controller
 
     public function confirmed(string $code, WhatsAppMessage $whatsAppMessage): View
     {
-        $order = Order::with(['items.product', 'items.size'])->where('code', $code)->firstOrFail();
+        $order = Order::with(['items.product', 'items.size', 'items.color'])->where('code', $code)->firstOrFail();
 
         return view('orders.confirmed', [
             'order' => $order,

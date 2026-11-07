@@ -1,8 +1,8 @@
 <header class="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-6 lg:px-8" x-data="{ open: false }">
     <nav class="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/70 bg-crema/90 px-4 py-3 shadow-soft backdrop-blur-md sm:px-6" aria-label="Navegación principal">
         <a href="{{ route('home') }}" class="group flex items-center gap-2" aria-label="Volver al inicio de Delicias Sn">
-            <img src="{{ asset('img/icono_delicias.png') }}" alt="Delicias Sn" class="h-10 w-10 rounded-full object-cover transition-transform group-hover:rotate-6">
-            <span class="font-display text-xl tracking-tight text-bordo sm:text-2xl">Delicias <span class="font-script text-2xl font-normal text-rosa-viejo">Sn</span></span>
+            <img src="{{ asset('img/icono_delicias.png') }}" alt="" class="h-10 w-10 rounded-full object-cover transition-transform group-hover:rotate-6">
+            <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias Pastelería" class="h-10 w-36 object-contain object-left sm:w-40">
         </a>
 
         <div class="hidden items-center gap-7 text-xs font-semibold uppercase tracking-[0.16em] text-ink/70 lg:flex">

@@ -13,7 +13,7 @@ class ProductImageController extends Controller
     public function index(): View
     {
         return view('private.products.index', [
-            'products' => Product::with('category')->orderBy('category_id')->orderBy('name')->get(),
+            'products' => Product::with(['category', 'sizes', 'colors'])->orderBy('category_id')->orderBy('name')->get(),
         ]);
     }
 

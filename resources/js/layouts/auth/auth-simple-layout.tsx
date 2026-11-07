@@ -14,21 +14,17 @@ export default function AuthSimpleLayout({
             <div className="relative z-10 w-full max-w-lg">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-5 text-center">
-                        <Link
-                            href={home()}
-                            className="group flex items-center gap-3 font-medium"
-                        >
+                        <Link href={home()} className="group flex items-center gap-3">
                             <img
                                 src="/img/icono_delicias.png"
-                                alt="Delicias Sn"
+                                alt=""
                                 className="h-12 w-12 rounded-full object-cover transition-transform group-hover:rotate-6"
                             />
-                            <span className="font-display text-3xl text-[#6B2D3C]">
-                                Delicias{' '}
-                                <span className="font-script text-4xl font-normal text-[#C98B8B]">
-                                    Sn
-                                </span>
-                            </span>
+                            <img
+                                src="/img/delicias_nombre.png"
+                                alt="Delicias Pastelería"
+                                className="h-12 w-44 object-contain object-left"
+                            />
                         </Link>
 
                         <div className="space-y-2">
