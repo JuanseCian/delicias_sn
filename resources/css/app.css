@@ -31,8 +31,8 @@
     --color-accent: #f4d9d5;
     --color-accent-foreground: #6b2d3c;
     --color-destructive: #b44d4d;
-    --color-border: rgba(107, 45, 60, .14);
-    --color-input: rgba(107, 45, 60, .18);
+    --color-border: rgba(107, 45, 60, 0.14);
+    --color-input: rgba(107, 45, 60, 0.18);
     --color-ring: #c98b8b;
     --color-sidebar: #fff;
     --color-sidebar-foreground: #3b2a2a;
@@ -40,10 +40,12 @@
     --color-sidebar-primary-foreground: #fff;
     --color-sidebar-accent: #f4d9d5;
     --color-sidebar-accent-foreground: #6b2d3c;
-    --color-sidebar-border: rgba(107, 45, 60, .12);
+    --color-sidebar-border: rgba(107, 45, 60, 0.12);
     --color-sidebar-ring: #c98b8b;
     --shadow-soft: 0 18px 55px rgba(107, 45, 60, 0.11);
     --shadow-card: 0 9px 28px rgba(59, 42, 42, 0.08);
+    --shadow-lift: 0 22px 48px rgba(107, 45, 60, 0.16);
+    --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
     --radius-4xl: 2.25rem;
 }
 
@@ -55,6 +57,11 @@
 
 body {
     background: #fbf5ee;
+}
+
+::selection {
+    background: #6b2d3c;
+    color: #fbf5ee;
 }
 
 button,
@@ -99,8 +106,7 @@ textarea:focus-visible {
         font-size: 0.72rem;
         font-weight: 700;
         gap: 0.65rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
+        letter-spacing: 0.06em;
     }
 
     .section-kicker::before {
@@ -110,10 +116,14 @@ textarea:focus-visible {
         width: 2rem;
     }
 
+    .brand-wordmark {
+        clip-path: inset(0 17% 0 0);
+    }
+
     .btn-primary {
         align-items: center;
         background: #6b2d3c;
-        border-radius: 999px;
+        border-radius: 1rem;
         color: #fff;
         display: inline-flex;
         font-size: 0.85rem;
@@ -122,9 +132,9 @@ textarea:focus-visible {
         justify-content: center;
         padding: 0.9rem 1.4rem;
         transition:
-            background 180ms ease,
-            transform 180ms ease,
-            box-shadow 180ms ease;
+            background 180ms var(--ease-brand),
+            transform 180ms var(--ease-brand),
+            box-shadow 180ms var(--ease-brand);
     }
 
     .btn-primary:hover {
@@ -136,7 +146,7 @@ textarea:focus-visible {
     .btn-secondary {
         align-items: center;
         border: 1px solid rgba(107, 45, 60, 0.22);
-        border-radius: 999px;
+        border-radius: 1rem;
         color: #6b2d3c;
         display: inline-flex;
         font-size: 0.85rem;
@@ -145,9 +155,9 @@ textarea:focus-visible {
         justify-content: center;
         padding: 0.9rem 1.4rem;
         transition:
-            background 180ms ease,
-            border 180ms ease,
-            transform 180ms ease;
+            background 180ms var(--ease-brand),
+            border 180ms var(--ease-brand),
+            transform 180ms var(--ease-brand);
     }
 
     .btn-secondary:hover {
@@ -165,13 +175,13 @@ textarea:focus-visible {
         box-shadow: 0 10px 25px rgba(47, 158, 98, 0.28);
         color: #fff;
         display: flex;
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 700;
         gap: 0.4rem;
-        padding: 0.7rem 0.85rem;
+        padding: 0.72rem 0.9rem;
         position: fixed;
         right: 1rem;
-        transition: transform 180ms ease;
+        transition: transform 180ms var(--ease-brand);
         z-index: 45;
     }
 
@@ -180,15 +190,32 @@ textarea:focus-visible {
     }
 
     .hero-cake-card {
-        background: radial-gradient(circle at 30% 25%, #fff 0 4%, transparent 4.5%), radial-gradient(circle at 75% 70%, rgba(255, 255, 255, .8) 0 7%, transparent 7.5%), linear-gradient(145deg, #f4d9d5 0%, #c98b8b 100%);
+        background:
+            radial-gradient(circle at 30% 25%, #fff 0 4%, transparent 4.5%),
+            radial-gradient(
+                circle at 75% 70%,
+                rgba(255, 255, 255, 0.8) 0 7%,
+                transparent 7.5%
+            ),
+            linear-gradient(145deg, #f4d9d5 0%, #c98b8b 100%);
         min-height: 28rem;
         padding: 1.5rem;
+        position: relative;
+    }
+
+    .hero-cake-card::after {
+        border: 1px solid rgba(107, 45, 60, 0.22);
+        border-radius: 45% 55% 50% 50%;
+        content: '';
+        inset: 12%;
+        position: absolute;
+        transform: rotate(9deg);
     }
 
     .hero-cake-mark {
         align-items: center;
-        background: rgba(251, 245, 238, .72);
-        border: 1px solid rgba(107, 45, 60, .2);
+        background: rgba(251, 245, 238, 0.72);
+        border: 1px solid rgba(107, 45, 60, 0.2);
         border-radius: 50%;
         display: flex;
         flex-direction: column;
@@ -200,16 +227,35 @@ textarea:focus-visible {
     }
 
     .custom-cake-panel {
-        background: radial-gradient(circle at 25% 22%, rgba(255, 255, 255, .72) 0 5%, transparent 5.5%), radial-gradient(circle at 75% 70%, rgba(255, 255, 255, .45) 0 9%, transparent 9.5%), linear-gradient(145deg, #f9e6df, #d59a9a);
+        background:
+            radial-gradient(
+                circle at 25% 22%,
+                rgba(255, 255, 255, 0.72) 0 5%,
+                transparent 5.5%
+            ),
+            radial-gradient(
+                circle at 75% 70%,
+                rgba(255, 255, 255, 0.45) 0 9%,
+                transparent 9.5%
+            ),
+            linear-gradient(145deg, #f9e6df, #d59a9a);
     }
 
     .custom-cupcake-panel {
-        background: radial-gradient(circle at 50% 35%, #fff 0 12%, transparent 12.5%), linear-gradient(145deg, #c68b59, #6b2d3c);
+        background:
+            radial-gradient(circle at 50% 35%, #fff 0 12%, transparent 12.5%),
+            linear-gradient(145deg, #c68b59, #6b2d3c);
     }
 
     .product-image-frame {
         align-items: center;
-        background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, .8) 0 5%, transparent 5.5%), linear-gradient(145deg, #f4d9d5, #fbf5ee);
+        background:
+            radial-gradient(
+                circle at 25% 25%,
+                rgba(255, 255, 255, 0.8) 0 5%,
+                transparent 5.5%
+            ),
+            linear-gradient(145deg, #f4d9d5, #fbf5ee);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -218,7 +264,13 @@ textarea:focus-visible {
     }
 
     .product-modal-image {
-        background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .65) 0 7%, transparent 7.5%), linear-gradient(145deg, #f4d9d5, #c98b8b);
+        background:
+            radial-gradient(
+                circle at 35% 30%,
+                rgba(255, 255, 255, 0.65) 0 7%,
+                transparent 7.5%
+            ),
+            linear-gradient(145deg, #f4d9d5, #c98b8b);
     }
 
     .featured-product-frame {
@@ -243,20 +295,123 @@ textarea:focus-visible {
     }
 
     .product-thumb-dark {
-        background: rgba(255, 255, 255, .12);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .catalog-card {
+        border: 1px solid rgba(107, 45, 60, 0.08);
+        box-shadow: var(--shadow-card);
+        transition:
+            border-color 300ms var(--ease-brand),
+            box-shadow 300ms var(--ease-brand),
+            transform 300ms var(--ease-brand);
+    }
+
+    .catalog-card:hover {
+        border-color: rgba(201, 139, 139, 0.5);
+        box-shadow: var(--shadow-lift);
+        transform: translateY(-4px);
+    }
+
+    @media (min-width: 1024px) {
+        #catalogo .catalog-card:first-child {
+            display: grid;
+            grid-column: span 2;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        }
+
+        #catalogo .catalog-card:first-child .product-image-frame {
+            height: 100%;
+            min-height: 25rem;
+        }
     }
 
     .reveal {
+        opacity: 1;
+        transform: none;
+        transition:
+            opacity 700ms var(--ease-brand),
+            transform 700ms var(--ease-brand);
+    }
+
+    .motion-ready .reveal {
         opacity: 0;
         transform: translateY(18px);
-        transition:
-            opacity 700ms ease,
-            transform 700ms ease;
     }
 
     .reveal.is-visible {
         opacity: 1;
         transform: translateY(0);
+    }
+
+    .private-shell {
+        background: #fbf5ee;
+        color: #3b2a2a;
+    }
+
+    .private-shell .admin-heading {
+        color: #6b2d3c;
+        font-family: var(--font-display);
+    }
+
+    .private-shell .admin-surface {
+        border-color: rgba(107, 45, 60, 0.1);
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 12px 36px rgba(59, 42, 42, 0.07);
+        backdrop-filter: blur(12px);
+    }
+
+    .private-shell .admin-muted {
+        color: rgba(59, 42, 42, 0.62);
+    }
+
+    .private-shell .admin-button {
+        background: #6b2d3c;
+        color: #fff;
+        transition:
+            background 180ms var(--ease-brand),
+            box-shadow 180ms var(--ease-brand),
+            transform 180ms var(--ease-brand);
+    }
+
+    .private-shell .admin-button:hover {
+        background: #3b2a2a;
+        box-shadow: 0 12px 24px rgba(107, 45, 60, 0.16);
+        transform: translateY(-2px);
+    }
+
+    .private-shell .admin-button-soft {
+        background: #f4d9d5;
+        color: #6b2d3c;
+        transition:
+            background 180ms var(--ease-brand),
+            transform 180ms var(--ease-brand);
+    }
+
+    .private-shell .admin-button-soft:hover {
+        background: #c98b8b;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .private-shell .admin-products article h2,
+    .private-shell .admin-form h1,
+    .private-shell .admin-form h2 {
+        color: #6b2d3c;
+    }
+
+    .private-shell .admin-form > div > form > section {
+        border-color: rgba(107, 45, 60, 0.1) !important;
+        background: rgba(255, 255, 255, 0.82) !important;
+        box-shadow: 0 12px 36px rgba(59, 42, 42, 0.07) !important;
+    }
+
+    .private-shell .admin-form button[type='submit'] {
+        background: #6b2d3c !important;
+    }
+
+    .private-shell .admin-form button[type='submit']:hover {
+        background: #3b2a2a !important;
     }
 }
 

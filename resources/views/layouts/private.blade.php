@@ -6,7 +6,7 @@
     <title>@yield('title', 'Gestión privada · Delicias Sn')</title>
     @vite(['resources/css/app.css', 'resources/js/landing.ts'])
 </head>
-<body class="min-h-screen bg-crema text-ink antialiased">
+<body class="private-shell min-h-screen antialiased">
     @yield('content')
 </body>
 </html>

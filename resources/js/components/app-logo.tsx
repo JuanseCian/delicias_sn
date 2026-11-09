@@ -9,7 +9,7 @@ export default function AppLogo() {
             <img
                 src="/img/delicias_nombre.png"
                 alt="Delicias Pastelería"
-                className="ml-1 h-10 min-w-0 flex-1 object-contain object-left group-data-[collapsible=icon]:hidden"
+                className="brand-wordmark ml-1 h-10 min-w-0 flex-1 object-contain object-left group-data-[collapsible=icon]:hidden"
             />
         </>
     );

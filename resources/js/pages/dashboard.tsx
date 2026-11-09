@@ -199,7 +199,7 @@ function QuickAction({
         </>
     );
 
-    if (external || native) {
+    if (external) {
         return (
             <a
                 href={href}
@@ -207,6 +207,14 @@ function QuickAction({
                 rel="noreferrer"
                 className={className}
             >
+                {content}
+            </a>
+        );
+    }
+
+    if (native) {
+        return (
+            <a href={href} className={className}>
                 {content}
             </a>
         );

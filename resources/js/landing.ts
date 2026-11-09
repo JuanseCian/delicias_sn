@@ -21,7 +21,12 @@ type Product = {
     allergens?: string[];
 };
 
-type ProductSizeOption = { id: number; label: string; price: number; quantity: number };
+type ProductSizeOption = {
+    id: number;
+    label: string;
+    price: number;
+    quantity: number;
+};
 
 type ProductColorOption = { id: number; name: string; hex: string };
 
@@ -89,7 +94,24 @@ Alpine.data(
                 this.cart = [];
             }
 
+            const reducedMotion = window.matchMedia(
+                '(prefers-reduced-motion: reduce)',
+            ).matches;
+
+            if (!reducedMotion) {
+                document.documentElement.classList.add('motion-ready');
+            }
+
             queueMicrotask(() => {
+                if (!('IntersectionObserver' in window)) {
+                    document
+                        .querySelectorAll('.reveal')
+                        .forEach((element) =>
+                            element.classList.add('is-visible'),
+                        );
+                    return;
+                }
+
                 const observer = new IntersectionObserver(
                     (entries) => {
                         entries.forEach((entry) => {
@@ -171,7 +193,8 @@ Alpine.data(
 
         colorFor(item: { product_id: number; color_id?: number | null }) {
             return this.productFor(item.product_id)?.colors?.find(
-                (color: ProductColorOption) => color.id === Number(item.color_id),
+                (color: ProductColorOption) =>
+                    color.id === Number(item.color_id),
             );
         },
 
@@ -197,7 +220,10 @@ Alpine.data(
 
         addSelectedToCart() {
             if (!this.selectedProduct || !this.selectedSize) return;
-            const size = this.sizeFor({ product_id: this.selectedProduct.id, size_id: this.selectedSize });
+            const size = this.sizeFor({
+                product_id: this.selectedProduct.id,
+                size_id: this.selectedSize,
+            });
             if (!size || size.quantity < this.detailQuantity) return;
             const key = `${this.selectedProduct.id}-${this.selectedSize}-${this.selectedColor || 0}-${encodeURIComponent(this.detailNote.trim().toLowerCase())}`;
             const existing = this.cart.find(
@@ -206,7 +232,8 @@ Alpine.data(
             );
 
             if (existing) {
-                if (existing.quantity + this.detailQuantity > size.quantity) return;
+                if (existing.quantity + this.detailQuantity > size.quantity)
+                    return;
                 existing.quantity += this.detailQuantity;
             } else {
                 this.cart.push({
@@ -230,7 +257,10 @@ Alpine.data(
             );
             if (!item) return;
             const maxQuantity = this.sizeFor(item)?.quantity || 1;
-            item.quantity = Math.max(1, Math.min(maxQuantity, item.quantity + amount));
+            item.quantity = Math.max(
+                1,
+                Math.min(maxQuantity, item.quantity + amount),
+            );
             this.persist();
         },
 
@@ -335,7 +365,10 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
     active: initial.active !== false,
     ingredients: initial.ingredients || [],
     allergens: initial.allergens || [],
-    sizes: (initial.sizes?.length ? initial.sizes : [{ label: '', price: '', quantity: 10 }]).map((size: EditorSize, index: number) => ({
+    sizes: (initial.sizes?.length
+        ? initial.sizes
+        : [{ label: '', price: '', quantity: 10 }]
+    ).map((size: EditorSize, index: number) => ({
         ...size,
         uid: size.uid || `size-${index}-${Date.now()}`,
     })),
@@ -345,7 +378,12 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
     })),
 
     addSize() {
-        this.sizes.push({ label: '', price: '', quantity: 10, uid: `size-${Date.now()}` });
+        this.sizes.push({
+            label: '',
+            price: '',
+            quantity: 10,
+            uid: `size-${Date.now()}`,
+        });
     },
 
     removeSize(index: number) {
@@ -353,7 +391,11 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
     },
 
     addColor() {
-        this.colors.push({ name: '', hex: '#C98B8B', uid: `color-${Date.now()}` });
+        this.colors.push({
+            name: '',
+            hex: '#C98B8B',
+            uid: `color-${Date.now()}`,
+        });
     },
 
     removeColor(index: number) {

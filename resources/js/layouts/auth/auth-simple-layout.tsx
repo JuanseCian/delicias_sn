@@ -14,7 +14,10 @@ export default function AuthSimpleLayout({
             <div className="relative z-10 w-full max-w-lg">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-5 text-center">
-                        <Link href={home()} className="group flex items-center gap-3">
+                        <Link
+                            href={home()}
+                            className="group flex items-center gap-3"
+                        >
                             <img
                                 src="/img/icono_delicias.png"
                                 alt=""
@@ -23,7 +26,7 @@ export default function AuthSimpleLayout({
                             <img
                                 src="/img/delicias_nombre.png"
                                 alt="Delicias Pastelería"
-                                className="h-12 w-44 object-contain object-left"
+                                className="brand-wordmark h-12 w-44 object-contain object-left"
                             />
                         </Link>
 

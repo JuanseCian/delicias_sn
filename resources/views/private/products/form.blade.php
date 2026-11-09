@@ -21,7 +21,7 @@
 @section('title', $isEditing ? 'Editar producto · Delicias Sn' : 'Nuevo producto · Delicias Sn')
 
 @section('content')
-<main class="min-h-screen bg-[#F5F1EC] px-4 py-6 text-[#263238] sm:px-6 lg:px-10" x-data="productEditor(@js($initial))">
+<main class="admin-form min-h-screen bg-crema px-4 py-6 text-ink sm:px-6 lg:px-10" x-data="productEditor(@js($initial))">
     <div class="mx-auto max-w-5xl">
         <header class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><a href="{{ route('private.products.index') }}" class="text-sm font-semibold text-[#64747A] hover:text-[#263238]">← Volver a productos</a><h1 class="mt-3 text-3xl font-bold tracking-tight text-[#263238] sm:text-4xl">{{ $isEditing ? 'Editar producto' : 'Nuevo producto' }}</h1><p class="mt-2 text-sm text-[#263238]/60">Todo lo que completes acá puede mostrarse en la landing pública.</p></div><span class="rounded-full bg-[#E9EFF0] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[#64747A]">Catálogo</span></header>
         @if ($errors->any())<div class="mt-6 rounded-xl border border-[#E3B2A8] bg-[#FFF1EE] px-4 py-3 text-sm text-[#8A3C2E]" role="alert"><p class="font-bold">Revisá estos campos:</p><ul class="mt-1 list-disc pl-5">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
