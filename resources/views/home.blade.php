@@ -9,8 +9,6 @@
     @if ($featured)
         <x-featured :featured="$featured" />
     @endif
-    <x-ingredients :ingredients="$ingredients" />
     <x-steps />
-    <x-custom-cakes />
     <x-footer />
 @endsection

@@ -8,7 +8,7 @@
         <div class="hidden items-center gap-7 text-sm font-semibold text-ink/70 lg:flex">
             <a href="#catalogo" class="transition-colors hover:text-bordo">Productos</a>
             <a href="#como-encargar" class="transition-colors hover:text-bordo">Cómo encargar</a>
-            <a href="#personalizadas" class="transition-colors hover:text-bordo">Personalizadas</a>
+            <a href="{{ route('personalized') }}" class="transition-colors hover:text-bordo">Personalización</a>
             <a href="{{ route('faq') }}" class="transition-colors hover:text-bordo">Preguntas</a>
         </div>
 
@@ -27,7 +27,7 @@
         <div class="grid gap-1 text-sm font-semibold text-ink/75">
             <a @click="open = false" href="#catalogo" class="rounded-2xl px-4 py-3 hover:bg-blush">Productos</a>
             <a @click="open = false" href="#como-encargar" class="rounded-2xl px-4 py-3 hover:bg-blush">Cómo encargar</a>
-            <a @click="open = false" href="#personalizadas" class="rounded-2xl px-4 py-3 hover:bg-blush">Personalizadas</a>
+            <a @click="open = false" href="{{ route('personalized') }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Personalización</a>
             <a @click="open = false" href="{{ route('faq') }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Preguntas frecuentes</a>
         </div>
     </div>

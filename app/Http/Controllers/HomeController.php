@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Ingredient;
 use App\Models\Product;
 use Illuminate\View\View;
 
@@ -13,6 +12,7 @@ class HomeController extends Controller
     {
         $products = Product::with(['category', 'sizes', 'colors', 'ingredients', 'allergens'])
             ->where('active', true)
+            ->where('is_custom', false)
             ->get();
 
         $catalog = $products->map(fn (Product $product): array => [
@@ -37,7 +37,6 @@ class HomeController extends Controller
             'categories' => Category::orderBy('order')->get(),
             'products' => $products,
             'featured' => $products->firstWhere('is_featured', true),
-            'ingredients' => Ingredient::orderBy('id')->get(),
             'leadTimes' => $products->mapWithKeys(fn (Product $product): array => [$product->id => $product->lead_time_hours]),
             'catalog' => $catalog,
         ]);

@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'cake_ai' => [
+        'provider' => env('CAKE_AI_PROVIDER'),
+        'endpoint' => env('CAKE_AI_ENDPOINT', 'https://api.openai.com/v1/chat/completions'),
+        'key' => env('CAKE_AI_API_KEY'),
+        'model' => env('CAKE_AI_MODEL', 'gpt-4o-mini'),
+    ],
+
 ];

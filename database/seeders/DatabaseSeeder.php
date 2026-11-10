@@ -121,5 +121,7 @@ class DatabaseSeeder extends Seeder
                 $product->allergens()->sync(collect($data['allergens'])->map(fn (string $name): int => $allergens[$name]->id)->all());
             }
         }
+
+        $this->call(CakeCustomizerSeeder::class);
     }
 }

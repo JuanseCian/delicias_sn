@@ -8,8 +8,8 @@ import {
     LayoutGrid,
     PackagePlus,
     Store,
+    WandSparkles,
 } from 'lucide-react';
-import { dashboard } from '@/routes';
 import AdjustableGlassDashboard from '@/components/ui/adjustable-glass-dashboard';
 
 type Props = {
@@ -151,9 +151,16 @@ export default function Dashboard({ stats }: Props) {
                                     native
                                 />
                                 <QuickAction
+                                    href="/gestion-delicias-sn-privada/personalizadas"
+                                    icon={<WandSparkles className="size-4" />}
+                                    title="Configurar diseñador"
+                                    detail="Opciones, precios y solicitudes"
+                                    native
+                                />
+                                <QuickAction
                                     href="/"
                                     icon={<ExternalLink className="size-4" />}
-                                    title="Abrir landing pública"
+                                    title="Abrir página"
                                     detail="Ver la experiencia de tus clientes"
                                     external
                                 />
@@ -260,10 +267,5 @@ function StatCard({
 }
 
 Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
+    breadcrumbs: [],
 };

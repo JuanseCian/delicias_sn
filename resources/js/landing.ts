@@ -33,7 +33,7 @@ type ProductColorOption = { id: number; name: string; hex: string };
 type CartItem = {
     key: string;
     product_id: number;
-    size_id: number;
+    product_size_id: number;
     color_id?: number | null;
     quantity: number;
     note: string;
@@ -89,7 +89,26 @@ Alpine.data(
                 const stored = JSON.parse(
                     localStorage.getItem(storageKey) || '[]',
                 );
-                this.cart = Array.isArray(stored) ? stored : [];
+                this.cart = Array.isArray(stored)
+                    ? stored.flatMap((item: Record<string, unknown>) => {
+                          const productSizeId = Number(
+                              item.product_size_id ?? item.size_id ?? 0,
+                          );
+
+                          if (!productSizeId) {
+                              return [];
+                          }
+
+                          const normalizedItem = {
+                              ...item,
+                              product_size_id: productSizeId,
+                          };
+                          delete (normalizedItem as Record<string, unknown>)
+                              .size_id;
+
+                          return [normalizedItem as CartItem];
+                      })
+                    : [];
             } catch {
                 this.cart = [];
             }
@@ -185,9 +204,10 @@ Alpine.data(
             );
         },
 
-        sizeFor(item: { product_id: number; size_id: number }) {
+        sizeFor(item: { product_id: number; product_size_id: number }) {
             return this.productFor(item.product_id)?.sizes.find(
-                (size: ProductSizeOption) => size.id === Number(item.size_id),
+                (size: ProductSizeOption) =>
+                    size.id === Number(item.product_size_id),
             );
         },
 
@@ -222,7 +242,7 @@ Alpine.data(
             if (!this.selectedProduct || !this.selectedSize) return;
             const size = this.sizeFor({
                 product_id: this.selectedProduct.id,
-                size_id: this.selectedSize,
+                product_size_id: this.selectedSize,
             });
             if (!size || size.quantity < this.detailQuantity) return;
             const key = `${this.selectedProduct.id}-${this.selectedSize}-${this.selectedColor || 0}-${encodeURIComponent(this.detailNote.trim().toLowerCase())}`;
@@ -239,7 +259,7 @@ Alpine.data(
                 this.cart.push({
                     key,
                     product_id: this.selectedProduct.id,
-                    size_id: this.selectedSize,
+                    product_size_id: this.selectedSize,
                     color_id: this.selectedColor || null,
                     quantity: this.detailQuantity,
                     note: this.detailNote,

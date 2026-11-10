@@ -7,11 +7,8 @@
     <div class="mx-auto max-w-7xl">
         <header class="admin-surface flex flex-col justify-between gap-5 rounded-[1.75rem] border p-6 sm:flex-row sm:items-end sm:p-8">
             <div><p class="eyebrow">Administración de catálogo</p><h1 class="admin-heading mt-2 text-3xl tracking-tight sm:text-4xl">Productos</h1><p class="admin-muted mt-2 max-w-2xl text-sm leading-6">Creá y editá lo que aparece en la landing. Cada tamaño, cantidad, color e imagen se guarda en la base de datos.</p></div>
-            <div class="flex gap-2"><a href="{{ route('dashboard') }}" class="admin-button-soft rounded-xl px-4 py-3 text-sm font-semibold">Dashboard</a><a href="{{ route('private.products.create') }}" class="admin-button rounded-xl px-5 py-3 text-sm font-bold">+ Nuevo producto</a></div>
+            <div class="flex gap-2"><a href="{{ route('dashboard') }}" class="admin-button-soft rounded-xl px-4 py-3 text-sm font-semibold">Panel</a><a href="{{ route('private.products.create') }}" class="admin-button rounded-xl px-5 py-3 text-sm font-bold">+ Nuevo producto</a></div>
         </header>
-
-        @if (session('success'))<div class="mt-5 rounded-xl border border-[#A5C8A8] bg-[#EEF8EF] px-4 py-3 text-sm font-semibold text-[#315D38]" role="status">{{ session('success') }}</div>@endif
-        @if (session('error'))<div class="mt-5 rounded-xl border border-[#E3B2A8] bg-[#FFF1EE] px-4 py-3 text-sm font-semibold text-[#8A3C2E]" role="alert">{{ session('error') }}</div>@endif
 
         <div class="mt-6 grid gap-4 sm:grid-cols-3"><div class="admin-surface rounded-2xl border p-5"><p class="eyebrow">Productos</p><p class="admin-heading mt-2 text-3xl font-bold">{{ $products->count() }}</p></div><div class="admin-surface rounded-2xl border p-5"><p class="eyebrow">Con imagen</p><p class="mt-2 text-3xl font-bold text-[#4C8060]">{{ $products->whereNotNull('image')->count() }}</p></div><div class="admin-surface rounded-2xl border p-5"><p class="eyebrow">Sin imagen</p><p class="mt-2 text-3xl font-bold text-caramelo">{{ $products->whereNull('image')->count() }}</p></div></div>
 

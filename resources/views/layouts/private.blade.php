@@ -8,5 +8,6 @@
 </head>
 <body class="private-shell min-h-screen antialiased">
     @yield('content')
+    <x-private-toast />
 </body>
 </html>

@@ -15,7 +15,10 @@ class OrderController extends Controller
 {
     public function checkout(): View
     {
-        $products = Product::with(['category', 'sizes'])->where('active', true)->get();
+        $products = Product::with(['category', 'sizes'])
+            ->where('active', true)
+            ->where('is_custom', false)
+            ->get();
         $catalog = $products->map(fn (Product $product): array => [
             'id' => $product->id,
             'name' => $product->name,

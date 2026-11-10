@@ -23,6 +23,22 @@ class StoreOrderRequest extends FormRequest
             $items = is_array($decoded) ? $decoded : [];
         }
 
+        if (is_array($items)) {
+            $items = array_map(static function (mixed $item): mixed {
+                if (! is_array($item)) {
+                    return $item;
+                }
+
+                if (! isset($item['product_size_id']) && isset($item['size_id'])) {
+                    $item['product_size_id'] = $item['size_id'];
+                }
+
+                unset($item['size_id']);
+
+                return $item;
+            }, $items);
+        }
+
         $this->merge(['items' => $items]);
     }
 

@@ -1,11 +1,4 @@
-import { Link } from '@inertiajs/react';
-import {
-    ArrowUpRight,
-    LayoutDashboard,
-    PackageOpen,
-    Plus,
-    Store,
-} from 'lucide-react';
+import { PackageOpen, Plus, WandSparkles } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -17,25 +10,28 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutDashboard,
-    },
     {
         title: 'Productos',
         href: '/gestion-delicias-sn-privada/productos',
         icon: PackageOpen,
         native: true,
     },
+    {
+        title: 'Diseñador',
+        href: '/gestion-delicias-sn-privada/personalizadas',
+        icon: WandSparkles,
+        native: true,
+    },
 ];
 
 export function AppSidebar() {
+    const { open, toggleSidebar } = useSidebar();
+
     return (
         <Sidebar collapsible="icon" variant="inset" className="p-2">
             <SidebarHeader className="gap-3 px-1 pt-1">
@@ -43,12 +39,13 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             size="lg"
-                            asChild
+                            type="button"
+                            onClick={toggleSidebar}
+                            aria-label={open ? 'Cerrar menú lateral' : 'Abrir menú lateral'}
+                            tooltip={{ children: open ? 'Cerrar menú' : 'Abrir menú' }}
                             className="h-14 rounded-2xl px-3 group-data-[collapsible=icon]:px-2 hover:bg-[#F4D9D5]/70"
                         >
-                            <Link href={dashboard()} prefetch>
-                                <AppLogo />
-                            </Link>
+                            <AppLogo />
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -77,22 +74,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter className="gap-3 px-1 pb-1">
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton
-                            asChild
-                            tooltip={{ children: 'Vista pública' }}
-                            className="h-10 rounded-xl text-[#3B2A2A]/65 hover:bg-[#F4D9D5]/60 hover:text-[#6B2D3C]"
-                        >
-                            <a href="/" target="_blank" rel="noreferrer">
-                                <Store className="size-4" />
-                                <span>Vista pública</span>
-                                <ArrowUpRight className="ml-auto size-3.5" />
-                            </a>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
+            <SidebarFooter className="px-1 pb-1">
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

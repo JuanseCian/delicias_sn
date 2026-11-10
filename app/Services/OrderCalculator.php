@@ -18,13 +18,18 @@ class OrderCalculator
     public function resolveItems(array $items): Collection
     {
         return collect($items)->map(function (array $item): array {
-            $product = Product::with('category')->where('active', true)->find($item['product_id']);
+            $productId = $item['product_id'] ?? null;
+            $productSizeId = $item['product_size_id'] ?? null;
+            $product = Product::with('category')
+                ->where('active', true)
+                ->where('is_custom', false)
+                ->find($productId);
             $size = ProductSize::query()
-                ->where('id', $item['product_size_id'])
-                ->where('product_id', $item['product_id'])
+                ->where('id', $productSizeId)
+                ->where('product_id', $productId)
                 ->first();
             $color = ! empty($item['color_id'])
-                ? ProductColor::query()->where('id', $item['color_id'])->where('product_id', $item['product_id'])->first()
+                ? ProductColor::query()->where('id', $item['color_id'])->where('product_id', $productId)->first()
                 : null;
 
             if (! $product || ! $size || (! empty($item['color_id']) && ! $color)) {
