@@ -160,14 +160,6 @@ Alpine.data(
             );
         },
 
-        get deposit() {
-            return Math.ceil(this.subtotal / 2);
-        },
-
-        get balance() {
-            return this.subtotal - this.deposit;
-        },
-
         get detailMaxQuantity() {
             return 50;
         },
@@ -176,14 +168,10 @@ Alpine.data(
             const leadTime = this.cart.reduce((max: number, item: CartItem) => {
                 const product = this.productFor(item.product_id);
                 return Math.max(max, product?.lead_time_hours || 0);
-            }, 0);
+            }, 48);
             const date = new Date();
             date.setHours(date.getHours() + leadTime, 0, 0, 0);
             date.setHours(0, 0, 0, 0);
-
-            while (date.getDay() === 0) {
-                date.setDate(date.getDate() + 1);
-            }
 
             return date;
         },
@@ -291,12 +279,6 @@ Alpine.data(
             );
             const minimum = this.minimumDate;
 
-            if (selected.getDay() === 0) {
-                this.dateError =
-                    'Los domingos descansamos. Elegí un día de lunes a sábado.';
-                return false;
-            }
-
             if (selected < minimum) {
                 this.dateError = `Por los productos elegidos, la primera fecha disponible es el ${this.minimumDateLabel}.`;
                 this.checkout.delivery_date = '';
@@ -348,7 +330,6 @@ Alpine.data(
                 }),
                 '',
                 `Total: ${money(this.subtotal)}`,
-                `Seña (50%): ${money(this.deposit)}`,
             ];
 
             if (this.checkout.customer_name) {
@@ -365,7 +346,6 @@ Alpine.data(
                     lines.push(
                         `Fecha: ${this.checkout.delivery_date}`,
                         `Horario: ${this.checkout.time_slot}`,
-                        'Pago: a coordinar por WhatsApp',
                     );
                 if (this.checkout.notes)
                     lines.push(`Notas: ${this.checkout.notes}`);

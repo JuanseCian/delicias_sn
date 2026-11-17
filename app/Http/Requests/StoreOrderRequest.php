@@ -62,10 +62,6 @@ class StoreOrderRequest extends FormRequest
                     $date = CarbonImmutable::createFromFormat('Y-m-d', $value);
                     $minimumDate = app(OrderCalculator::class)->minimumDateForItems($this->input('items', []));
 
-                    if ($date->isSunday()) {
-                        $fail('Elegí un día de lunes a sábado.');
-                    }
-
                     if ($date->lessThan($minimumDate)) {
                         $fail('La primera fecha disponible para estos productos es '.$minimumDate->format('d/m/Y').'.');
                     }

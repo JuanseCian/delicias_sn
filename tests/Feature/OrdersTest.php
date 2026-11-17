@@ -3,6 +3,7 @@
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\OrderCalculator;
+use Carbon\CarbonImmutable;
 
 test('a customer can reserve a seeded order', function () {
     $this->seed();
@@ -93,6 +94,36 @@ test('a reservation rejects a date before the longest lead time', function () {
     $response->assertRedirect(route('checkout'));
     $response->assertSessionHasErrors('delivery_date');
     expect(Order::count())->toBe(0);
+});
+
+test('a Sunday can be selected as a delivery date', function () {
+    CarbonImmutable::setTestNow('2026-11-13 10:00:00');
+    $this->seed();
+    $product = Product::where('name', 'Cookies chunky')->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+
+    $minimumDate = app(OrderCalculator::class)->minimumDateForItems([
+        ['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1],
+    ]);
+
+    expect($minimumDate->isSunday())->toBeTrue();
+
+    CarbonImmutable::setTestNow();
+});
+
+test('a reservation is available at least two days from today', function () {
+    CarbonImmutable::setTestNow('2026-11-17 10:00:00');
+    $this->seed();
+    $product = Product::where('name', 'Cookies chunky')->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+
+    $minimumDate = app(OrderCalculator::class)->minimumDateForItems([
+        ['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1],
+    ]);
+
+    expect($minimumDate->toDateString())->toBe('2026-11-19');
+
+    CarbonImmutable::setTestNow();
 });
 
 test('checkout preserves entered data after validation errors', function () {

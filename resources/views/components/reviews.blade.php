@@ -5,6 +5,9 @@
                 <p class="section-kicker">Lo que dicen</p>
                 <h2 class="mt-4 font-display text-4xl leading-tight tracking-[-0.03em] text-bordo sm:text-5xl">Historias<br><span class="font-script text-6xl font-normal text-rosa-viejo">que endulzan</span></h2>
                 <p class="mt-5 max-w-md text-base leading-7 text-ink/65">Después de tu encargo podés dejarnos tu opinión. Nos ayuda a seguir mejorando cada detalle.</p>
+                @if (! request()->routeIs('reviews.public'))
+                    <a href="{{ route('reviews.public') }}" class="mt-5 inline-flex text-sm font-bold text-bordo underline decoration-blush underline-offset-4 hover:text-rosa-viejo">Ver todas las opiniones <span class="ml-2" aria-hidden="true">↗</span></a>
+                @endif
             </div>
             <div class="rounded-[2rem] bg-bordo p-6 text-crema shadow-soft sm:p-8 reveal">
                 <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">

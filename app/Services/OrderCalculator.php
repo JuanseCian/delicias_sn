@@ -60,12 +60,9 @@ class OrderCalculator
         $leadTimeHours = $this->resolveItems($items)
             ->map(fn (array $item): int => $item['product']->lead_time_hours)
             ->max() ?? 0;
+        $leadTimeHours = max(48, $leadTimeHours);
 
         $date = CarbonImmutable::now()->addHours($leadTimeHours)->startOfDay();
-
-        while ($date->isSunday()) {
-            $date = $date->addDay();
-        }
 
         return $date;
     }

@@ -7,14 +7,13 @@
         </div>
         <div class="divide-y divide-bordo/10">
             @foreach ([
-                ['¿Cómo se reserva una fecha?', 'Trabajamos por encargo y confirmamos la fecha con una seña del 50% del total. El saldo se abona al recibir el pedido.'],
+                ['¿Cómo se reserva una fecha?', 'Trabajamos por encargo y confirmamos la fecha después de recibir tus datos y coordinar los detalles del pedido.'],
                 ['¿Con cuánta anticipación tengo que pedir?', 'Cookies con 24 h, cupcakes y boxes con 48 h, tortas con 72 h y mesas dulces con 10 días. Las tortas personalizadas necesitan 7 días.'],
                 ['¿A qué zonas hacen envíos?', 'Coordinamos envíos en zonas cercanas a Catamarca 523. El costo depende de la distancia y se informa antes de confirmar.'],
                 ['¿Puedo retirar mi pedido?', 'Sí, podés retirarlo por Catamarca 523 en la franja horaria que elegiste, con reserva previa.'],
                 ['¿Qué pasa si necesito cancelar?', 'Avisanos con la mayor anticipación posible. Para revisar cambios o cancelaciones, escribinos por WhatsApp con tu número de pedido.'],
                 ['¿Tienen opciones sin alérgenos?', 'Todos nuestros productos se elaboran en el mismo obrador. Consultanos por ingredientes y posibles trazas antes de encargar.'],
                 ['¿Cómo conservo lo que compré?', 'Cada producto incluye sus indicaciones. En general, las tortas y cupcakes van en heladera y las cookies en recipiente hermético.'],
-                ['¿Cómo coordinamos el pago?', 'La seña y el medio de pago se coordinan por WhatsApp después de reservar tu fecha.'],
             ] as $faq)
                 <div x-data="{ expanded: false }" class="py-5">
                     <button type="button" @click="expanded = !expanded" class="flex w-full items-center justify-between gap-5 text-left" :aria-expanded="expanded.toString()">

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/preguntas-frecuentes', FaqController::class)->name('faq');
 Route::get('/personalizadas', PersonalizationController::class)->name('personalized');
+Route::get('/opiniones', [ReviewController::class, 'index'])->name('reviews.public');
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/pedidos/{code}/confirmado', [OrderController::class, 'confirmed'])->name('orders.confirmed');

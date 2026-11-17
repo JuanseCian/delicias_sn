@@ -8,7 +8,7 @@
         <div class="max-w-2xl">
             <p class="section-kicker">Un último paso</p>
             <h1 class="mt-5 font-display text-5xl tracking-[-0.04em] text-bordo sm:text-6xl">Reservá tu <span class="font-script text-6xl font-normal text-rosa-viejo">fecha</span></h1>
-            <p class="mt-5 text-base leading-7 text-ink/65">Completá tus datos y nos ponemos a preparar todo. El pago se coordina por WhatsApp.</p>
+            <p class="mt-5 text-base leading-7 text-ink/65">Completá tus datos y nos ponemos a preparar todo.</p>
         </div>
 
         <div class="mt-12 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="mt-9 flex items-center justify-between border-b border-bordo/10 pb-5">
-                    <div><h2 class="font-display text-2xl text-bordo">Fecha y entrega</h2><p class="mt-1 text-sm text-ink/55">El pago y la seña se coordinan directamente por WhatsApp.</p></div>
+                    <div><h2 class="font-display text-2xl text-bordo">Fecha y entrega</h2></div>
                     <span class="rounded-full bg-blush px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-bordo">Paso 2 de 2</span>
                 </div>
                 <div class="mt-6 grid gap-5 sm:grid-cols-2">
@@ -68,7 +68,7 @@
                     </label>
                     <div class="sm:col-span-2 rounded-2xl bg-blush/60 p-4 text-sm leading-6 text-bordo">
                         <strong>Primera fecha disponible:</strong> <span x-text="minimumDateLabel"></span>
-                        <p class="mt-1 text-xs text-ink/60">Calculada según el producto que más anticipación necesita. Los domingos no se pueden seleccionar.</p>
+                        <p class="mt-1 text-xs text-ink/60">Calculada según el producto que más anticipación necesita. También podés elegir un domingo.</p>
                         <p x-show="dateError" x-text="dateError" class="mt-2 font-semibold text-red-700"></p>
                     </div>
                     <label class="block sm:col-span-2">
@@ -82,7 +82,6 @@
                     <button type="submit" class="btn-primary flex-1">Confirmar reserva <span aria-hidden="true">→</span></button>
                     <button type="button" @click="openWhatsApp()" class="btn-secondary flex-1">Seguir por WhatsApp <span aria-hidden="true">↗</span></button>
                 </div>
-                <p class="mt-4 text-center text-xs leading-5 text-ink/45">Después de confirmar, coordinamos el pago por WhatsApp.</p>
             </form>
 
             <aside class="rounded-[2rem] bg-bordo p-5 text-crema shadow-soft sm:p-8 lg:sticky lg:top-28">
@@ -92,8 +91,7 @@
                     <template x-if="cart.length === 0"><p class="rounded-2xl bg-white/10 p-4 text-sm leading-6 text-crema/70">Tu carrito está vacío. Volvé al catálogo para elegir tus favoritos.</p></template>
                     <template x-for="item in cart" :key="item.key"><div class="flex gap-3 border-b border-white/10 pb-4"><div class="product-thumb product-thumb-dark"><template x-if="productFor(item.product_id)?.image"><img :src="productFor(item.product_id)?.image" :alt="productFor(item.product_id)?.name" class="h-full w-full object-cover"></template><template x-if="!productFor(item.product_id)?.image"><span class="font-script text-xl text-blush/70">♡</span></template></div><div class="min-w-0 flex-1"><p class="font-display text-lg" x-text="productFor(item.product_id)?.name"></p><p class="text-xs text-crema/55" x-text="`${sizeFor(item)?.label} · x${item.quantity}`"></p></div><strong class="text-sm" x-text="money(itemTotal(item))"></strong></div></template>
                 </div>
-                <div class="mt-7 space-y-3 border-t border-white/15 pt-5 text-sm"><div class="flex justify-between text-crema/65"><span>Subtotal</span><span x-text="money(subtotal)"></span></div><div class="flex justify-between font-bold text-blush"><span>Seña (50%)</span><span x-text="money(deposit)"></span></div><div class="flex justify-between border-t border-white/15 pt-4 text-base font-bold"><span>Saldo al recibir</span><span x-text="money(balance)"></span></div></div>
-                <p class="mt-7 text-center text-xs leading-5 text-crema/55">El pago se coordina por WhatsApp después de reservar.</p>
+                <div class="mt-7 flex justify-between border-t border-white/15 pt-5 text-base font-bold"><span>Total</span><span x-text="money(subtotal)"></span></div>
                 <a href="{{ route('home') }}#catalogo" class="mt-5 block text-center text-xs font-bold uppercase tracking-[0.12em] text-blush hover:text-white">← Seguir mirando productos</a>
             </aside>
         </div>

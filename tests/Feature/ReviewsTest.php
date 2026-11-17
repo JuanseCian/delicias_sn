@@ -11,6 +11,17 @@ test('the home page includes the reviews section', function () {
         ->assertSee('Historias');
 });
 
+test('the public reviews page shows all approved reviews', function () {
+    $this->seed();
+    Review::create(['name' => 'Visible', 'rating' => 5, 'comment' => 'Una opinión visible en la página.', 'approved' => true]);
+    Review::create(['name' => 'Oculta', 'rating' => 5, 'comment' => 'Esta opinión todavía no se publica.', 'approved' => false]);
+
+    $this->get(route('reviews.public'))
+        ->assertOk()
+        ->assertSee('Visible')
+        ->assertDontSee('Oculta');
+});
+
 test('a visitor can submit a review for moderation', function () {
     $response = $this->post(route('reviews.store'), [
         'name' => 'Ada Lovelace',
@@ -21,6 +32,17 @@ test('a visitor can submit a review for moderation', function () {
     $response->assertRedirect()
         ->assertSessionHas('review_status');
     expect(Review::firstOrFail()->approved)->toBeFalse();
+});
+
+test('a visitor can submit a review without a comment', function () {
+    $response = $this->post(route('reviews.store'), [
+        'name' => 'Ada Lovelace',
+        'rating' => 4,
+    ]);
+
+    $response->assertRedirect()
+        ->assertSessionHas('review_status');
+    expect(Review::firstOrFail()->comment)->toBe('');
 });
 
 test('only approved reviews are shown publicly', function () {

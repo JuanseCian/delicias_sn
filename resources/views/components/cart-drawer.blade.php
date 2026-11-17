@@ -16,7 +16,7 @@
             </div>
         </div>
         <div x-show="cart.length > 0" class="border-t border-bordo/10 bg-white px-6 py-5">
-            <div class="space-y-2 text-sm"><div class="flex justify-between text-ink/65"><span>Subtotal</span><strong x-text="money(subtotal)"></strong></div><div class="flex justify-between text-bordo"><span>Seña para reservar (50%)</span><strong x-text="money(deposit)"></strong></div><div class="flex justify-between border-t border-bordo/10 pt-3 text-base font-bold text-bordo"><span>Saldo al recibir</span><span x-text="money(balance)"></span></div></div>
+            <div class="flex justify-between text-base font-bold text-bordo"><span>Total</span><strong x-text="money(subtotal)"></strong></div>
             <a href="{{ route('checkout') }}" class="mt-5 block rounded-full bg-bordo px-5 py-4 text-center text-sm font-bold text-white transition hover:bg-ink">Continuar reserva</a>
             <a href="https://wa.me/{{ config('delicias.whatsapp') }}" :href="whatsappUrl()" target="_blank" rel="noopener" class="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-bordo/20 px-5 py-3 text-sm font-bold text-bordo transition hover:bg-blush"><span>Encargar por WhatsApp</span><span aria-hidden="true">↗</span></a>
         </div>
