@@ -408,12 +408,11 @@ export function initCakeDesigner(root: HTMLElement): void {
         link.click();
     });
 
-    root.querySelector('[data-cake-whatsapp]')?.setAttribute('href', '#');
-    root.querySelector('[data-cake-whatsapp]')?.addEventListener('click', (event) => {
-        event.preventDefault();
+    root.querySelector<HTMLAnchorElement>('[data-cake-whatsapp]')?.addEventListener('click', (event) => {
+        const link = event.currentTarget as HTMLAnchorElement;
         const phone = root.dataset.whatsapp || '';
         const summary = `Hola Delicias Sn! Quiero consultar por una torta personalizada de ${selected('size')[0]?.name ?? ''}, con ${selected('coverage')[0]?.name ?? ''}, colores ${selected('color').map((option) => option.name).join(' y ')} y detalles: ${selected('topping').map((option) => option.name).join(', ') || 'a definir'}.`;
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(summary)}`, '_blank', 'noopener');
+        link.href = `https://wa.me/${phone}?text=${encodeURIComponent(summary)}`;
     });
 
     const mobileSections = root.querySelectorAll<HTMLElement>('[data-cake-mobile-section]');

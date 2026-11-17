@@ -7,8 +7,9 @@ import {
     ImagePlus,
     LayoutGrid,
     PackagePlus,
+    ClipboardList,
+    Star,
     Store,
-    WandSparkles,
 } from 'lucide-react';
 import AdjustableGlassDashboard from '@/components/ui/adjustable-glass-dashboard';
 
@@ -147,14 +148,21 @@ export default function Dashboard({ stats }: Props) {
                                     href="/gestion-delicias-sn-privada/productos"
                                     icon={<ImagePlus className="size-4" />}
                                     title="Gestionar productos"
-                                    detail="Editar datos, stock y fotos"
+                                     detail="Editar datos, precios y fotos"
                                     native
                                 />
                                 <QuickAction
-                                    href="/gestion-delicias-sn-privada/personalizadas"
-                                    icon={<WandSparkles className="size-4" />}
-                                    title="Configurar diseñador"
-                                    detail="Opciones, precios y solicitudes"
+                                    href="/gestion-delicias-sn-privada/pedidos"
+                                    icon={<ClipboardList className="size-4" />}
+                                    title="Gestionar pedidos"
+                                    detail="Pendientes, entregados y cancelados"
+                                    native
+                                />
+                                <QuickAction
+                                    href="/gestion-delicias-sn-privada/valoraciones"
+                                    icon={<Star className="size-4" />}
+                                    title="Revisar valoraciones"
+                                    detail="Publicar estrellas y comentarios"
                                     native
                                 />
                                 <QuickAction

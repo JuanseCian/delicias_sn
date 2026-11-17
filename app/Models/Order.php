@@ -12,6 +12,12 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const STATUS_PENDING = 'pendiente';
+
+    public const STATUS_DELIVERED = 'entregado';
+
+    public const STATUS_CANCELLED = 'cancelado';
+
     protected function casts(): array
     {
         return ['delivery_date' => 'date', 'subtotal' => 'integer', 'deposit' => 'integer'];

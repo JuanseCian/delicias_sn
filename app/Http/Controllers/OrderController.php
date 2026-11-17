@@ -46,10 +46,10 @@ class OrderController extends Controller
                 'address' => $request->validated('address'),
                 'delivery_date' => $request->validated('delivery_date'),
                 'time_slot' => $request->validated('time_slot'),
-                'payment_method' => $request->validated('payment_method'),
+                'payment_method' => 'whatsapp',
                 'subtotal' => $totals['subtotal'],
                 'deposit' => $totals['deposit'],
-                'status' => 'reservado',
+                'status' => Order::STATUS_PENDING,
                 'notes' => $request->validated('notes'),
             ]);
 

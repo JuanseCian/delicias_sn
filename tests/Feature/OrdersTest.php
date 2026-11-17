@@ -32,7 +32,14 @@ test('a customer can reserve a seeded order', function () {
     $response->assertRedirect(route('orders.confirmed', $order->code));
     expect($order->code)->toStartWith('DSN-')
         ->and($order->subtotal)->toBe($size->price * 2)
-        ->and($order->deposit)->toBe($size->price);
+        ->and($order->deposit)->toBe($size->price)
+        ->and($order->payment_method)->toBe('whatsapp');
+
+    $this->get(route('orders.confirmed', $order->code))
+        ->assertOk()
+        ->assertSee('wa.me', false)
+        ->assertSee('Tu opinión')
+        ->assertSee('¿Qué te pareció?');
 });
 
 test('a reservation accepts carts saved with the legacy size key', function () {
@@ -86,6 +93,28 @@ test('a reservation rejects a date before the longest lead time', function () {
     $response->assertRedirect(route('checkout'));
     $response->assertSessionHasErrors('delivery_date');
     expect(Order::count())->toBe(0);
+});
+
+test('checkout preserves entered data after validation errors', function () {
+    $this->seed();
+    $product = Product::with('sizes')->where('is_custom', false)->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+    $date = app(OrderCalculator::class)->minimumDateForItems([
+        ['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1],
+    ]);
+
+    $response = $this->from(route('checkout'))->post(route('orders.store'), [
+        'items' => [['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1]],
+        'customer_name' => 'Ada Lovelace',
+        'phone' => '',
+        'delivery_type' => 'retiro',
+        'delivery_date' => $date->format('Y-m-d'),
+        'time_slot' => '12 a 15 h',
+        'payment_method' => 'transferencia',
+    ]);
+
+    $response->assertRedirect(route('checkout'));
+    $this->get(route('checkout'))->assertSee('Ada Lovelace');
 });
 
 test('custom products are displayed as examples but cannot be reserved', function () {

@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['product_id', 'label', 'price', 'quantity'])]
+#[Fillable(['product_id', 'label', 'price'])]
 class ProductSize extends Model
 {
     use HasFactory;
 
     protected function casts(): array
     {
-        return ['price' => 'integer', 'quantity' => 'integer'];
+        return ['price' => 'integer'];
     }
 
     public function product(): BelongsTo

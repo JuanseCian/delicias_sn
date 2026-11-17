@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
-use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\ProductColor;
 use App\Models\ProductSize;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,7 +39,7 @@ class ProductAdminController extends Controller
 
     public function edit(Product $product): View
     {
-        $product->load(['sizes', 'colors', 'ingredients', 'allergens']);
+        $product->load(['sizes', 'ingredients', 'allergens']);
 
         return view('private.products.form', $this->formData($product));
     }
@@ -62,14 +60,9 @@ class ProductAdminController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        if (OrderItem::where('product_id', $product->id)->exists()) {
-            return to_route('private.products.index')->with('error', 'No se puede borrar un producto que ya tiene pedidos. Podés desactivarlo desde editar.');
-        }
-
-        $this->deleteStoredImage($product->image);
         $product->delete();
 
-        return to_route('private.products.index')->with('success', 'Producto eliminado.');
+        return to_route('private.products.index')->with('success', 'Producto archivado. Los pedidos existentes se conservaron.');
     }
 
     /** @return array<string, mixed> */
@@ -89,7 +82,6 @@ class ProductAdminController extends Controller
         return $request->validate([
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:120'],
-            'short_description' => ['required', 'string', 'max:180'],
             'description' => ['required', 'string', 'max:1200'],
             'storage_instructions' => ['required', 'string', 'max:500'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
@@ -100,11 +92,6 @@ class ProductAdminController extends Controller
             'sizes.*.id' => ['nullable', 'integer', 'exists:product_sizes,id'],
             'sizes.*.label' => ['required', 'string', 'max:80'],
             'sizes.*.price' => ['required', 'integer', 'min:1', 'max:99999999'],
-            'sizes.*.quantity' => ['required', 'integer', 'min:0', 'max:999999'],
-            'colors' => ['nullable', 'array', 'max:12'],
-            'colors.*.id' => ['nullable', 'integer', 'exists:product_colors,id'],
-            'colors.*.name' => ['required_with:colors.*.hex', 'string', 'max:50'],
-            'colors.*.hex' => ['required_with:colors.*.name', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'ingredients' => ['nullable', 'array'],
             'ingredients.*' => ['integer', 'exists:ingredients,id'],
             'allergens' => ['nullable', 'array'],
@@ -113,8 +100,6 @@ class ProductAdminController extends Controller
             'sizes.required' => 'Agregá al menos un tamaño.',
             'sizes.*.label.required' => 'Cada tamaño necesita un nombre.',
             'sizes.*.price.required' => 'Cada tamaño necesita un precio.',
-            'sizes.*.quantity.required' => 'Cada tamaño necesita una cantidad.',
-            'colors.*.hex.regex' => 'Cada color debe tener un código hexadecimal válido.',
             'image.max' => 'La imagen no puede pesar más de 5 MB.',
         ]);
     }
@@ -122,20 +107,23 @@ class ProductAdminController extends Controller
     /** @param array<string, mixed> $data */
     private function productAttributes(array $data, ?Product $product = null): array
     {
-        $slug = Str::slug($data['name']);
-        $slugExists = Product::where('slug', $slug)
-            ->when($product, fn ($query) => $query->whereKeyNot($product->id))
-            ->exists();
+        $baseSlug = Str::slug($data['name']) ?: 'producto';
+        $slug = $baseSlug;
+        $suffix = 2;
 
-        if ($slugExists) {
-            $slug .= '-'.Str::lower(Str::random(4));
+        while (Product::withTrashed()
+            ->where('slug', $slug)
+            ->when($product, fn ($query) => $query->whereKeyNot($product->id))
+            ->exists()) {
+            $slug = $baseSlug.'-'.$suffix;
+            $suffix++;
         }
 
         return [
             'category_id' => $data['category_id'],
             'name' => $data['name'],
             'slug' => $slug,
-            'short_description' => $data['short_description'],
+            'short_description' => $data['description'],
             'description' => $data['description'],
             'storage_instructions' => $data['storage_instructions'],
             'is_featured' => (bool) ($data['is_featured'] ?? false),
@@ -156,7 +144,6 @@ class ProductAdminController extends Controller
             $size->fill([
                 'label' => $sizeData['label'],
                 'price' => $sizeData['price'],
-                'quantity' => $sizeData['quantity'],
             ])->save();
             $sizeIds[] = $size->id;
         }
@@ -170,27 +157,6 @@ class ProductAdminController extends Controller
                 }
             });
 
-        $colorIds = [];
-        foreach ($data['colors'] ?? [] as $index => $colorData) {
-            if (blank($colorData['name'] ?? null) || blank($colorData['hex'] ?? null)) {
-                continue;
-            }
-
-            $color = ! empty($colorData['id'])
-                ? ProductColor::whereKey($colorData['id'])->where('product_id', $product->id)->first()
-                : null;
-            $color ??= new ProductColor(['product_id' => $product->id]);
-            $color->fill([
-                'name' => $colorData['name'],
-                'hex' => $colorData['hex'],
-                'sort_order' => $index,
-            ])->save();
-            $colorIds[] = $color->id;
-        }
-
-        ProductColor::where('product_id', $product->id)
-            ->whereNotIn('id', $colorIds)
-            ->delete();
     }
 
     /** @param array<string, mixed> $data */

@@ -1,0 +1,51 @@
+<?php
+
+use App\Models\Review;
+
+test('the home page includes the reviews section', function () {
+    $this->seed();
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('opiniones', false)
+        ->assertSee('Historias');
+});
+
+test('a visitor can submit a review for moderation', function () {
+    $response = $this->post(route('reviews.store'), [
+        'name' => 'Ada Lovelace',
+        'rating' => 5,
+        'comment' => 'Me encantó la propuesta y la atención.',
+    ]);
+
+    $response->assertRedirect()
+        ->assertSessionHas('review_status');
+    expect(Review::firstOrFail()->approved)->toBeFalse();
+});
+
+test('only approved reviews are shown publicly', function () {
+    $this->seed();
+    Review::create(['name' => 'Publicado', 'rating' => 5, 'comment' => 'Una experiencia hermosa.', 'approved' => true]);
+    Review::create(['name' => 'Pendiente', 'rating' => 1, 'comment' => 'Todavía no debe aparecer.', 'approved' => false]);
+
+    $this->get(route('home'))
+        ->assertSee('Publicado')
+        ->assertDontSee('Pendiente');
+});
+
+test('all approved reviews are shown publicly', function () {
+    $this->seed();
+
+    foreach (range(1, 7) as $number) {
+        Review::create([
+            'name' => "Cliente {$number}",
+            'rating' => 5,
+            'comment' => "Opinión publicada {$number}.",
+            'approved' => true,
+        ]);
+    }
+
+    $this->get(route('home'))
+        ->assertSee('Cliente 1')
+        ->assertSee('Cliente 7');
+});

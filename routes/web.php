@@ -6,10 +6,13 @@ use App\Http\Controllers\CustomizerAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderAdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PersonalizationController;
 use App\Http\Controllers\ProductAdminController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\ReviewAdminController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -18,6 +21,7 @@ Route::get('/personalizadas', PersonalizationController::class)->name('personali
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/pedidos/{code}/confirmado', [OrderController::class, 'confirmed'])->name('orders.confirmed');
+Route::post('/valoraciones', [ReviewController::class, 'store'])->middleware('throttle:6,1')->name('reviews.store');
 Route::post('/personalizadas/solicitudes', [CakeDesignRequestController::class, 'store'])
     ->middleware('throttle:custom-design')
     ->name('custom-design-requests.store');
@@ -34,9 +38,13 @@ Route::middleware(['auth', 'verified'])->prefix('gestion-delicias-sn-privada')->
     Route::delete('/productos/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
     Route::post('/productos/{product}/imagen', [ProductImageController::class, 'store'])->name('products.image.store');
     Route::delete('/productos/{product}/imagen', [ProductImageController::class, 'destroy'])->name('products.image.destroy');
+    Route::get('/pedidos', [OrderAdminController::class, 'index'])->name('orders.index');
+    Route::patch('/pedidos/{order}', [OrderAdminController::class, 'update'])->name('orders.update');
     Route::get('/personalizadas', [CustomizerAdminController::class, 'index'])->name('customizer.index');
     Route::post('/personalizadas/opciones', [CustomizerAdminController::class, 'store'])->name('customizer.options.store');
     Route::patch('/personalizadas/opciones/{option}', [CustomizerAdminController::class, 'update'])->name('customizer.options.update');
+    Route::get('/valoraciones', [ReviewAdminController::class, 'index'])->name('reviews.index');
+    Route::patch('/valoraciones/{review}', [ReviewAdminController::class, 'update'])->name('reviews.update');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

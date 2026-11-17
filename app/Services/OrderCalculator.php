@@ -40,12 +40,6 @@ class OrderCalculator
 
             $quantity = (int) $item['quantity'];
 
-            if ($quantity > $size->quantity) {
-                throw ValidationException::withMessages([
-                    'items' => 'No hay cantidad disponible para uno de los tamaños elegidos.',
-                ]);
-            }
-
             return [
                 'product' => $product,
                 'size' => $size,

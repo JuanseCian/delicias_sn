@@ -168,86 +168,41 @@ textarea:focus-visible {
 
     .whatsapp-float {
         align-items: center;
-        background: #2f9e62;
-        border: 3px solid #fbf5ee;
+        background: transparent;
+        border: 0;
         border-radius: 999px;
         bottom: 1.25rem;
-        box-shadow: 0 12px 30px rgba(47, 158, 98, 0.3);
+        filter: drop-shadow(0 8px 16px rgba(47, 158, 98, 0.24));
         color: #fff;
         display: flex;
-        gap: 0.6rem;
-        isolation: isolate;
-        padding: 0.45rem 0.7rem 0.45rem 0.45rem;
+        height: 3.7rem;
+        justify-content: center;
+        padding: 0;
         position: fixed;
         right: 1rem;
         transition:
-            box-shadow 180ms var(--ease-brand),
+            filter 180ms var(--ease-brand),
             transform 180ms var(--ease-brand);
+        width: 3.7rem;
         z-index: 45;
     }
 
-    .whatsapp-float::before {
-        border: 1px solid rgba(47, 158, 98, 0.3);
-        border-radius: inherit;
-        content: '';
-        inset: -0.35rem;
-        opacity: 0;
-        position: absolute;
-        transform: scale(0.9);
-        transition: opacity 180ms var(--ease-brand), transform 180ms var(--ease-brand);
-        z-index: -1;
-    }
-
     .whatsapp-float:hover {
-        box-shadow: 0 16px 34px rgba(47, 158, 98, 0.38);
+        filter: drop-shadow(0 12px 20px rgba(47, 158, 98, 0.34));
         transform: translateY(-3px);
     }
 
-    .whatsapp-float:hover::before,
-    .whatsapp-float:focus-visible::before {
-        opacity: 1;
-        transform: scale(1);
-    }
-
     .whatsapp-float:focus-visible {
-        outline: 3px solid rgba(47, 158, 98, 0.35);
+        outline: 2px solid rgba(47, 158, 98, 0.55);
         outline-offset: 3px;
     }
 
     .whatsapp-float-icon {
         align-items: center;
-        background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.28);
-        border-radius: 999px;
         display: grid;
-        height: 2.15rem;
+        height: 100%;
         justify-content: center;
-        width: 2.15rem;
-    }
-
-    .whatsapp-float-copy {
-        display: flex;
-        flex-direction: column;
-        gap: 0.12rem;
-        line-height: 1.1;
-    }
-
-    .whatsapp-float-copy strong {
-        font-size: 0.74rem;
-        font-weight: 800;
-    }
-
-    .whatsapp-float-copy small {
-        color: rgba(255, 255, 255, 0.76);
-        font-size: 0.62rem;
-        font-weight: 500;
-    }
-
-    .whatsapp-float-arrow {
-        align-self: flex-start;
-        font-size: 0.9rem;
-        line-height: 1;
-        opacity: 0.72;
+        width: 100%;
     }
 
     .hero-cake-card {
@@ -581,10 +536,6 @@ textarea:focus-visible {
         right: 0.75rem;
     }
 
-    .whatsapp-float-copy small,
-    .whatsapp-float-arrow {
-        display: none;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {

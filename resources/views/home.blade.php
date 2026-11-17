@@ -9,6 +9,7 @@
     @if ($featured)
         <x-featured :featured="$featured" />
     @endif
+    <x-reviews :reviews="$reviews" :stats="$reviewStats" />
     <x-steps />
     <x-footer />
 @endsection

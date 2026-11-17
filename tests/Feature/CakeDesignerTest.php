@@ -10,7 +10,19 @@ test('the cake designer lives on its own personalization page', function () {
 
     $response->assertOk()
         ->assertSee('data-cake-designer', false)
+        ->assertSee('data-cake-whatsapp', false)
+        ->assertSee('href="https://wa.me/', false)
         ->assertSee('Diseñá algo único');
+});
+
+test('the catalog modal exposes the add to cart action', function () {
+    $this->seed();
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('addSelectedToCart()', false)
+        ->assertSee('detailQuantity', false)
+        ->assertSee('Agregar al carrito');
 });
 
 test('a customer can save a valid cake design request', function () {

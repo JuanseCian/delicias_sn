@@ -1,4 +1,4 @@
-import { PackageOpen, Plus, WandSparkles } from 'lucide-react';
+import { ClipboardList, PackageOpen, Plus } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -22,9 +22,9 @@ const mainNavItems: NavItem[] = [
         native: true,
     },
     {
-        title: 'Diseñador',
-        href: '/gestion-delicias-sn-privada/personalizadas',
-        icon: WandSparkles,
+        title: 'Pedidos',
+        href: '/gestion-delicias-sn-privada/pedidos',
+        icon: ClipboardList,
         native: true,
     },
 ];

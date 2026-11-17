@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['category_id', 'name', 'slug', 'short_description', 'description', 'image', 'storage_instructions', 'is_featured', 'is_custom', 'active'])]
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected function casts(): array
     {

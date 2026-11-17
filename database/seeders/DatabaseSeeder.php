@@ -87,7 +87,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $categorySlug => $categoryProducts) {
             foreach ($categoryProducts as $data) {
-                $product = Product::updateOrCreate(
+                $product = Product::withTrashed()->updateOrCreate(
                     ['slug' => $data['slug']],
                     [
                         'category_id' => $categories[$categorySlug]->id,
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
                 foreach ($data['sizes'] as $size) {
                     $product->sizes()->updateOrCreate(
                         ['label' => $size['label']],
-                        ['price' => $size['price'], 'quantity' => $size['quantity'] ?? 10],
+                        ['price' => $size['price']],
                     );
                 }
 

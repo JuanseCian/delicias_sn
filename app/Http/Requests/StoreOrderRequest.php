@@ -72,8 +72,27 @@ class StoreOrderRequest extends FormRequest
                 },
             ],
             'time_slot' => ['required', Rule::in(['9 a 12 h', '12 a 15 h', '15 a 18 h', '18 a 20 h'])],
-            'payment_method' => ['required', Rule::in(['transferencia', 'mercado_pago', 'efectivo'])],
             'notes' => ['nullable', 'string', 'max:500'],
+        ];
+    }
+
+    /** @return array<string, string> */
+    public function messages(): array
+    {
+        return [
+            'items.required' => 'Agregá al menos un producto al pedido.',
+            'items.min' => 'Agregá al menos un producto al pedido.',
+            'customer_name.required' => 'Completá tu nombre y apellido.',
+            'customer_name.max' => 'El nombre no puede superar los 120 caracteres.',
+            'phone.required' => 'Completá tu teléfono o WhatsApp.',
+            'phone.max' => 'El teléfono no puede superar los 40 caracteres.',
+            'delivery_type.required' => 'Elegí cómo vas a recibir el pedido.',
+            'address.required' => 'Completá la dirección de entrega.',
+            'address.max' => 'La dirección no puede superar los 180 caracteres.',
+            'delivery_date.required' => 'Elegí una fecha de entrega.',
+            'delivery_date.date_format' => 'La fecha de entrega no es válida.',
+            'time_slot.required' => 'Elegí una franja horaria.',
+            'notes.max' => 'Las notas no pueden superar los 500 caracteres.',
         ];
     }
 }

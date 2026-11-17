@@ -9,7 +9,7 @@
                 <a href="#catalogo" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>
                 <a href="https://wa.me/{{ config('delicias.whatsapp') }}?text={{ rawurlencode('¡Hola! Quiero encargar algo rico en Delicias Sn.') }}" target="_blank" rel="noopener" class="btn-secondary">Pedir por WhatsApp <span aria-hidden="true">↗</span></a>
             </div>
-            <div class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold text-ink/45"><span class="h-px w-10 bg-rosa-viejo"></span><span>Retiro en Jujuy 422</span><span aria-hidden="true">·</span><span>Envíos coordinados</span></div>
+            <div class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold text-ink/45"><span class="h-px w-10 bg-rosa-viejo"></span><span>Retiro en Catamarca 523</span><span aria-hidden="true">·</span><span>Envíos coordinados</span></div>
         </div>
         <div class="relative mx-auto w-full max-w-xl reveal [transition-delay:120ms]">
             <div class="absolute -right-2 -top-5 z-10 grid h-24 w-24 rotate-6 place-items-center rounded-full bg-caramelo p-3 text-center text-[10px] font-bold uppercase leading-4 tracking-[0.12em] text-white shadow-soft sm:-right-5 sm:h-28 sm:w-28"><span>Hecho<br>por encargo<br>♡</span></div>
