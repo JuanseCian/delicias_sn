@@ -71,6 +71,12 @@ test('an admin can write custom ingredients when creating a product', function (
         'Ralladura de limón',
     ]);
     expect(Ingredient::where('name', 'Harina de avena')->value('origin'))->toBe('Carga manual');
+
+    $this->get(route('private.products.edit', $product))
+        ->assertOk()
+        ->assertSee('name="ingredients_text"', false)
+        ->assertSee('Harina de avena', false)
+        ->assertSee('Ralladura de limón', false);
 });
 
 test('an admin can create a product when its slug belongs to an archived product', function () {
