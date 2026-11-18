@@ -1,6 +1,6 @@
 @extends('layouts.delicias')
 
-@section('title', 'Delicias Sn · Cada bocado, una celebración')
+@section('title', 'Delicias Sn · Endulza tus momentos')
 
 @section('content')
     <x-hero />
