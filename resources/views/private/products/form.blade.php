@@ -23,7 +23,7 @@
     <div class="mx-auto max-w-5xl">
         <header class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-                <a href="{{ route('private.products.index') }}" class="text-sm font-semibold text-[#64747A] hover:text-[#263238]">← Volver a productos</a>
+                <div class="flex flex-wrap items-center gap-4"><a href="{{ route('dashboard') }}" class="text-sm font-semibold text-[#64747A] hover:text-[#263238]">← Dashboard</a><a href="{{ route('private.products.index') }}" class="text-sm font-semibold text-[#64747A] hover:text-[#263238]">Volver a productos</a></div>
                 <h1 class="mt-3 text-3xl font-bold tracking-tight text-[#263238] sm:text-4xl">{{ $isEditing ? 'Editar producto' : 'Nuevo producto' }}</h1>
                 <p class="mt-2 text-sm text-[#263238]/60">Completá cada paso. Los campos obligatorios están indicados dentro del formulario.</p>
             </div>
