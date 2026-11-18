@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\OrderItem;
@@ -72,8 +71,6 @@ class ProductAdminController extends Controller
         return [
             'product' => $product,
             'categories' => Category::orderBy('order')->get(),
-            'ingredients' => Ingredient::orderBy('name')->get(),
-            'allergens' => Allergen::orderBy('name')->get(),
         ];
     }
 
@@ -93,8 +90,7 @@ class ProductAdminController extends Controller
             'sizes.*.id' => ['nullable', 'integer', 'exists:product_sizes,id'],
             'sizes.*.label' => ['required', 'string', 'max:80'],
             'sizes.*.price' => ['required', 'integer', 'min:1', 'max:99999999'],
-            'ingredients' => ['nullable', 'array'],
-            'ingredients.*' => ['integer', 'exists:ingredients,id'],
+            'ingredients_text' => ['nullable', 'string', 'max:2000'],
             'allergens' => ['nullable', 'array'],
             'allergens.*' => ['integer', 'exists:allergens,id'],
         ], [
@@ -163,8 +159,19 @@ class ProductAdminController extends Controller
     /** @param array<string, mixed> $data */
     private function saveRelations(Product $product, array $data): void
     {
-        $product->ingredients()->sync($data['ingredients'] ?? []);
-        $product->allergens()->sync($data['allergens'] ?? []);
+        $ingredientIds = collect(preg_split('/[\r\n,]+/', trim((string) ($data['ingredients_text'] ?? '')), -1, PREG_SPLIT_NO_EMPTY))
+            ->map(fn (string $name): int => Ingredient::firstOrCreate(
+                ['name' => trim($name)],
+                ['origin' => 'Carga manual'],
+            )->id)
+            ->unique()
+            ->values()
+            ->all();
+
+        $product->ingredients()->sync($ingredientIds);
+        if (array_key_exists('allergens', $data)) {
+            $product->allergens()->sync($data['allergens']);
+        }
     }
 
     private function saveImage(Request $request, Product $product): void

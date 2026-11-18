@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Ingredient;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -13,6 +14,7 @@ test('the product form includes its custom field styles', function () {
     $this->get(route('private.products.create'))
         ->assertOk()
         ->assertSee('Nombre visible para tus clientes', false)
+        ->assertDontSee('Alérgenos')
         ->assertDontSee('Colores disponibles');
 });
 
@@ -41,6 +43,34 @@ test('an admin can create a made-to-order product with sizes', function () {
         ->and($product->short_description)->toBe($product->description);
 
     $this->get(route('home'))->assertOk()->assertSee('Torta demo');
+});
+
+test('an admin can write custom ingredients when creating a product', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $category = Category::where('slug', 'tortas')->firstOrFail();
+
+    $response = $this->post(route('private.products.store'), [
+        'category_id' => $category->id,
+        'name' => 'Torta con ingredientes propios',
+        'description' => 'Descripción de prueba.',
+        'storage_instructions' => 'Conservar refrigerada.',
+        'ingredients_text' => "Harina de avena\nCrema de coco, Ralladura de limón",
+        'active' => 1,
+        'sizes' => [
+            ['label' => '18 cm', 'price' => 30000],
+        ],
+    ]);
+
+    $product = Product::where('name', 'Torta con ingredientes propios')->with('ingredients')->firstOrFail();
+
+    $response->assertRedirect(route('private.products.edit', $product));
+    expect($product->ingredients->pluck('name')->all())->toEqual([
+        'Harina de avena',
+        'Crema de coco',
+        'Ralladura de limón',
+    ]);
+    expect(Ingredient::where('name', 'Harina de avena')->value('origin'))->toBe('Carga manual');
 });
 
 test('an admin can create a product when its slug belongs to an archived product', function () {

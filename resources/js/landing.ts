@@ -383,8 +383,7 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
     is_featured: Boolean(initial.is_featured),
     is_custom: Boolean(initial.is_custom),
     active: initial.active !== false,
-    ingredients: initial.ingredients || [],
-    allergens: initial.allergens || [],
+    ingredients_text: initial.ingredients_text || '',
     sizes: (initial.sizes?.length
         ? initial.sizes
         : [{ label: '', price: '' }]
