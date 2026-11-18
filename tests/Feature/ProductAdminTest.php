@@ -76,6 +76,27 @@ test('an admin can create a product when its slug belongs to an archived product
     expect($product->slug)->toBe('torta-2');
 });
 
+test('an admin can update a product and remove an unused size', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $product = Product::where('is_custom', false)->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+
+    $response = $this->put(route('private.products.update', $product), [
+        'category_id' => $product->category_id,
+        'name' => $product->name.' actualizado',
+        'description' => 'Descripción actualizada del producto.',
+        'storage_instructions' => 'Conservar refrigerada.',
+        'active' => 1,
+        'sizes' => [
+            ['id' => $size->id, 'label' => $size->label, 'price' => $size->price],
+        ],
+    ]);
+
+    $response->assertRedirect(route('private.products.edit', $product));
+    expect($product->fresh()->sizes)->toHaveCount(1);
+});
+
 test('an admin can archive a product without removing existing order items', function () {
     $this->seed();
     $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());

@@ -46,7 +46,7 @@ export default function AuthSimpleLayout({
                         href={home()}
                         className="text-center text-xs font-semibold tracking-[0.14em] text-[#6B2D3C]/60 uppercase transition hover:text-[#6B2D3C]"
                     >
-                        ← Volver a la landing
+                        ← Volver a la página
                     </Link>
                 </div>
             </div>

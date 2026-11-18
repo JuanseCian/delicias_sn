@@ -126,6 +126,21 @@ test('a reservation is available at least two days from today', function () {
     CarbonImmutable::setTestNow();
 });
 
+test('a cake reservation is available at least four days from today', function () {
+    CarbonImmutable::setTestNow('2026-11-17 10:00:00');
+    $this->seed();
+    $product = Product::where('slug', 'choco-dulce')->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+
+    $minimumDate = app(OrderCalculator::class)->minimumDateForItems([
+        ['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1],
+    ]);
+
+    expect($minimumDate->toDateString())->toBe('2026-11-21');
+
+    CarbonImmutable::setTestNow();
+});
+
 test('checkout preserves entered data after validation errors', function () {
     $this->seed();
     $product = Product::with('sizes')->where('is_custom', false)->firstOrFail();

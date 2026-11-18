@@ -74,7 +74,7 @@ export default function Dashboard({ stats }: Props) {
                             icon={<LayoutGrid className="size-5" />}
                             label="Categorías"
                             value={stats.categories}
-                            detail="Ordenadas en la landing"
+                            detail="Ordenadas en la página"
                         />
                         <StatCard
                             icon={<ImagePlus className="size-5" />}
@@ -114,7 +114,7 @@ export default function Dashboard({ stats }: Props) {
                             <p className="mt-4 max-w-lg text-sm leading-6 text-[#3B2A2A]/65">
                                 Las fotos reales ayudan a que cada producto se
                                 luzca. Subí una imagen por producto y se va a
-                                mostrar automáticamente en la landing, el
+                                mostrar automáticamente en la página, el
                                 detalle y el carrito.
                             </p>
                             <div className="mt-7 flex items-center gap-4">

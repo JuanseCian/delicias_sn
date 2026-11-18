@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductSize;
 use Illuminate\Http\RedirectResponse;
@@ -34,7 +35,7 @@ class ProductAdminController extends Controller
             return $product;
         });
 
-        return to_route('private.products.edit', $product)->with('success', 'Producto creado. Ya podés verlo en la landing.');
+        return to_route('private.products.edit', $product)->with('success', 'Producto creado. Ya podés verlo en la página.');
     }
 
     public function edit(Product $product): View

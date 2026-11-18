@@ -2,7 +2,7 @@
     <div class="mx-auto max-w-7xl">
         <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div class="max-w-xl reveal"><p class="section-kicker">El mostrador</p><h2 class="mt-4 font-display text-4xl leading-tight tracking-[-0.03em] text-bordo sm:text-5xl">Elegí algo<br><span class="font-script text-5xl font-normal text-rosa-viejo sm:text-6xl">muy rico</span></h2></div>
-            <p class="max-w-xs text-sm leading-6 text-ink/60 reveal sm:text-right">Todo se prepara por encargo. Elegí una opción, mirá sus tamaños y reservá la fecha con anticipación.</p>
+            <p class="max-w-xs text-sm leading-6 text-ink/60 reveal sm:text-right">Elegí una opción, mirá sus tamaños y reservá la fecha con anticipación.</p>
         </div>
 
         <div class="mt-10 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none]" role="tablist" aria-label="Filtrar por categoría">

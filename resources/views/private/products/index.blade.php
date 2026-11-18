@@ -6,7 +6,7 @@
 <main class="admin-products min-h-screen bg-crema px-4 py-6 text-ink sm:px-6 lg:px-10">
     <div class="mx-auto max-w-7xl">
         <header class="admin-surface flex flex-col justify-between gap-5 rounded-[1.75rem] border p-6 sm:flex-row sm:items-end sm:p-8">
-            <div><p class="eyebrow">Administración de catálogo</p><h1 class="admin-heading mt-2 text-3xl tracking-tight sm:text-4xl">Productos</h1><p class="admin-muted mt-2 max-w-2xl text-sm leading-6">Creá y editá lo que aparece en la landing. Cada tamaño, precio e imagen se guarda en la base de datos.</p></div>
+            <div><p class="eyebrow">Administración de catálogo</p><h1 class="admin-heading mt-2 text-3xl tracking-tight sm:text-4xl">Productos</h1><p class="admin-muted mt-2 max-w-2xl text-sm leading-6">Creá y editá lo que aparece en la página. Cada tamaño, precio e imagen se guarda en la base de datos.</p></div>
             <div class="flex gap-2"><a href="{{ route('dashboard') }}" class="admin-button-soft rounded-xl px-4 py-3 text-sm font-semibold">Panel</a><a href="{{ route('private.products.create') }}" class="admin-button rounded-xl px-5 py-3 text-sm font-bold">+ Nuevo producto</a></div>
         </header>
 

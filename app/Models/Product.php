@@ -48,7 +48,7 @@ class Product extends Model
 
     public function getLeadTimeHoursAttribute(): int
     {
-        return $this->is_custom ? max(168, $this->category->lead_time_hours) : $this->category->lead_time_hours;
+        return $this->category->lead_time_hours;
     }
 
     public function getStartingPriceAttribute(): int

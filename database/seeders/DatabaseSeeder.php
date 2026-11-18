@@ -30,11 +30,11 @@ class DatabaseSeeder extends Seeder
         $admin->forceFill(['email_verified_at' => now()])->save();
 
         $categories = collect([
-            ['name' => 'Tortas', 'slug' => 'tortas', 'lead_time_hours' => 72, 'order' => 1],
+            ['name' => 'Tortas', 'slug' => 'tortas', 'lead_time_hours' => 96, 'order' => 1],
             ['name' => 'Cupcakes', 'slug' => 'cupcakes', 'lead_time_hours' => 48, 'order' => 2],
-            ['name' => 'Cookies', 'slug' => 'cookies', 'lead_time_hours' => 24, 'order' => 3],
+            ['name' => 'Cookies', 'slug' => 'cookies', 'lead_time_hours' => 48, 'order' => 3],
             ['name' => 'Boxes / cajas sorpresa', 'slug' => 'boxes', 'lead_time_hours' => 48, 'order' => 4],
-            ['name' => 'Mesas dulces para eventos', 'slug' => 'mesas-dulces', 'lead_time_hours' => 240, 'order' => 5],
+            ['name' => 'Mesas dulces para eventos', 'slug' => 'mesas-dulces', 'lead_time_hours' => 48, 'order' => 5],
         ])->mapWithKeys(fn (array $category): array => [$category['slug'] => Category::updateOrCreate(
             ['slug' => $category['slug']],
             $category,

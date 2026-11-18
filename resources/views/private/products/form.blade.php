@@ -61,7 +61,7 @@
                     <div class="border-b border-[#263238]/10 pb-5">
                         <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Información principal</p>
                         <h2 class="mt-1 text-xl font-bold text-[#263238]">Qué vas a ofrecer</h2>
-                        <p class="mt-2 text-sm leading-6 text-[#263238]/60">Estos datos forman la presentación del producto en la landing.</p>
+                        <p class="mt-2 text-sm leading-6 text-[#263238]/60">Estos datos forman la presentación del producto en la página.</p>
                     </div>
                     <div class="mt-6 grid gap-5 sm:grid-cols-2">
                         <label class="field-label">Nombre del producto<input x-model="name" name="name" required class="field-input" placeholder="Ej: Torta de chocolate"></label>
@@ -70,7 +70,7 @@
                         <label class="field-label sm:col-span-2">Cómo conservarlo<textarea x-model="storage_instructions" name="storage_instructions" required rows="2" class="field-input resize-y" placeholder="Ej: conservar refrigerado y retirar 20 minutos antes"></textarea></label>
                     </div>
                     <div class="mt-6 flex flex-wrap gap-3 border-t border-[#263238]/10 pt-5">
-                        <label class="check-label"><input type="hidden" name="active" value="0"><input x-model="active" type="checkbox" name="active" value="1" class="check-input"> Visible en la landing</label>
+                        <label class="check-label"><input type="hidden" name="active" value="0"><input x-model="active" type="checkbox" name="active" value="1" class="check-input"> Visible en la página</label>
                         <label class="check-label"><input type="hidden" name="is_featured" value="0"><input x-model="is_featured" type="checkbox" name="is_featured" value="1" class="check-input"> Destacado</label>
                         <label class="check-label"><input type="hidden" name="is_custom" value="0"><input x-model="is_custom" type="checkbox" name="is_custom" value="1" class="check-input"> Producto personalizado</label>
                     </div>
@@ -114,7 +114,7 @@
                         <div class="mt-6 border-t border-[#263238]/10 pt-5"><p class="field-label">Alérgenos</p><div class="mt-3 flex flex-wrap gap-2">@foreach ($allergens as $allergen)<label class="check-label rounded-xl bg-[#F5F1EC] px-3 py-2.5"><input x-model.number="allergens" type="checkbox" name="allergens[]" value="{{ $allergen->id }}" class="check-input"> <span>{{ $allergen->name }}</span></label>@endforeach</div></div>
                     </div>
                     <div class="rounded-[1.5rem] border border-[#263238]/10 bg-white p-6 shadow-[0_8px_24px_rgba(38,50,56,0.06)] sm:p-8">
-                        <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Imagen real</p><h2 class="mt-1 text-xl font-bold text-[#263238]">Foto del producto</h2><p class="mt-2 text-sm leading-6 text-[#263238]/60">Una foto clara ayuda a vender y se mostrará en la landing.</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Imagen real</p><h2 class="mt-1 text-xl font-bold text-[#263238]">Foto del producto</h2><p class="mt-2 text-sm leading-6 text-[#263238]/60">Una foto clara ayuda a vender y se mostrará en la página.</p>
                         @if ($product?->image)<img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }}" class="mt-5 aspect-[1.4] w-full rounded-2xl object-cover">@else<div class="mt-5 grid aspect-[1.4] place-items-center rounded-2xl bg-[#E9EFF0] text-center text-sm font-semibold text-[#64747A]">Todavía no hay una imagen cargada</div>@endif
                         <label class="field-label mt-5">Subir o reemplazar<input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-[#263238]/20 bg-[#F5F1EC] p-2.5"></label>
                     </div>

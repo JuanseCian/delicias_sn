@@ -7,7 +7,7 @@
         </div>
         <div class="divide-y divide-bordo/10">
             @foreach ([
-                ['¿Cómo se reserva una fecha?', 'Trabajamos por encargo y confirmamos la fecha después de recibir tus datos y coordinar los detalles del pedido.'],
+                ['¿Cómo se reserva una fecha?', 'Confirmamos la fecha después de recibir tus datos y coordinar los detalles del pedido.'],
                 ['¿Con cuánta anticipación tengo que pedir?', 'Cookies con 24 h, cupcakes y boxes con 48 h, tortas con 72 h y mesas dulces con 10 días. Las tortas personalizadas necesitan 7 días.'],
                 ['¿A qué zonas hacen envíos?', 'Coordinamos envíos en zonas cercanas a Catamarca 523. El costo depende de la distancia y se informa antes de confirmar.'],
                 ['¿Puedo retirar mi pedido?', 'Sí, podés retirarlo por Catamarca 523 en la franja horaria que elegiste, con reserva previa.'],
