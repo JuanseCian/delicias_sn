@@ -54,6 +54,16 @@ const defaultTimeSlots: TimeSlots = {
     weekend: ['9 a 12 h', '12 a 15 h', '15 a 18 h', '18 a 20 h'],
 };
 
+const normalizeTimeSlots = (value: unknown): TimeSlots => {
+    const slots = (value ?? {}) as Partial<Record<keyof TimeSlots, unknown>>;
+    const pick = (key: keyof TimeSlots): string[] =>
+        Array.isArray(slots[key]) && slots[key].length > 0
+            ? (slots[key] as unknown[]).map(String)
+            : defaultTimeSlots[key];
+
+    return { weekday: pick('weekday'), weekend: pick('weekend') };
+};
+
 const money = (value: number): string =>
     `$ ${new Intl.NumberFormat('es-AR').format(Math.round(value))}`;
 
@@ -78,11 +88,11 @@ Alpine.data(
         catalog: Product[] = [],
         whatsapp = '5491100000000',
         initialCheckout = {},
-        timeSlots: TimeSlots = defaultTimeSlots,
+        timeSlots: unknown = defaultTimeSlots,
     ) => ({
         catalog,
         whatsapp,
-        timeSlots,
+        timeSlots: normalizeTimeSlots(timeSlots),
         cart: [] as CartItem[],
         cartOpen: false,
         cartTrigger: null as HTMLElement | null,

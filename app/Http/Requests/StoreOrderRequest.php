@@ -95,8 +95,7 @@ class StoreOrderRequest extends FormRequest
     /** @return list<string> */
     private function availableTimeSlots(mixed $date): array
     {
-        $weekdaySlots = array_values((array) config('delicias.time_slots.weekday', []));
-        $weekendSlots = array_values((array) config('delicias.time_slots.weekend', []));
+        ['weekday' => $weekdaySlots, 'weekend' => $weekendSlots] = delicias_time_slots();
 
         if (! is_string($date) || $date === '') {
             return array_values(array_unique([...$weekdaySlots, ...$weekendSlots]));

@@ -190,3 +190,29 @@ test('custom products are displayed as examples but cannot be reserved', functio
     $response->assertSessionHasErrors('items');
     expect(Order::count())->toBe(0);
 });
+
+test('reservations still work when the time slots config is missing', function () {
+    config(['delicias.time_slots' => null]);
+    $this->seed();
+    $product = Product::with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+    $date = app(OrderCalculator::class)->minimumDateForItems([
+        ['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1],
+    ]);
+
+    $this->get(route('checkout'))
+        ->assertOk()
+        ->assertSee('13 a 15 h');
+
+    $this->post(route('orders.store'), [
+        'items' => [['product_id' => $product->id, 'product_size_id' => $size->id, 'quantity' => 1, 'note' => '']],
+        'customer_name' => 'Ada Lovelace',
+        'phone' => '11 1234 5678',
+        'delivery_type' => 'retiro',
+        'delivery_date' => $date->format('Y-m-d'),
+        'time_slot' => $date->isWeekend() ? '15 a 18 h' : '13 a 15 h',
+        'payment_method' => 'transferencia',
+    ])->assertSessionHasNoErrors();
+
+    expect(Order::count())->toBe(1);
+});

@@ -19,7 +19,7 @@
     'delivery_date' => old('delivery_date', ''),
     'time_slot' => old('time_slot', '13 a 15 h'),
     'notes' => old('notes', ''),
-]), @js(config('delicias.time_slots')))" x-init="init()" class="bg-crema text-ink antialiased">
+]), @js(delicias_time_slots()))" x-init="init()" class="bg-crema text-ink antialiased">
     <div class="min-h-screen overflow-x-hidden">
         @include('partials.navigation')
 
