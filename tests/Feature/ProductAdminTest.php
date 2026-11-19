@@ -144,7 +144,7 @@ test('an admin can archive a product without removing existing order items', fun
         'phone' => '11 1234 5678',
         'delivery_type' => 'retiro',
         'delivery_date' => now()->addDays(4),
-        'time_slot' => '12 a 15 h',
+        'time_slot' => '15 a 18 h',
         'payment_method' => 'transferencia',
         'subtotal' => $size->price,
         'deposit' => (int) ceil($size->price / 2),

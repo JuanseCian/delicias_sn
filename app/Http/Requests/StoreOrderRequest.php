@@ -67,7 +67,7 @@ class StoreOrderRequest extends FormRequest
                     }
                 },
             ],
-            'time_slot' => ['required', Rule::in(['9 a 12 h', '12 a 15 h', '15 a 18 h', '18 a 20 h'])],
+            'time_slot' => ['required', Rule::in($this->availableTimeSlots($this->input('delivery_date')))],
             'notes' => ['nullable', 'string', 'max:500'],
         ];
     }
@@ -90,5 +90,24 @@ class StoreOrderRequest extends FormRequest
             'time_slot.required' => 'Elegí una franja horaria.',
             'notes.max' => 'Las notas no pueden superar los 500 caracteres.',
         ];
+    }
+
+    /** @return list<string> */
+    private function availableTimeSlots(mixed $date): array
+    {
+        $weekdaySlots = array_values((array) config('delicias.time_slots.weekday', []));
+        $weekendSlots = array_values((array) config('delicias.time_slots.weekend', []));
+
+        if (! is_string($date) || $date === '') {
+            return array_values(array_unique([...$weekdaySlots, ...$weekendSlots]));
+        }
+
+        try {
+            $deliveryDate = CarbonImmutable::createFromFormat('!Y-m-d', $date);
+        } catch (\Throwable) {
+            return array_values(array_unique([...$weekdaySlots, ...$weekendSlots]));
+        }
+
+        return $deliveryDate->isWeekend() ? $weekendSlots : $weekdaySlots;
     }
 }

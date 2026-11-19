@@ -58,13 +58,13 @@
                 <div class="mt-6 grid gap-5 sm:grid-cols-2">
                     <label class="block">
                         <span class="form-label">Fecha de entrega</span>
-                        <input data-checkout-field="delivery_date" type="date" name="delivery_date" x-model="checkout.delivery_date" :min="minimumDateString" @change="validateDate()" required value="{{ old('delivery_date') }}" class="form-input">
+                        <input data-checkout-field="delivery_date" type="date" name="delivery_date" x-model="checkout.delivery_date" :min="minimumDateString" @change="validateDate(); normalizeTimeSlot()" required value="{{ old('delivery_date') }}" class="form-input">
                         <span x-show="formErrors.delivery_date" x-text="formErrors.delivery_date" class="field-error" role="alert"></span>
                         @error('delivery_date')<span class="field-error" role="alert">{{ $message }}</span>@enderror
                     </label>
                     <label class="block">
                         <span class="form-label">Franja horaria</span>
-                        <select name="time_slot" x-model="checkout.time_slot" class="form-input"><option>9 a 12 h</option><option>12 a 15 h</option><option>15 a 18 h</option><option>18 a 20 h</option></select>
+                        <select name="time_slot" x-model="checkout.time_slot" class="form-input"><template x-for="slot in availableTimeSlots" :key="slot"><option :value="slot" x-text="slot"></option></template></select>
                     </label>
                     <div class="sm:col-span-2 rounded-2xl bg-blush/60 p-4 text-sm leading-6 text-bordo">
                         <strong>Primera fecha disponible:</strong> <span x-text="minimumDateLabel"></span>

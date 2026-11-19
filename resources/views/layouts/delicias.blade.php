@@ -17,9 +17,9 @@
     'delivery_type' => old('delivery_type', 'envio'),
     'address' => old('address', ''),
     'delivery_date' => old('delivery_date', ''),
-    'time_slot' => old('time_slot', '9 a 12 h'),
+    'time_slot' => old('time_slot', '13 a 15 h'),
     'notes' => old('notes', ''),
-]))" x-init="init()" class="bg-crema text-ink antialiased">
+]), @js(config('delicias.time_slots')))" x-init="init()" class="bg-crema text-ink antialiased">
     <div class="min-h-screen overflow-x-hidden">
         @include('partials.navigation')
 

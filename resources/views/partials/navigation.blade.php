@@ -18,9 +18,10 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button type="button" @click="cartOpen = true" class="relative grid h-11 w-11 place-items-center rounded-full bg-blush text-bordo transition hover:bg-rosa-viejo hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-bordo" aria-label="Abrir carrito">
+            <button type="button" @click="openCart($event)" class="relative grid h-11 w-11 place-items-center rounded-full bg-blush text-bordo transition hover:bg-rosa-viejo hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-bordo" aria-label="Abrir carrito">
                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
                 <span x-show="cartCount > 0" x-text="cartCount" x-cloak class="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-bordo px-1 text-[10px] font-bold text-white"></span>
+                <span class="sr-only" aria-live="polite" x-text="cartCount ? `Abrir carrito, ${cartCount} productos` : 'Abrir carrito vacío'"></span>
             </button>
             <button type="button" @click="open = !open" class="grid h-11 w-11 place-items-center rounded-full border border-bordo/15 text-bordo lg:hidden" :aria-expanded="open.toString()" aria-label="Abrir menú">
                 <svg x-show="!open" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>

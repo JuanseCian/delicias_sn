@@ -34,7 +34,25 @@ type CartItem = {
     note: string;
 };
 
+type TimeSlots = {
+    weekday: string[];
+    weekend: string[];
+};
+
 const storageKey = 'delicias-sn-cart';
+const cartFocusableSelector =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const cartItemKey = (
+    productId: number,
+    sizeId: number,
+    note: string,
+): string => `${productId}-${sizeId}-${encodeURIComponent(note.toLowerCase())}`;
+
+const defaultTimeSlots: TimeSlots = {
+    weekday: ['13 a 15 h', '15 a 18 h', '18 a 20 h'],
+    weekend: ['9 a 12 h', '12 a 15 h', '15 a 18 h', '18 a 20 h'],
+};
 
 const money = (value: number): string =>
     `$ ${new Intl.NumberFormat('es-AR').format(Math.round(value))}`;
@@ -56,11 +74,19 @@ const dateLabel = (date: Date): string =>
 
 Alpine.data(
     'deliciasApp',
-    (catalog: Product[] = [], whatsapp = '5491100000000', initialCheckout = {}) => ({
+    (
+        catalog: Product[] = [],
+        whatsapp = '5491100000000',
+        initialCheckout = {},
+        timeSlots: TimeSlots = defaultTimeSlots,
+    ) => ({
         catalog,
         whatsapp,
+        timeSlots,
         cart: [] as CartItem[],
         cartOpen: false,
+        cartTrigger: null as HTMLElement | null,
+        removingItemKey: null as string | null,
         filter: 'all',
         selectedProduct: null as Product | null,
         selectedSize: 0,
@@ -72,7 +98,7 @@ Alpine.data(
             delivery_type: 'envio',
             address: '',
             delivery_date: '',
-            time_slot: '9 a 12 h',
+            time_slot: '13 a 15 h',
             notes: '',
             ...initialCheckout,
         },
@@ -84,29 +110,87 @@ Alpine.data(
                 const stored = JSON.parse(
                     localStorage.getItem(storageKey) || '[]',
                 );
-                this.cart = Array.isArray(stored)
+                const normalizedItems = Array.isArray(stored)
                     ? stored.flatMap((item: Record<string, unknown>) => {
+                          const productId = Number(item.product_id ?? 0);
                           const productSizeId = Number(
                               item.product_size_id ?? item.size_id ?? 0,
                           );
+                          const product = this.productFor(productId);
+                          const size = product?.sizes.find(
+                              (option: ProductSizeOption) =>
+                                  option.id === productSizeId,
+                          );
 
-                          if (!productSizeId) {
+                          if (!product || !size) {
                               return [];
                           }
 
-                          const normalizedItem = {
-                              ...item,
-                              product_size_id: productSizeId,
-                          };
-                          delete (normalizedItem as Record<string, unknown>)
-                              .size_id;
+                          const note =
+                              typeof item.note === 'string'
+                                  ? item.note.trim()
+                                  : '';
 
-                          return [normalizedItem as CartItem];
+                          return [
+                              {
+                                  key: cartItemKey(
+                                      productId,
+                                      productSizeId,
+                                      note,
+                                  ),
+                                  product_id: productId,
+                                  product_size_id: productSizeId,
+                                  quantity: Math.min(
+                                      50,
+                                      Math.max(1, Number(item.quantity) || 1),
+                                  ),
+                                  note,
+                              } satisfies CartItem,
+                          ];
                       })
                     : [];
+                const uniqueItems = new Map<string, CartItem>();
+
+                normalizedItems.forEach((item: CartItem) => {
+                    const existing = uniqueItems.get(item.key);
+
+                    if (existing) {
+                        existing.quantity = Math.min(
+                            50,
+                            existing.quantity + item.quantity,
+                        );
+                        return;
+                    }
+
+                    uniqueItems.set(item.key, item);
+                });
+
+                this.cart = [...uniqueItems.values()];
+                this.persist();
             } catch {
                 this.cart = [];
             }
+
+            this.$watch('cartOpen', (open: boolean) => {
+                document.body.classList.toggle('cart-is-open', open);
+
+                if (open) {
+                    this.$nextTick(() => {
+                        document.getElementById('cart-close')?.focus();
+                    });
+                    return;
+                }
+
+                this.$nextTick(() => {
+                    if (
+                        this.cartTrigger &&
+                        document.contains(this.cartTrigger)
+                    ) {
+                        this.cartTrigger.focus();
+                    }
+                    this.cartTrigger = null;
+                });
+            });
 
             const reducedMotion = window.matchMedia(
                 '(prefers-reduced-motion: reduce)',
@@ -185,6 +269,29 @@ Alpine.data(
             return label.charAt(0).toUpperCase() + label.slice(1);
         },
 
+        get availableTimeSlots() {
+            const date = this.checkout.delivery_date;
+
+            if (!date) {
+                return [
+                    ...this.timeSlots.weekday,
+                    ...this.timeSlots.weekend,
+                ];
+            }
+
+            const day = new Date(`${date}T00:00:00`).getDay();
+
+            return day === 0 || day === 6
+                ? this.timeSlots.weekend
+                : this.timeSlots.weekday;
+        },
+
+        normalizeTimeSlot() {
+            if (!this.availableTimeSlots.includes(this.checkout.time_slot)) {
+                this.checkout.time_slot = this.availableTimeSlots[0];
+            }
+        },
+
         productFor(productId: number) {
             return this.catalog.find(
                 (product: Product) => product.id === Number(productId),
@@ -207,7 +314,52 @@ Alpine.data(
         },
 
         persist() {
-            localStorage.setItem(storageKey, JSON.stringify(this.cart));
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(this.cart));
+            } catch {
+                // Keep the in-memory cart usable if browser storage is unavailable.
+            }
+        },
+
+        openCart(event?: Event) {
+            const trigger = event?.currentTarget;
+
+            this.cartTrigger =
+                trigger instanceof HTMLElement
+                    ? trigger
+                    : document.activeElement instanceof HTMLElement
+                      ? document.activeElement
+                      : null;
+            this.cartOpen = true;
+        },
+
+        closeCart() {
+            this.cartOpen = false;
+        },
+
+        trapCartFocus(event: KeyboardEvent) {
+            if (event.key !== 'Tab') return;
+
+            const dialog = event.currentTarget as HTMLElement;
+            const focusable = Array.from(
+                dialog.querySelectorAll<HTMLElement>(cartFocusableSelector),
+            ).filter((element) => element.offsetParent !== null);
+
+            if (!focusable.length) {
+                event.preventDefault();
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
         },
 
         openProduct(productId: number) {
@@ -228,10 +380,14 @@ Alpine.data(
                 product_size_id: this.selectedSize,
             });
             if (!size || this.detailQuantity > 50) return;
-            const key = `${this.selectedProduct.id}-${this.selectedSize}-${encodeURIComponent(this.detailNote.trim().toLowerCase())}`;
+            const note = this.detailNote.trim();
+            const key = cartItemKey(
+                this.selectedProduct.id,
+                this.selectedSize,
+                note,
+            );
             const existing = this.cart.find(
-                (item: CartItem) =>
-                    item.key === key && item.note === this.detailNote,
+                (item: CartItem) => item.key === key,
             );
 
             if (existing) {
@@ -244,13 +400,13 @@ Alpine.data(
                     product_id: this.selectedProduct.id,
                     product_size_id: this.selectedSize,
                     quantity: this.detailQuantity,
-                    note: this.detailNote,
+                    note,
                 });
             }
 
             this.persist();
             this.closeProduct();
-            this.cartOpen = true;
+            this.openCart();
         },
 
         changeQuantity(key: string, amount: number) {
@@ -267,8 +423,16 @@ Alpine.data(
         },
 
         removeItem(key: string) {
-            this.cart = this.cart.filter((item: CartItem) => item.key !== key);
-            this.persist();
+            if (this.removingItemKey) return;
+
+            this.removingItemKey = key;
+            window.setTimeout(() => {
+                this.cart = this.cart.filter(
+                    (item: CartItem) => item.key !== key,
+                );
+                this.removingItemKey = null;
+                this.persist();
+            }, 220);
         },
 
         validateDate() {

@@ -24,7 +24,7 @@ test('a customer can reserve a seeded order', function () {
         'phone' => '11 1234 5678',
         'delivery_type' => 'retiro',
         'delivery_date' => $date->format('Y-m-d'),
-        'time_slot' => '12 a 15 h',
+        'time_slot' => $date->isWeekend() ? '15 a 18 h' : '13 a 15 h',
         'payment_method' => 'transferencia',
     ]);
 
@@ -38,9 +38,12 @@ test('a customer can reserve a seeded order', function () {
 
     $this->get(route('orders.confirmed', $order->code))
         ->assertOk()
+        ->assertSee('data-ticket-confirmation', false)
+        ->assertSee('data-ticket-id="'.$order->code.'"', false)
         ->assertSee('wa.me', false)
         ->assertSee('Tu opinión')
-        ->assertSee('¿Qué te pareció?');
+        ->assertSee('¿Qué tan dulce fue?')
+        ->assertSee('5 cupcakes');
 });
 
 test('a reservation accepts carts saved with the legacy size key', function () {
@@ -61,7 +64,7 @@ test('a reservation accepts carts saved with the legacy size key', function () {
         'phone' => '11 1234 5678',
         'delivery_type' => 'retiro',
         'delivery_date' => $date->format('Y-m-d'),
-        'time_slot' => '12 a 15 h',
+        'time_slot' => $date->isWeekend() ? '15 a 18 h' : '13 a 15 h',
         'payment_method' => 'efectivo',
     ]);
 
@@ -87,7 +90,7 @@ test('a reservation rejects a date before the longest lead time', function () {
         'phone' => '11 1234 5678',
         'delivery_type' => 'retiro',
         'delivery_date' => $date->format('Y-m-d'),
-        'time_slot' => '12 a 15 h',
+        'time_slot' => $date->isWeekend() ? '15 a 18 h' : '13 a 15 h',
         'payment_method' => 'efectivo',
     ]);
 
@@ -155,7 +158,7 @@ test('checkout preserves entered data after validation errors', function () {
         'phone' => '',
         'delivery_type' => 'retiro',
         'delivery_date' => $date->format('Y-m-d'),
-        'time_slot' => '12 a 15 h',
+        'time_slot' => $date->isWeekend() ? '15 a 18 h' : '13 a 15 h',
         'payment_method' => 'transferencia',
     ]);
 
@@ -168,6 +171,7 @@ test('custom products are displayed as examples but cannot be reserved', functio
     $product = Product::with('sizes')->where('is_custom', true)->firstOrFail();
     $size = $product->sizes->firstOrFail();
 
+    $deliveryDate = now()->addDays(8);
     $response = $this->from(route('checkout'))->post(route('orders.store'), [
         'items' => [[
             'product_id' => $product->id,
@@ -177,8 +181,8 @@ test('custom products are displayed as examples but cannot be reserved', functio
         'customer_name' => 'Ada Lovelace',
         'phone' => '11 1234 5678',
         'delivery_type' => 'retiro',
-        'delivery_date' => now()->addDays(8)->format('Y-m-d'),
-        'time_slot' => '12 a 15 h',
+        'delivery_date' => $deliveryDate->format('Y-m-d'),
+        'time_slot' => $deliveryDate->isWeekend() ? '15 a 18 h' : '13 a 15 h',
         'payment_method' => 'efectivo',
     ]);
 
