@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Review;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -32,21 +31,13 @@ class HomeController extends Controller
             'ingredients' => $product->ingredients->map(fn ($ingredient): array => ['name' => $ingredient->name, 'origin' => $ingredient->origin])->values(),
             'allergens' => $product->allergens->pluck('name')->values(),
         ])->values();
-        $approvedReviews = Review::query()->where('approved', true);
-        $reviews = (clone $approvedReviews)->latest()->get();
-        $reviewStats = [
-            'count' => (clone $approvedReviews)->count(),
-            'average' => round((float) ((clone $approvedReviews)->avg('rating') ?? 0), 1),
-        ];
 
         return view('home', [
             'categories' => Category::orderBy('order')->get(),
             'products' => $products,
-            'featured' => $products->firstWhere('is_featured', true),
+            'featured' => $products->where('is_featured', true)->take(4)->values(),
             'leadTimes' => $products->mapWithKeys(fn (Product $product): array => [$product->id => $product->lead_time_hours]),
             'catalog' => $catalog,
-            'reviews' => $reviews,
-            'reviewStats' => $reviewStats,
         ]);
     }
 }

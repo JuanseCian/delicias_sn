@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProductAdminController extends Controller
@@ -46,7 +47,7 @@ class ProductAdminController extends Controller
 
     public function update(Request $request, Product $product): RedirectResponse
     {
-        $data = $this->validatedData($request);
+        $data = $this->validatedData($request, $product);
 
         DB::transaction(function () use ($request, $data, $product): void {
             $product->update($this->productAttributes($data, $product));
@@ -75,9 +76,9 @@ class ProductAdminController extends Controller
     }
 
     /** @return array<string, mixed> */
-    private function validatedData(Request $request): array
+    private function validatedData(Request $request, ?Product $product = null): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:120'],
             'description' => ['required', 'string', 'max:1200'],
@@ -99,6 +100,14 @@ class ProductAdminController extends Controller
             'sizes.*.price.required' => 'Cada tamaño necesita un precio.',
             'image.max' => 'La imagen no puede pesar más de 5 MB.',
         ]);
+
+        if (($data['is_featured'] ?? false) && ! $product?->is_featured && Product::where('is_featured', true)->count() >= 4) {
+            throw ValidationException::withMessages([
+                'is_featured' => 'Podés seleccionar hasta 4 productos destacados.',
+            ]);
+        }
+
+        return $data;
     }
 
     /** @param array<string, mixed> $data */

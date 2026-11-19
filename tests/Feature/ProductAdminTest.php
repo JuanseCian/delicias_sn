@@ -5,6 +5,7 @@ use App\Models\Ingredient;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductSize;
 use App\Models\User;
 
 test('the product form includes its custom field styles', function () {
@@ -43,6 +44,57 @@ test('an admin can create a made-to-order product with sizes', function () {
         ->and($product->short_description)->toBe($product->description);
 
     $this->get(route('home'))->assertOk()->assertSee('Torta demo');
+});
+
+test('an admin can select up to four featured products', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $category = Category::where('slug', 'tortas')->firstOrFail();
+
+    foreach (range(1, 4) as $index) {
+        $product = Product::create([
+            'category_id' => $category->id,
+            'name' => "Destacado de prueba {$index}",
+            'slug' => "destacado-de-prueba-{$index}",
+            'short_description' => 'Producto destacado.',
+            'description' => 'Descripción del producto destacado.',
+            'storage_instructions' => 'Conservar refrigerado.',
+            'is_featured' => true,
+            'active' => true,
+        ]);
+        ProductSize::create(['product_id' => $product->id, 'label' => 'Único', 'price' => 10000]);
+    }
+
+    $candidate = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Quinto destacado',
+        'slug' => 'quinto-destacado',
+        'short_description' => 'Producto candidato.',
+        'description' => 'Descripción del producto candidato.',
+        'storage_instructions' => 'Conservar refrigerado.',
+        'active' => true,
+    ]);
+    $size = ProductSize::create(['product_id' => $candidate->id, 'label' => 'Único', 'price' => 10000]);
+
+    $this->put(route('private.products.update', $candidate), [
+        'category_id' => $category->id,
+        'name' => $candidate->name,
+        'description' => $candidate->description,
+        'storage_instructions' => $candidate->storage_instructions,
+        'active' => 1,
+        'is_featured' => 1,
+        'sizes' => [['id' => $size->id, 'label' => $size->label, 'price' => $size->price]],
+    ])->assertSessionHasErrors('is_featured');
+
+    expect($candidate->fresh()->is_featured)->toBeFalse();
+});
+
+test('the home places featured products before the catalog', function () {
+    $this->seed();
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSeeInOrder(['Selección de la casa', 'El mostrador']);
 });
 
 test('an admin can write custom ingredients when creating a product', function () {

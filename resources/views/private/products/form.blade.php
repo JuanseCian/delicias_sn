@@ -70,7 +70,7 @@
                     </div>
                     <div class="mt-6 flex flex-wrap gap-3 border-t border-[#263238]/10 pt-5">
                         <label class="check-label"><input type="hidden" name="active" value="0"><input x-model="active" type="checkbox" name="active" value="1" class="check-input"> Visible en la página</label>
-                        <label class="check-label"><input type="hidden" name="is_featured" value="0"><input x-model="is_featured" type="checkbox" name="is_featured" value="1" class="check-input"> Destacado</label>
+                        <label class="check-label"><input type="hidden" name="is_featured" value="0"><input x-model="is_featured" type="checkbox" name="is_featured" value="1" class="check-input"> Destacado</label><span class="w-full text-xs text-[#64747A]">Podés elegir hasta 4 productos destacados.</span>
                         <label class="check-label"><input type="hidden" name="is_custom" value="0"><input x-model="is_custom" type="checkbox" name="is_custom" value="1" class="check-input"> Producto personalizado</label>
                     </div>
                     <div class="mt-8 flex justify-end border-t border-[#263238]/10 pt-5">

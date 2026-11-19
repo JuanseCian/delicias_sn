@@ -2,10 +2,10 @@
 
 use App\Models\Review;
 
-test('the home page includes the reviews section', function () {
+test('the public reviews page includes the reviews section', function () {
     $this->seed();
 
-    $this->get(route('home'))
+    $this->get(route('reviews.public'))
         ->assertOk()
         ->assertSee('opiniones', false)
         ->assertSee('Historias');
@@ -50,7 +50,7 @@ test('only approved reviews are shown publicly', function () {
     Review::create(['name' => 'Publicado', 'rating' => 5, 'comment' => 'Una experiencia hermosa.', 'approved' => true]);
     Review::create(['name' => 'Pendiente', 'rating' => 1, 'comment' => 'Todavía no debe aparecer.', 'approved' => false]);
 
-    $this->get(route('home'))
+    $this->get(route('reviews.public'))
         ->assertSee('Publicado')
         ->assertDontSee('Pendiente');
 });
@@ -67,7 +67,7 @@ test('all approved reviews are shown publicly', function () {
         ]);
     }
 
-    $this->get(route('home'))
+    $this->get(route('reviews.public'))
         ->assertSee('Cliente 1')
         ->assertSee('Cliente 7');
 });

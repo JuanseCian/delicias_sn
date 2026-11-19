@@ -5,11 +5,10 @@
 @section('content')
     <x-hero />
     <x-benefits />
-    <x-catalog :categories="$categories" :products="$products" />
-    @if ($featured)
+    @if ($featured->isNotEmpty())
         <x-featured :featured="$featured" />
     @endif
-    <x-reviews :reviews="$reviews" :stats="$reviewStats" />
+    <x-catalog :categories="$categories" :products="$products" />
     <x-steps />
     <x-footer />
 @endsection
