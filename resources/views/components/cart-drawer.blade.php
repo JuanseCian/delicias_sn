@@ -97,7 +97,7 @@
 
         <footer x-show="cart.length > 0" x-transition.opacity class="shrink-0 border-t border-bordo/10 bg-white/90 px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 backdrop-blur sm:px-6 sm:pb-5">
             <div class="mb-4 grid gap-2 rounded-2xl bg-crema px-3 py-2.5 text-xs leading-5 text-ink/60 sm:grid-cols-2 sm:gap-3">
-                <p><span class="font-bold text-bordo">Retiro:</span> Catamarca 523</p>
+                <p><span class="font-bold text-bordo">Retiro:</span> Jujuy 422</p>
                 <p><span class="font-bold text-bordo">Envíos:</span> coordinados por WhatsApp</p>
             </div>
             <div class="flex items-end justify-between gap-3">

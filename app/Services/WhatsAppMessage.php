@@ -15,7 +15,7 @@ class WhatsAppMessage
             'Titular: '.$order->customer_name,
             'Teléfono: '.$order->phone,
             'Entrega: '.ucfirst($order->delivery_date->locale('es')->translatedFormat('l j \d\e F')).' · '.$order->time_slot,
-            'Modalidad: '.($order->delivery_type === 'envio' ? 'Envío a domicilio' : 'Retiro por Catamarca 523'),
+            'Modalidad: '.($order->delivery_type === 'envio' ? 'Envío a domicilio' : 'Retiro por Jujuy 422'),
         ];
 
         if ($order->delivery_type === 'envio' && filled($order->address)) {

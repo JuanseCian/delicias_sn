@@ -41,7 +41,7 @@
                     </label>
                     <label class="block">
                         <span class="form-label">¿Cómo lo recibís?</span>
-                        <select name="delivery_type" x-model="checkout.delivery_type" class="form-input"><option value="envio">Envío a domicilio</option><option value="retiro">Retiro por Catamarca 523</option></select>
+                        <select name="delivery_type" x-model="checkout.delivery_type" class="form-input"><option value="envio">Envío a domicilio</option><option value="retiro">Retiro por Jujuy 422</option></select>
                     </label>
                     <label class="block sm:col-span-2" x-show="checkout.delivery_type === 'envio'">
                         <span class="form-label">Dirección de entrega</span>

@@ -12,7 +12,7 @@
     ];
     $ticketDetails = [
         ['label' => 'Entrega', 'value' => ucfirst($order->delivery_date->locale('es')->translatedFormat('l j \d\e F')).' · '.$order->time_slot, 'icon' => 'calendar'],
-        ['label' => 'Modalidad', 'value' => $order->delivery_type === 'envio' ? 'Envío a domicilio' : 'Retiro por Catamarca 523', 'icon' => 'delivery'],
+        ['label' => 'Modalidad', 'value' => $order->delivery_type === 'envio' ? 'Envío a domicilio' : 'Retiro por Jujuy 422', 'icon' => 'delivery'],
     ];
 @endphp
 <section class="px-4 pb-20 pt-36 sm:px-6 sm:pb-28 sm:pt-44 lg:px-8">

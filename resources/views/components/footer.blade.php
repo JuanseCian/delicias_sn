@@ -40,7 +40,7 @@
                 <div class="mt-5 space-y-3 text-sm leading-6 text-ink/60">
                     <a class="block transition hover:text-bordo" href="https://wa.me/{{ config('delicias.whatsapp') }}" target="_blank" rel="noopener">{{ config('delicias.whatsapp_display') }}</a>
                     <p>{{ config('delicias.hours') }}<br>Pedidos coordinados por WhatsApp.</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Catamarca+523" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-semibold text-bordo hover:text-ink">{{ config('delicias.address') }} <span>↗</span></a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jujuy+422" target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-semibold text-bordo hover:text-ink">{{ config('delicias.address') }} <span>↗</span></a>
                 </div>
             </div>
         </div>

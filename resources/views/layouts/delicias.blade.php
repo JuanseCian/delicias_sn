@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Delicias Sn · Pastelería artesanal hecha a mano en Catamarca 523.">
+    <meta name="description" content="Delicias Sn · Pastelería artesanal hecha a mano en Jujuy 422.">
     <title>@yield('title', 'Delicias Sn · Pastelería artesanal')</title>
     <link rel="icon" href="{{ asset('img/icono_delicias.png') }}" type="image/png">
     <link rel="apple-touch-icon" href="{{ asset('img/icono_delicias.png') }}">

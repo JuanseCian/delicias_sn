@@ -10,7 +10,7 @@
                 ['¿Cómo se reserva una fecha?', 'Confirmamos la fecha después de recibir tus datos y una seña del 50% del total. Luego se coordina la entrega o el retiro.'],
                 ['¿Con cuánta anticipación tengo que pedir?', 'Pedidos con 2/3 dias de anticipación,tortas personalizadas y mesas dulces con 5 dias de anticipación'],
                 ['¿A qué zonas hacen envíos?', 'Todo san nicolas,el costo varia segun la zona'],
-                ['¿Puedo retirar mi pedido?', 'Sí, podés retirarlo por Catamarca 523 en la franja horaria que elegiste, con reserva previa.'],
+                ['¿Puedo retirar mi pedido?', 'Sí, podés retirarlo por Jujuy 422 en la franja horaria que elegiste, con reserva previa.'],
                 ['¿Qué pasa si necesito cancelar?', 'Avisanos con la mayor anticipación posible. Para revisar cambios o cancelaciones, escribinos por WhatsApp con tu número de pedido. La seña no es reembolsable'],
                 ['¿Tienen opciones sin alérgenos?', 'Todos nuestros productos se elaboran en el mismo obrador. Consultanos por ingredientes y posibles trazas antes de encargar.'],
                 ['¿Cómo conservo lo que compré?', 'Cada producto incluye sus indicaciones. En general, las tortas y cupcakes van en heladera y las cookies en recipiente hermético.'],

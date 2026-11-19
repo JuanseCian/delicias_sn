@@ -10,7 +10,7 @@
             <a href="#catalogo" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>
             <a href="https://wa.me/{{ config('delicias.whatsapp') }}?text={{ rawurlencode('¡Hola! Quiero encargar algo rico en Delicias Sn.') }}" target="_blank" rel="noopener" class="btn-secondary">Pedir por WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="hero-enter mt-12 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs font-semibold text-ink/45" style="--hero-enter-delay: 560ms"><span class="h-px w-10 bg-rosa-viejo"></span><span>Retiro en Catamarca 523</span><span aria-hidden="true">·</span><span>Envíos coordinados</span></div>
+        <div class="hero-enter mt-12 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs font-semibold text-ink/45" style="--hero-enter-delay: 560ms"><span class="h-px w-10 bg-rosa-viejo"></span><span>Retiro en Jujuy 422</span><span aria-hidden="true">·</span><span>Envíos coordinados</span></div>
     </div>
     <div class="hero-scroll-hint" aria-hidden="true"><span></span> descubrí algo rico</div>
 </section>
