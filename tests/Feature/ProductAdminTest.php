@@ -97,6 +97,15 @@ test('the home places featured products before the catalog', function () {
         ->assertSeeInOrder(['Selección de la casa', 'El mostrador']);
 });
 
+test('the home hides categories without public products', function () {
+    $this->seed();
+    Category::create(['name' => 'Categoría vacía', 'slug' => 'categoria-vacia', 'lead_time_hours' => 24, 'order' => 99]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertDontSee('Categoría vacía');
+});
+
 test('an admin can write custom ingredients when creating a product', function () {
     $this->seed();
     $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());

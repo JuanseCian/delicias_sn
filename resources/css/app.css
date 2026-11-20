@@ -64,6 +64,50 @@ body.cart-is-open {
     overflow: hidden;
 }
 
+body.product-modal-is-open {
+    overflow: hidden;
+}
+
+@media (max-width: 639px) {
+    .product-modal-backdrop {
+        align-items: start;
+        padding: 0.75rem 0.75rem 6rem;
+    }
+
+    .product-modal {
+        grid-template-rows: 10rem minmax(0, 1fr);
+        max-height: calc(100dvh - 1.5rem);
+        margin-block: 0;
+    }
+
+    .product-modal .product-modal-image {
+        min-height: 0;
+        height: 10rem;
+    }
+
+    .product-modal > div:nth-child(2) {
+        min-height: 0;
+        max-height: none;
+        padding: 1.25rem 1.25rem 7.5rem;
+    }
+
+    .product-modal-actions {
+        bottom: 0.75rem;
+        left: 0.75rem;
+        right: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .product-modal-actions > div {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .product-modal-actions > div > button {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+}
+
 ::selection {
     background: #6b2d3c;
     color: #fbf5ee;

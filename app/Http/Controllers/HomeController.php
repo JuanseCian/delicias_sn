@@ -33,7 +33,9 @@ class HomeController extends Controller
         ])->values();
 
         return view('home', [
-            'categories' => Category::orderBy('order')->get(),
+            'categories' => Category::whereHas('products', function ($query): void {
+                $query->where('active', true)->where('is_custom', false);
+            })->orderBy('order')->get(),
             'products' => $products,
             'featured' => $products->where('is_featured', true)->take(4)->values(),
             'leadTimes' => $products->mapWithKeys(fn (Product $product): array => [$product->id => $product->lead_time_hours]),

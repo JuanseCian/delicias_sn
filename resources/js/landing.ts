@@ -202,6 +202,13 @@ Alpine.data(
                 });
             });
 
+            this.$watch('selectedProduct', (product: Product | null) => {
+                document.body.classList.toggle(
+                    'product-modal-is-open',
+                    Boolean(product),
+                );
+            });
+
             const reducedMotion = window.matchMedia(
                 '(prefers-reduced-motion: reduce)',
             ).matches;
