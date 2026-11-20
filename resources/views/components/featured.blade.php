@@ -2,7 +2,7 @@
     $featuredCount = min($featured->count(), 4);
 @endphp
 
-<section id="destacados" class="overflow-hidden bg-bordo px-4 py-12 text-crema sm:px-6 sm:py-16 lg:px-8">
+<section id="destacados" class="overflow-hidden bg-pino px-4 py-12 text-crema sm:px-6 sm:py-16 lg:px-8">
     <div class="mx-auto max-w-6xl">
         <div>
             <p class="section-kicker !text-blush before:!bg-blush">Selección de la casa</p>

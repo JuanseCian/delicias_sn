@@ -1,4 +1,4 @@
-<footer class="border-t border-bordo/20 bg-mist/70 px-4 pb-8 pt-14 text-ink sm:px-6 lg:px-8">
+<footer class="border-t border-oro/30 bg-mist/70 px-4 pb-8 pt-14 text-ink sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,1fr)] lg:gap-8">
             <div>
