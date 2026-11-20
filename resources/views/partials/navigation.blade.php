@@ -4,7 +4,7 @@
 @endphp
 
 <header class="fixed inset-x-0 top-0 z-40 px-3 pt-4 sm:px-6 lg:px-8" x-data="{ open: false }">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-pino/15 bg-nieve/90 px-4 py-3 shadow-soft backdrop-blur-md sm:px-6" aria-label="Navegación principal">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-white/75 bg-crema/90 px-4 py-3 shadow-soft backdrop-blur-md sm:px-6" aria-label="Navegación principal">
         <a href="{{ route('home') }}" class="group flex items-center gap-2" aria-label="Volver al inicio de Delicias Sn">
             <img src="{{ asset('img/icono_delicias.png') }}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover transition-transform group-hover:rotate-6">
             <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias Pastelería" class="brand-wordmark h-10 w-32 object-contain object-left sm:w-40">
@@ -29,12 +29,12 @@
             </button>
         </div>
     </nav>
-    <div x-show="open" x-transition x-cloak class="mx-auto mt-2 max-w-7xl rounded-[1.35rem] border border-pino/15 bg-nieve p-3 shadow-soft lg:hidden">
+    <div x-show="open" x-transition x-cloak class="mx-auto mt-2 max-w-7xl rounded-[1.35rem] border border-white/70 bg-crema p-3 shadow-soft lg:hidden">
         <div class="grid gap-1 text-sm font-semibold text-ink/75">
-            <a @click="open = false" href="{{ $catalogHref }}" class="rounded-2xl px-4 py-3 hover:bg-pino-claro">Productos</a>
-            <a @click="open = false" href="{{ $stepsHref }}" class="rounded-2xl px-4 py-3 hover:bg-pino-claro">Cómo encargar</a>
-            <a @click="open = false" href="{{ route('reviews.public') }}" class="rounded-2xl px-4 py-3 hover:bg-pino-claro">Opiniones</a>
-            <a @click="open = false" href="{{ route('faq') }}" class="rounded-2xl px-4 py-3 hover:bg-pino-claro">Preguntas frecuentes</a>
+            <a @click="open = false" href="{{ $catalogHref }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Productos</a>
+            <a @click="open = false" href="{{ $stepsHref }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Cómo encargar</a>
+            <a @click="open = false" href="{{ route('reviews.public') }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Opiniones</a>
+            <a @click="open = false" href="{{ route('faq') }}" class="rounded-2xl px-4 py-3 hover:bg-blush">Preguntas frecuentes</a>
         </div>
     </div>
 </header>

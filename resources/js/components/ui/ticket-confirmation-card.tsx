@@ -57,7 +57,7 @@ const DashedLine = () => (
 );
 
 const SprinkleShower = () => {
-    const colors = ['#9B2739', '#1F5A46', '#C49B43', '#F3DED0', '#DCEAE0'];
+    const colors = ['#6B2D3C', '#C98B8B', '#F4D9D5', '#C68B59', '#EADFD7'];
 
     return (
         <div
