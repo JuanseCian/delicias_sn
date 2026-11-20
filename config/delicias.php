@@ -2,6 +2,7 @@
 
 return [
     'name' => 'Delicias Sn',
+    'canonical_url' => rtrim(env('DELICIAS_CANONICAL_URL', 'https://deliciassn.com'), '/'),
     'christmas_theme_enabled' => filter_var(env('DELICIAS_CHRISTMAS_THEME', false), FILTER_VALIDATE_BOOL),
     'christmas_snow_enabled' => filter_var(env('DELICIAS_CHRISTMAS_SNOW', true), FILTER_VALIDATE_BOOL),
     'address' => env('DELICIAS_ADDRESS', ' 523'),

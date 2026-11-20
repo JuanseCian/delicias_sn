@@ -1,2 +1,12 @@
 User-agent: *
 Disallow:
+
+Disallow: /checkout
+Disallow: /pedidos/
+Disallow: /dashboard
+Disallow: /gestion-delicias-sn-privada/
+Disallow: /settings/
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://deliciassn.com/sitemap.xml
