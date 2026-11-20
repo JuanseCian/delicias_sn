@@ -4,7 +4,7 @@
             <div>
                 <div class="flex items-center gap-3">
                     <x-brand-mark size="h-12 w-12" />
-                    <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias Pastelería" class="brand-wordmark h-12 w-44 object-contain object-left">
+                    <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias SN" class="brand-wordmark h-12 w-44 object-contain object-left">
                 </div>
                 <p class="mt-4 max-w-xs text-sm leading-6 text-ink/60">Pastelería artesanal hecha a mano para convertir cualquier día en una celebración.</p>
                 <div class="mt-6 flex gap-2">

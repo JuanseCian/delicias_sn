@@ -25,7 +25,7 @@ class PublicCatalogController extends Controller
     public function product(Product $product): View
     {
         abort_unless($product->active && ! $product->is_custom, 404);
-        $product->load(['category', 'sizes', 'ingredients']);
+        $product->load(['category', 'sizes', 'ingredients', 'allergens', 'colors']);
 
         return view('catalog.product', compact('product'));
     }

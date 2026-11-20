@@ -25,7 +25,7 @@
                 <article class="group grid overflow-hidden rounded-[2rem] border border-blush/15 bg-white/10 shadow-[0_18px_55px_rgba(38,12,20,0.18)] backdrop-blur-sm {{ $cardClass }}">
                     <div class="featured-product-frame relative {{ $imageClass }}">
                         @if ($product->image)
-                            <img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }} destacado" class="h-full w-full object-cover transition duration-700 group-hover:scale-105">
+                            <img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }} destacado" width="1000" height="1000" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" fetchpriority="{{ $loop->first ? 'high' : 'auto' }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-105">
                         @else
                             <span class="px-6 text-center font-script text-6xl text-bordo">{{ $product->name }}</span>
                         @endif
@@ -41,7 +41,7 @@
                                 <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-crema/45">Desde</p>
                                 <p class="mt-1 font-display text-2xl text-white">{{ format_price($product->starting_price) }}</p>
                             </div>
-                            <button type="button" @click="openProduct({{ $product->id }})" aria-label="Ver opciones de {{ $product->name }}" class="rounded-full bg-blush px-5 py-3 text-xs font-bold uppercase tracking-[0.1em] text-bordo transition hover:bg-white">Ver opciones <span aria-hidden="true">↗</span></button>
+                            <a href="{{ route('catalog.products.show', ['product' => $product->slug]) }}" @click.prevent="openProduct({{ $product->id }})" aria-label="Ver opciones de {{ $product->name }}" class="rounded-full bg-blush px-5 py-3 text-xs font-bold uppercase tracking-[0.1em] text-bordo transition hover:bg-white">Ver opciones <span aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                 </article>

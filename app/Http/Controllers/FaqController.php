@@ -8,6 +8,6 @@ class FaqController extends Controller
 {
     public function __invoke(): View
     {
-        return view('faq');
+        return view('faq', ['faqs' => config('delicias.faqs', [])]);
     }
 }

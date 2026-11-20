@@ -23,6 +23,29 @@ if (! function_exists('product_image_url')) {
     }
 }
 
+if (! function_exists('delicias_canonical_url')) {
+    function delicias_canonical_url(?string $path = null): string
+    {
+        $baseUrl = rtrim((string) config('delicias.canonical_url'), '/');
+        $path ??= request()->getPathInfo();
+
+        return $baseUrl.'/'.ltrim($path ?: '/', '/');
+    }
+}
+
+if (! function_exists('delicias_absolute_url')) {
+    function delicias_absolute_url(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        return Str::startsWith($url, ['http://', 'https://'])
+            ? $url
+            : delicias_canonical_url($url);
+    }
+}
+
 if (! function_exists('delicias_time_slots')) {
     /**
      * Franjas horarias de entrega, con valores por defecto si la configuración

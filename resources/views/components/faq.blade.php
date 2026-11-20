@@ -6,21 +6,13 @@
             <p class="mt-5 max-w-sm text-sm leading-7 text-ink/60">Si no encontrás lo que buscás, escribinos. Estamos para ayudarte a que todo salga lindo.</p>
         </div>
         <div class="divide-y divide-bordo/10">
-            @foreach ([
-                ['¿Cómo se reserva una fecha?', 'Confirmamos la fecha después de recibir tus datos y una seña del 50% del total. Luego se coordina la entrega o el retiro.'],
-                ['¿Con cuánta anticipación tengo que pedir?', 'Pedidos con 2/3 dias de anticipación,tortas personalizadas y mesas dulces con 5 dias de anticipación'],
-                ['¿A qué zonas hacen envíos?', 'Todo san nicolas,el costo varia segun la zona'],
-                ['¿Puedo retirar mi pedido?', 'Sí, podés retirarlo por Jujuy 422 en la franja horaria que elegiste, con reserva previa.'],
-                ['¿Qué pasa si necesito cancelar?', 'Avisanos con la mayor anticipación posible. Para revisar cambios o cancelaciones, escribinos por WhatsApp con tu número de pedido. La seña no es reembolsable'],
-                ['¿Tienen opciones sin alérgenos?', 'Todos nuestros productos se elaboran en el mismo obrador. Consultanos por ingredientes y posibles trazas antes de encargar.'],
-                ['¿Cómo conservo lo que compré?', 'Cada producto incluye sus indicaciones. En general, las tortas y cupcakes van en heladera y las cookies en recipiente hermético.'],
-            ] as $faq)
+            @foreach ($faqs as $faq)
                 <div x-data="{ expanded: false }" class="py-5">
                     <button type="button" @click="expanded = !expanded" class="flex w-full items-center justify-between gap-5 text-left" :aria-expanded="expanded.toString()">
-                        <span class="font-display text-lg text-bordo sm:text-xl">{{ $faq[0] }}</span>
+                        <span class="font-display text-lg text-bordo sm:text-xl">{{ $faq['question'] }}</span>
                         <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blush text-xl leading-none text-bordo transition" :class="expanded ? 'rotate-45' : ''">+</span>
                     </button>
-                    <div x-show="expanded" x-transition x-cloak class="max-w-2xl pr-12 pt-3 text-sm leading-6 text-ink/60">{{ $faq[1] }}</div>
+                    <div x-show="expanded" x-transition x-cloak class="max-w-2xl pr-12 pt-3 text-sm leading-6 text-ink/60">{{ $faq['answer'] }}</div>
                 </div>
             @endforeach
         </div>

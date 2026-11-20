@@ -1,6 +1,5 @@
 User-agent: *
-Disallow:
-
+Disallow: /*?
 Disallow: /checkout
 Disallow: /pedidos/
 Disallow: /dashboard
@@ -8,5 +7,8 @@ Disallow: /gestion-delicias-sn-privada/
 Disallow: /settings/
 Disallow: /login
 Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /confirm-password
 
 Sitemap: https://deliciassn.com/sitemap.xml

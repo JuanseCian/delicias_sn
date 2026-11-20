@@ -1,6 +1,8 @@
 @extends('layouts.delicias')
 
-@section('title', 'Opiniones · Delicias Sn')
+@section('title', 'Opiniones de clientes | Delicias SN')
+@section('description', 'Leé las opiniones de quienes encargaron tortas y pastelería artesanal en Delicias SN, San Nicolás de los Arroyos.')
+@section('canonical', delicias_canonical_url('/opiniones'))
 
 @section('content')
     <div class="pt-20">

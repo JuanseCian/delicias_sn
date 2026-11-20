@@ -1,6 +1,8 @@
 @extends('layouts.delicias')
 
 @section('title', 'Reservá tu pedido · Delicias Sn')
+@section('description', 'Completá los datos para reservar tu pedido de pastelería artesanal en Delicias SN.')
+@section('robots', 'noindex, nofollow, noarchive')
 
 @section('content')
 <section class="px-4 pb-20 pt-32 sm:px-6 sm:pb-28 sm:pt-40 lg:px-8">

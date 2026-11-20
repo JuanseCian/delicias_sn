@@ -6,7 +6,7 @@
     <div class="mx-auto max-w-7xl">
         <div class="max-w-2xl reveal">
             <p class="section-kicker">Diseñá algo único</p>
-            <h2 class="mt-4 font-display text-4xl leading-tight tracking-[-0.03em] text-bordo sm:text-5xl">Tu torta,<br><span class="font-script text-6xl font-normal text-rosa-viejo">a tu manera</span></h2>
+            <h1 class="mt-4 font-display text-4xl leading-tight tracking-[-0.03em] text-bordo sm:text-5xl">Tu torta,<br><span class="font-script text-6xl font-normal text-rosa-viejo">a tu manera</span></h1>
             <p class="mt-5 max-w-xl text-base leading-7 text-ink/65">Probá tamaños, coberturas, colores y detalles sobre una maqueta 3D. Es una guía visual para explorar tu idea y compartirla con Delicias.</p>
         </div>
 

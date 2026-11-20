@@ -1005,7 +1005,7 @@ textarea:focus-visible {
 .theme-christmas .christmas-header-action {
     border-color: rgba(196, 155, 67, 0.5);
     box-shadow: 0 5px 14px rgba(31, 90, 70, 0.08);
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     transition:
         background 220ms var(--ease-brand),
@@ -1013,6 +1013,12 @@ textarea:focus-visible {
         box-shadow 220ms var(--ease-brand),
         color 220ms var(--ease-brand),
         transform 220ms var(--ease-brand);
+}
+
+.theme-christmas .cart-count-badge {
+    border: 2px solid var(--color-nieve);
+    box-shadow: 0 3px 9px rgba(31, 90, 70, 0.28);
+    z-index: 2;
 }
 
 .theme-christmas .christmas-header-action::after {

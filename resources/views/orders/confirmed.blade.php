@@ -1,6 +1,7 @@
 @extends('layouts.delicias')
 
 @section('title', '¡Reserva recibida! · Delicias Sn')
+@section('robots', 'noindex, nofollow, noarchive')
 
 @section('content')
 @php
