@@ -1,9 +1,9 @@
-<footer class="border-t border-bordo/20 bg-mist/70 px-4 pb-8 pt-14 text-ink sm:px-6 lg:px-8">
+<footer class="border-t {{ config('delicias.christmas_theme_enabled') ? 'border-oro/30' : 'border-bordo/10' }} bg-mist/70 px-4 pb-8 pt-14 text-ink sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,1fr)] lg:gap-8">
             <div>
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('img/icono_delicias.png') }}" alt="" class="h-12 w-12 rounded-full object-cover">
+                    <x-brand-mark size="h-12 w-12" />
                     <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias Pastelería" class="brand-wordmark h-12 w-44 object-contain object-left">
                 </div>
                 <p class="mt-4 max-w-xs text-sm leading-6 text-ink/60">Pastelería artesanal hecha a mano para convertir cualquier día en una celebración.</p>
@@ -47,7 +47,7 @@
 
         <div class="mt-12 flex flex-col justify-between gap-3 border-t border-bordo/10 pt-6 text-xs text-ink/45 sm:flex-row">
             <p>© {{ date('Y') }} Delicias Sn · Desarrollado por <a href="https://developerscv.dev" target="_blank" rel="noopener" class="font-semibold text-bordo transition hover:text-ink">c&amp;vdev</a></p>
-            <p>Hecho con tiempo y cariño.</p>
+            <p>Hecho con tiempo y cariño.@if (config('delicias.christmas_theme_enabled')) <span class="text-bordo"> · ¡Felices fiestas!</span>@endif</p>
         </div>
     </div>
 </footer>

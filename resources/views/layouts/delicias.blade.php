@@ -1,5 +1,7 @@
+@php($christmasThemeEnabled = config('delicias.christmas_theme_enabled'))
+
 <!doctype html>
-<html lang="es">
+<html lang="es" class="{{ $christmasThemeEnabled ? 'theme-christmas' : '' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +23,9 @@
     'notes' => old('notes', ''),
 ]), @js(delicias_time_slots()))" x-init="init()" class="bg-crema text-ink antialiased">
     <div class="min-h-screen overflow-x-hidden">
+        @if ($christmasThemeEnabled)
+            <x-christmas-decorations :snow="config('delicias.christmas_snow_enabled')" />
+        @endif
         @include('partials.navigation')
 
         <main>

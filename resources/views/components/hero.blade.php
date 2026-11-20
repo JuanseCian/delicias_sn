@@ -3,8 +3,8 @@
     <div class="hero-wash hero-wash-right" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-intro relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center reveal">
-        <p class="eyebrow hero-enter" style="--hero-enter-delay: 80ms">Pastelería artesanal</p>
-        <h1 class="hero-enter mt-7 max-w-3xl font-display text-5xl leading-[0.92] tracking-[-0.055em] text-bordo sm:text-7xl lg:text-[7rem]" style="--hero-enter-delay: 180ms">Endulza<br><span class="font-script text-[1.08em] font-normal tracking-normal text-rosa-viejo">tus momentos</span></h1>
+        <p class="eyebrow hero-enter" style="--hero-enter-delay: 80ms">{{ config('delicias.christmas_theme_enabled') ? 'Edición navideña · Pastelería artesanal' : 'Pastelería artesanal' }}</p>
+        <h1 class="hero-enter mt-7 max-w-3xl font-display text-5xl leading-[0.92] tracking-[-0.055em] text-bordo sm:text-7xl lg:text-[7rem]" style="--hero-enter-delay: 180ms">Endulza<br><span class="font-script text-[1.08em] font-normal tracking-normal text-rosa-viejo">{{ config('delicias.christmas_theme_enabled') ? 'tus fiestas' : 'tus momentos' }}</span></h1>
         <p class="hero-enter mt-8 max-w-xl text-base leading-7 text-ink/65 sm:text-lg" style="--hero-enter-delay: 300ms">Tortas, cupcakes y boxes hechos por encargo para cumpleaños, meriendas y días que merecen algo dulce.</p>
         <div class="hero-enter mt-9 flex flex-col justify-center gap-3 sm:flex-row" style="--hero-enter-delay: 430ms">
             <a href="#catalogo" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>

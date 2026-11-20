@@ -126,7 +126,7 @@
                 <span class="review-hero-blob review-hero-blob-b" aria-hidden="true"></span>
                 <header class="review-modal-header review-stagger" style="--i: 0">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('img/icono_delicias.png') }}" alt="" class="review-brand">
+                        <x-brand-mark size="h-11 w-11" class="review-brand" />
                         <div>
                             <p class="review-script">Tu opinión</p>
                             <h2 id="confirmed-review-title" class="review-modal-title">¿Qué tan dulce fue?</h2>

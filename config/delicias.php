@@ -2,6 +2,8 @@
 
 return [
     'name' => 'Delicias Sn',
+    'christmas_theme_enabled' => filter_var(env('DELICIAS_CHRISTMAS_THEME', false), FILTER_VALIDATE_BOOL),
+    'christmas_snow_enabled' => filter_var(env('DELICIAS_CHRISTMAS_SNOW', true), FILTER_VALIDATE_BOOL),
     'address' => env('DELICIAS_ADDRESS', ' 523'),
     'whatsapp' => env('DELICIAS_WHATSAPP', '5493364012851'),
     'whatsapp_display' => env('DELICIAS_WHATSAPP_DISPLAY', '+54 9 336 401-2851'),

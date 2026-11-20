@@ -16,6 +16,10 @@
     --color-caramelo: #c68b59;
     --color-ink: #3b2a2a;
     --color-mist: #eadfd7;
+    --color-pino: #1f5a46;
+    --color-pino-claro: #dceae0;
+    --color-nieve: #fffdf8;
+    --color-oro: #c49b43;
     --color-background: #fbf5ee;
     --color-foreground: #3b2a2a;
     --color-card: #fff;
@@ -24,7 +28,7 @@
     --color-popover-foreground: #3b2a2a;
     --color-primary: #6b2d3c;
     --color-primary-foreground: #fff;
-    --color-secondary: #f4d9d5;
+    --color-secondary: #f3ded0;
     --color-secondary-foreground: #6b2d3c;
     --color-muted: #eadfd7;
     --color-muted-foreground: #786768;
@@ -38,7 +42,7 @@
     --color-sidebar-foreground: #3b2a2a;
     --color-sidebar-primary: #6b2d3c;
     --color-sidebar-primary-foreground: #fff;
-    --color-sidebar-accent: #f4d9d5;
+    --color-sidebar-accent: #f3ded0;
     --color-sidebar-accent-foreground: #6b2d3c;
     --color-sidebar-border: rgba(107, 45, 60, 0.12);
     --color-sidebar-ring: #c98b8b;
@@ -56,6 +60,47 @@
     scroll-behavior: smooth;
 }
 
+.theme-christmas {
+    --color-crema: #fffaf2;
+    --color-blush: #f3ded0;
+    --color-rosa-viejo: #b84b58;
+    --color-bordo: #9b2739;
+    --color-caramelo: #c49b43;
+    --color-ink: #26372f;
+    --color-mist: #dfe9df;
+    --color-pino: #1f5a46;
+    --color-pino-claro: #dceae0;
+    --color-nieve: #fffdf8;
+    --color-oro: #c49b43;
+    --color-background: #fffaf2;
+    --color-foreground: #26372f;
+    --color-card: #fffdf8;
+    --color-card-foreground: #26372f;
+    --color-popover: #fffdf8;
+    --color-popover-foreground: #26372f;
+    --color-primary: #9b2739;
+    --color-secondary: #f3ded0;
+    --color-secondary-foreground: #9b2739;
+    --color-muted: #dfe9df;
+    --color-muted-foreground: #65736b;
+    --color-accent: #f3ded0;
+    --color-accent-foreground: #9b2739;
+    --color-border: rgba(31, 90, 70, 0.16);
+    --color-input: rgba(31, 90, 70, 0.2);
+    --color-ring: #c49b43;
+    --color-sidebar: #fffdf8;
+    --color-sidebar-foreground: #26372f;
+    --color-sidebar-primary: #9b2739;
+    --color-sidebar-primary-foreground: #fff;
+    --color-sidebar-accent: #f3ded0;
+    --color-sidebar-accent-foreground: #9b2739;
+    --color-sidebar-border: rgba(31, 90, 70, 0.14);
+    --color-sidebar-ring: #c49b43;
+    --shadow-soft: 0 18px 55px rgba(31, 90, 70, 0.12);
+    --shadow-card: 0 9px 28px rgba(38, 55, 47, 0.09);
+    --shadow-lift: 0 22px 48px rgba(31, 90, 70, 0.18);
+}
+
 body {
     background: #fbf5ee;
 }
@@ -66,6 +111,10 @@ body.cart-is-open {
 
 body.product-modal-is-open {
     overflow: hidden;
+}
+
+body {
+    background-color: var(--color-crema);
 }
 
 @media (max-width: 639px) {
@@ -851,4 +900,353 @@ textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) {
     .dt-ticket, .dt-rise, .dt-stamp, .dt-bar { animation: none; }
     .dt-check-circle, .dt-check-tick { animation: none; stroke-dashoffset: 0; }
+}
+
+/* --- Modo Navidad opcional --- */
+.christmas-atmosphere {
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    z-index: 30;
+}
+
+.christmas-lights {
+    align-items: flex-start;
+    display: flex;
+    height: 1rem;
+    justify-content: space-between;
+    left: 0.8rem;
+    padding: 0 2%;
+    position: absolute;
+    right: 0.8rem;
+    top: 0;
+}
+
+.christmas-lights::before {
+    border-top: 1px solid rgba(31, 90, 70, 0.32);
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0.28rem;
+}
+
+.christmas-light {
+    animation: christmas-light-glow 3.8s ease-in-out infinite;
+    animation-delay: calc(var(--light-index) * -0.28s);
+    background: var(--color-caramelo);
+    border-radius: 999px;
+    box-shadow: 0 0 0.35rem rgba(196, 155, 67, 0.72);
+    height: 0.42rem;
+    margin-top: 0.22rem;
+    position: relative;
+    width: 0.42rem;
+}
+
+.christmas-light:nth-child(3n) {
+    background: var(--color-bordo);
+    box-shadow: 0 0 0.35rem rgba(155, 39, 57, 0.55);
+}
+
+.christmas-light:nth-child(4n) {
+    background: var(--color-pino);
+    box-shadow: 0 0 0.35rem rgba(31, 90, 70, 0.55);
+}
+
+.christmas-snow {
+    height: 100%;
+    inset: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+.christmas-snowflake {
+    animation: christmas-snow-fall calc(10s + var(--snow-index) * 0.55s) linear infinite;
+    animation-delay: calc(var(--snow-index) * -0.9s);
+    background: var(--color-nieve);
+    border-radius: 999px;
+    box-shadow: 0 0 0.35rem rgba(255, 253, 248, 0.8);
+    height: calc(0.18rem + var(--snow-index) * 0.012rem);
+    left: calc(var(--snow-index) * 6.25%);
+    opacity: 0.54;
+    position: absolute;
+    top: -0.5rem;
+    width: calc(0.18rem + var(--snow-index) * 0.012rem);
+}
+
+.christmas-snowflake:nth-child(3n) {
+    animation-duration: 13s;
+    opacity: 0.34;
+}
+
+.christmas-snowflake:nth-child(4n) {
+    animation-duration: 9s;
+    opacity: 0.68;
+}
+
+.brand-mark {
+    display: inline-flex;
+    position: relative;
+}
+
+.brand-mark-logo {
+    border-radius: 999px;
+    object-fit: cover;
+}
+
+.theme-christmas .review-brand {
+    background: var(--color-nieve);
+}
+
+.theme-christmas .review-hero-blob {
+    background: var(--color-pino-claro);
+}
+
+.theme-christmas .christmas-header-action {
+    border-color: rgba(196, 155, 67, 0.5);
+    box-shadow: 0 5px 14px rgba(31, 90, 70, 0.08);
+    overflow: hidden;
+    position: relative;
+    transition:
+        background 220ms var(--ease-brand),
+        border-color 220ms var(--ease-brand),
+        box-shadow 220ms var(--ease-brand),
+        color 220ms var(--ease-brand),
+        transform 220ms var(--ease-brand);
+}
+
+.theme-christmas .christmas-header-action::after {
+    background: radial-gradient(circle, rgba(255, 253, 248, 0.72) 0 0.18rem, transparent 0.22rem);
+    content: '';
+    height: 1.2rem;
+    opacity: 0;
+    position: absolute;
+    right: 0.35rem;
+    top: 0.25rem;
+    transform: translate(0.2rem, -0.2rem) scale(0.7);
+    transition: opacity 220ms var(--ease-brand), transform 220ms var(--ease-brand);
+    width: 1.2rem;
+}
+
+.theme-christmas .christmas-header-action:hover {
+    background: var(--color-pino);
+    border-color: var(--color-oro);
+    box-shadow: 0 9px 22px rgba(31, 90, 70, 0.24), 0 0 0 3px rgba(196, 155, 67, 0.12);
+    color: var(--color-nieve);
+    transform: translateY(-2px) rotate(-2deg);
+}
+
+.theme-christmas .christmas-header-action:hover::after {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+.theme-christmas .christmas-nav-link {
+    position: relative;
+}
+
+.theme-christmas .christmas-nav-link::after {
+    background: var(--color-oro);
+    border-radius: 999px;
+    bottom: -0.35rem;
+    content: '';
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms var(--ease-brand);
+    width: 1.4rem;
+}
+
+.theme-christmas .christmas-nav-link:hover {
+    color: var(--color-bordo);
+}
+
+.theme-christmas .christmas-nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+@media (max-width: 1023px) {
+    .theme-christmas .christmas-nav-link::after {
+        display: none;
+    }
+
+    .theme-christmas .christmas-nav-link:hover {
+        color: var(--color-pino);
+    }
+}
+
+@keyframes christmas-light-glow {
+    0%, 100% { opacity: 0.62; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(1px); }
+}
+
+@keyframes christmas-snow-fall {
+    0% { transform: translate3d(0, -5vh, 0); }
+    50% { transform: translate3d(0.7rem, 52vh, 0); }
+    100% { transform: translate3d(-0.45rem, 108vh, 0); }
+}
+
+@media (max-width: 639px) {
+    .christmas-lights {
+        left: 0.35rem;
+        right: 0.35rem;
+    }
+
+    .christmas-light:nth-child(n + 9) {
+        display: none;
+    }
+
+    .christmas-snowflake:nth-child(n + 10) {
+        display: none;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .christmas-light,
+    .christmas-snowflake {
+        animation: none;
+    }
+}
+
+/* --- Tema navideño --- */
+.theme-christmas .hero-section {
+    background:
+        radial-gradient(ellipse 58% 62% at 50% 42%, rgba(255, 253, 248, 0.96) 0%, rgba(255, 253, 248, 0) 72%),
+        radial-gradient(ellipse 42% 34% at 50% 100%, rgba(220, 234, 224, 0.82) 0%, rgba(220, 234, 224, 0) 78%),
+        var(--color-crema);
+}
+
+.theme-christmas .hero-section::before {
+    border-color: rgba(31, 90, 70, 0.12);
+}
+
+.theme-christmas .hero-section::after {
+    background-image:
+        radial-gradient(circle at 12% 20%, rgba(196, 155, 67, 0.48) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 86% 27%, rgba(155, 39, 57, 0.28) 0 1.5px, transparent 2px),
+        radial-gradient(circle at 78% 76%, rgba(31, 90, 70, 0.25) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 20% 82%, rgba(196, 155, 67, 0.35) 0 1.5px, transparent 2px);
+    background-size: 19rem 19rem, 23rem 23rem, 27rem 27rem, 31rem 31rem;
+    content: '';
+    inset: 0;
+    opacity: 0.7;
+    pointer-events: none;
+    position: absolute;
+}
+
+.theme-christmas .hero-wash-left {
+    background: rgba(155, 39, 57, 0.11);
+}
+
+.theme-christmas .hero-wash-right {
+    background: rgba(31, 90, 70, 0.12);
+}
+
+.theme-christmas .hero-grain {
+    background-image: radial-gradient(rgba(31, 90, 70, 0.16) 0.7px, transparent 0.7px);
+}
+
+.theme-christmas .hero-scroll-hint {
+    color: rgba(31, 90, 70, 0.52);
+}
+
+.theme-christmas .hero-scroll-hint span {
+    border-color: rgba(31, 90, 70, 0.32);
+}
+
+.theme-christmas .hero-scroll-hint span::after {
+    background: var(--color-oro);
+}
+
+.theme-christmas .btn-primary {
+    background: var(--color-bordo);
+}
+
+.theme-christmas .btn-primary:hover {
+    background: var(--color-pino);
+}
+
+.theme-christmas .btn-secondary {
+    border-color: rgba(31, 90, 70, 0.25);
+    color: var(--color-pino);
+}
+
+.theme-christmas .btn-secondary:hover {
+    background: var(--color-pino-claro);
+    border-color: var(--color-pino);
+}
+
+.theme-christmas .product-image-frame {
+    background:
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.84) 0 5%, transparent 5.5%),
+        linear-gradient(145deg, var(--color-pino-claro), var(--color-crema));
+}
+
+.theme-christmas .product-modal-image {
+    background:
+        radial-gradient(circle at 35% 30%, rgba(255, 253, 248, 0.7) 0 7%, transparent 7.5%),
+        linear-gradient(145deg, var(--color-pino-claro), var(--color-rosa-viejo));
+}
+
+.theme-christmas .featured-product-frame {
+    background: linear-gradient(145deg, var(--color-pino-claro), var(--color-caramelo));
+}
+
+.theme-christmas .custom-cake-panel {
+    background:
+        radial-gradient(circle at 25% 22%, rgba(255, 253, 248, 0.72) 0 5%, transparent 5.5%),
+        radial-gradient(circle at 75% 70%, rgba(255, 253, 248, 0.45) 0 9%, transparent 9.5%),
+        linear-gradient(145deg, var(--color-pino-claro), var(--color-rosa-viejo));
+}
+
+.theme-christmas .custom-cupcake-panel {
+    background:
+        radial-gradient(circle at 50% 35%, var(--color-nieve) 0 12%, transparent 12.5%),
+        linear-gradient(145deg, var(--color-caramelo), var(--color-pino));
+}
+
+.theme-christmas .cake-mobile-tab.is-active {
+    background: var(--color-pino);
+    color: var(--color-crema);
+}
+
+.theme-christmas .cake-option:hover,
+.theme-christmas .cake-option[data-selected='true'] {
+    border-color: var(--color-caramelo);
+    background: var(--color-pino-claro);
+}
+
+.theme-christmas .cake-color-option:hover,
+.theme-christmas .cake-color-option[data-selected='true'] {
+    border-color: var(--color-bordo);
+}
+
+.theme-christmas .private-shell {
+    background: var(--color-crema);
+    color: var(--color-ink);
+}
+
+.theme-christmas .private-shell .admin-heading,
+.theme-christmas .private-shell .admin-form h2 {
+    color: var(--color-pino);
+}
+
+.theme-christmas .love-benefit .love-icon {
+    background: var(--color-pino-claro);
+    color: var(--color-pino);
+}
+
+.theme-christmas .love-benefit:hover {
+    background: rgba(220, 234, 224, 0.5);
+}
+
+.theme-christmas .love-benefit .love-icon::after {
+    border-color: rgba(196, 155, 67, 0.55);
+}
+
+.theme-christmas .catalog-card:hover {
+    border-color: rgba(196, 155, 67, 0.55);
 }

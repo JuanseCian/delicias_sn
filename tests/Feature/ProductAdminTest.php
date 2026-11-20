@@ -106,6 +106,23 @@ test('the home hides categories without public products', function () {
         ->assertDontSee('Categoría vacía');
 });
 
+test('the public christmas theme can be toggled', function () {
+    $this->seed();
+    config(['delicias.christmas_theme_enabled' => true]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('christmas-atmosphere', false)
+        ->assertSee('brand-mark', false);
+
+    config(['delicias.christmas_theme_enabled' => false]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertDontSee('christmas-atmosphere', false)
+        ->assertDontSee('brand-mark-hat', false);
+});
+
 test('an admin can write custom ingredients when creating a product', function () {
     $this->seed();
     $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
