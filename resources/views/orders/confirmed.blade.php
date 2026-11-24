@@ -36,8 +36,6 @@
         </div>
     </div>
 </section>
-
-<x-review-form />
 @endsection
 
 @push('head')

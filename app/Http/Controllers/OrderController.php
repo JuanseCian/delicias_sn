@@ -67,12 +67,12 @@ class OrderController extends Controller
             return $order;
         });
 
-        return to_route('orders.confirmed', $order->code);
+        return to_route('orders.confirmed', $order->access_token);
     }
 
-    public function confirmed(string $code, WhatsAppMessage $whatsAppMessage): View
+    public function confirmed(string $token, WhatsAppMessage $whatsAppMessage): View
     {
-        $order = Order::with(['items.product', 'items.size', 'items.color'])->where('code', $code)->firstOrFail();
+        $order = Order::with(['items.product', 'items.size', 'items.color'])->where('access_token', $token)->firstOrFail();
 
         return view('orders.confirmed', [
             'order' => $order,

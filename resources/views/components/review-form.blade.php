@@ -1,3 +1,5 @@
+@props(['order'])
+
 @php
     $reviewTags = ['Riquísimo', 'Hermosa presentación', 'Llegó a tiempo', 'Muy buena atención', 'Volvería a pedir'];
 @endphp
@@ -109,7 +111,7 @@
             }
         },
     }"
-    x-init="setTimeout(() => openReview(), @js($errors->any() || session('review_status') ? 150 : 2800))"
+    x-init="setTimeout(() => openReview(), @js($errors->any() || session('review_status') ? 150 : 400))"
     @keydown.escape.window="closeReview()"
 >
     <div x-show="reviewOpen" x-cloak
@@ -152,6 +154,7 @@
 
                     <form action="{{ route('reviews.store') }}" method="POST" class="review-form" @submit="if (!validateReview()) { $event.preventDefault(); } else { reviewSending = true; }" novalidate>
                         @csrf
+                        <input type="hidden" name="token" value="{{ $order->access_token }}">
                         <fieldset class="review-fieldset review-rating-card review-stagger" style="--i: 2">
                             <legend class="sr-only">Tu valoración</legend>
                             <input type="hidden" name="rating" :value="rating">

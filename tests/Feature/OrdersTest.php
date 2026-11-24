@@ -30,20 +30,21 @@ test('a customer can reserve a seeded order', function () {
 
     $order = Order::firstOrFail();
 
-    $response->assertRedirect(route('orders.confirmed', $order->code));
+    $response->assertRedirect(route('orders.confirmed', $order->access_token));
     expect($order->code)->toStartWith('DSN-')
+        ->and($order->access_token)->not->toBeEmpty()
         ->and($order->subtotal)->toBe($size->price * 2)
         ->and($order->deposit)->toBe($size->price)
         ->and($order->payment_method)->toBe('whatsapp');
 
-    $this->get(route('orders.confirmed', $order->code))
+    $this->get(route('orders.confirmed', $order->access_token))
         ->assertOk()
         ->assertSee('data-ticket-confirmation', false)
         ->assertSee('data-ticket-id="'.$order->code.'"', false)
-        ->assertSee('wa.me', false)
-        ->assertSee('Tu opinión')
-        ->assertSee('¿Qué tan dulce fue?')
-        ->assertSee('5 cupcakes');
+        ->assertSee('wa.me', false);
+
+    // El código legible del pedido no debe funcionar como ruta de confirmación: es adivinable.
+    $this->get(route('orders.confirmed', $order->code))->assertNotFound();
 });
 
 test('a reservation accepts carts saved with the legacy size key', function () {

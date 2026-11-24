@@ -40,8 +40,18 @@ class WhatsAppMessage
         return implode("\n", $lines);
     }
 
-    public function url(string $message): string
+    public function reviewInvite(Order $order): string
     {
-        return 'https://wa.me/'.config('delicias.whatsapp').'?'.http_build_query(['text' => $message]);
+        $url = route('reviews.create', $order->access_token);
+
+        return "¡Hola {$order->customer_name}! Esperamos que hayas disfrutado tu pedido {$order->code}. ".
+            "Nos encantaría conocer tu opinión, podés dejarla acá: {$url}";
+    }
+
+    public function url(string $message, ?string $phone = null): string
+    {
+        $phone = $phone !== null ? preg_replace('/[^0-9]/', '', $phone) : config('delicias.whatsapp');
+
+        return 'https://wa.me/'.$phone.'?'.http_build_query(['text' => $message]);
     }
 }

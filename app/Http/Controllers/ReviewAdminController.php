@@ -11,7 +11,7 @@ class ReviewAdminController extends Controller
     public function index(): View
     {
         return view('private.reviews.index', [
-            'reviews' => Review::query()->latest()->get(),
+            'reviews' => Review::query()->with('order')->latest()->get(),
         ]);
     }
 

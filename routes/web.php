@@ -22,11 +22,12 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/preguntas-frecuentes', FaqController::class)->name('faq');
 Route::get('/personalizadas', PersonalizationController::class)->name('personalized');
 Route::get('/opiniones', [ReviewController::class, 'index'])->name('reviews.public');
+Route::get('/pedidos/valorar/{token}', [ReviewController::class, 'create'])->name('reviews.create');
 Route::get('/categorias/{category:slug}', [PublicCatalogController::class, 'category'])->name('catalog.categories.show');
 Route::get('/productos/{product:slug}', [PublicCatalogController::class, 'product'])->name('catalog.products.show');
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
-Route::get('/pedidos/{code}/confirmado', [OrderController::class, 'confirmed'])->name('orders.confirmed');
+Route::get('/pedidos/confirmado/{token}', [OrderController::class, 'confirmed'])->name('orders.confirmed');
 Route::post('/valoraciones', [ReviewController::class, 'store'])->middleware('throttle:6,1')->name('reviews.store');
 Route::post('/personalizadas/solicitudes', [CakeDesignRequestController::class, 'store'])
     ->middleware('throttle:custom-design')
