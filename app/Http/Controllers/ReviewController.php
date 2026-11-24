@@ -51,7 +51,7 @@ class ReviewController extends Controller
                 return response()->json(['message' => 'Ya no podés dejar una opinión para este pedido.'], 409);
             }
 
-            return redirect()->route('reviews.create', $order->access_token);
+            return redirect()->route('reviews.create', ['token' => $order->ensureAccessToken()]);
         }
 
         try {
@@ -64,14 +64,14 @@ class ReviewController extends Controller
             ]);
         } catch (QueryException) {
             // Envío duplicado simultáneo: otra solicitud ya creó la opinión para este pedido.
-            return redirect()->route('reviews.create', $order->access_token);
+            return redirect()->route('reviews.create', ['token' => $order->ensureAccessToken()]);
         }
 
         if ($request->expectsJson()) {
             return response()->json(['message' => 'Valoración recibida.'], 201);
         }
 
-        return redirect()->route('reviews.create', $order->access_token)
+        return redirect()->route('reviews.create', ['token' => $order->ensureAccessToken()])
             ->with('review_status', 'Gracias por compartir tu opinión. La vamos a revisar antes de publicarla.');
     }
 }

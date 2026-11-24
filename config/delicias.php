@@ -7,6 +7,7 @@ return [
     'christmas_snow_enabled' => filter_var(env('DELICIAS_CHRISTMAS_SNOW', true), FILTER_VALIDATE_BOOL),
     'address' => env('DELICIAS_ADDRESS', 'Jujuy 422'),
     'whatsapp' => env('DELICIAS_WHATSAPP', '5493364012851'),
+    'whatsapp_country_code' => env('DELICIAS_WHATSAPP_COUNTRY_CODE', '549'),
     'whatsapp_display' => env('DELICIAS_WHATSAPP_DISPLAY', '+54 9 336 401-2851'),
     'instagram' => env('DELICIAS_INSTAGRAM', '@delicias_.sn'),
     'hours' => env('DELICIAS_HOURS', 'Lunes a viernes de 13hs a 20hs · Sábados y domingos de 9hs a 20hs'),

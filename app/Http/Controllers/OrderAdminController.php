@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Throwable;
 
 class OrderAdminController extends Controller
 {
@@ -26,7 +27,7 @@ class OrderAdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, Order $order): RedirectResponse
+    public function update(Request $request, Order $order, WhatsAppMessage $whatsAppMessage): RedirectResponse
     {
         $data = $request->validate([
             'status' => ['required', Rule::in([
@@ -36,8 +37,20 @@ class OrderAdminController extends Controller
             ])],
         ]);
 
+        $wasDelivered = $order->status === Order::STATUS_DELIVERED;
         $order->update($data);
+        $statusMessage = 'Estado del pedido actualizado.';
 
-        return back()->with('status', 'Estado del pedido actualizado.');
+        if (! $wasDelivered && $order->status === Order::STATUS_DELIVERED && ! $order->review_invite_sent_at) {
+            try {
+                $whatsAppMessage->sendReviewInvitation($order->fresh());
+                $statusMessage .= ' La invitación para dejar una reseña fue enviada por WhatsApp.';
+            } catch (Throwable $exception) {
+                report($exception);
+                $statusMessage .= ' No se pudo enviar automáticamente la invitación de reseña; revisá la configuración de WhatsApp Cloud API.';
+            }
+        }
+
+        return back()->with('status', $statusMessage);
     }
 }

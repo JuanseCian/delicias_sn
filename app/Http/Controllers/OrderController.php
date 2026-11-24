@@ -67,7 +67,7 @@ class OrderController extends Controller
             return $order;
         });
 
-        return to_route('orders.confirmed', $order->access_token);
+        return to_route('orders.confirmed', ['token' => $order->access_token]);
     }
 
     public function confirmed(string $token, WhatsAppMessage $whatsAppMessage): View

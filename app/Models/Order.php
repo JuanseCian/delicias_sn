@@ -29,9 +29,25 @@ class Order extends Model
         });
     }
 
+    public function ensureAccessToken(): string
+    {
+        if (filled($this->access_token)) {
+            return (string) $this->access_token;
+        }
+
+        $this->forceFill(['access_token' => Str::random(48)])->saveQuietly();
+
+        return (string) $this->access_token;
+    }
+
     protected function casts(): array
     {
-        return ['delivery_date' => 'date', 'subtotal' => 'integer', 'deposit' => 'integer'];
+        return [
+            'delivery_date' => 'date',
+            'subtotal' => 'integer',
+            'deposit' => 'integer',
+            'review_invite_sent_at' => 'datetime',
+        ];
     }
 
     public function items(): HasMany
