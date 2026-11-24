@@ -42,4 +42,13 @@ return [
         'model' => env('CAKE_AI_MODEL', 'gpt-4o-mini'),
     ],
 
+    'whatsapp_cloud' => [
+        'api_url' => env('WHATSAPP_CLOUD_API_URL', 'https://graph.facebook.com'),
+        'api_version' => env('WHATSAPP_CLOUD_API_VERSION', 'v22.0'),
+        'phone_number_id' => env('WHATSAPP_CLOUD_PHONE_NUMBER_ID'),
+        'access_token' => env('WHATSAPP_CLOUD_ACCESS_TOKEN'),
+        'review_template' => env('WHATSAPP_CLOUD_REVIEW_TEMPLATE', 'delicias_resena_entregada'),
+        'template_language' => env('WHATSAPP_CLOUD_TEMPLATE_LANGUAGE', 'es_AR'),
+    ],
+
 ];

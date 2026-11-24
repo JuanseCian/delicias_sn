@@ -2,6 +2,7 @@
 
 use App\Models\Order;
 use App\Models\Review;
+use App\Services\WhatsAppMessage;
 
 function createOrderForReview(string $status = Order::STATUS_DELIVERED): Order
 {
@@ -57,6 +58,17 @@ test('a customer cannot review an order that has not been delivered yet', functi
 
     $response->assertRedirect(route('reviews.create', $order->access_token));
     expect(Review::count())->toBe(0);
+});
+
+test('review invitations repair legacy orders without an access token', function () {
+    $order = createOrderForReview();
+    $order->forceFill(['access_token' => null])->saveQuietly();
+
+    $message = app(WhatsAppMessage::class)->reviewInvite($order->fresh());
+    $token = $order->fresh()->access_token;
+
+    expect($token)->not->toBeEmpty()
+        ->and($message)->toContain(delicias_canonical_url(route('reviews.create', ['token' => $token], false)));
 });
 
 test('a customer can review an order once it has been delivered', function () {
