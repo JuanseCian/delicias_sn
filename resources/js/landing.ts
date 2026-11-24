@@ -554,6 +554,13 @@ type EditorSize = {
     uid?: string;
 };
 
+type EditorColor = {
+    id?: number | string;
+    name: string;
+    hex: string;
+    uid?: string;
+};
+
 Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
     currentStep: 1,
     maxStep: 1,
@@ -572,6 +579,11 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
         ...size,
         uid: size.uid || `size-${index}-${Date.now()}`,
     })),
+    colors: (initial.colors || []).map((color: EditorColor, index: number) => ({
+        ...color,
+        uid: color.uid || `color-${index}-${Date.now()}`,
+    })),
+    allergen_ids: initial.allergen_ids || [],
 
     goToStep(step: number) {
         if (step > this.maxStep) return;
@@ -611,6 +623,18 @@ Alpine.data('productEditor', (initial: Record<string, any> = {}) => ({
 
     removeSize(index: number) {
         if (this.sizes.length > 1) this.sizes.splice(index, 1);
+    },
+
+    addColor() {
+        this.colors.push({
+            name: '',
+            hex: '#F4D9D5',
+            uid: `color-${Date.now()}`,
+        });
+    },
+
+    removeColor(index: number) {
+        this.colors.splice(index, 1);
     },
 
 }));

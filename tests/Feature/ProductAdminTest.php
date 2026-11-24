@@ -1,22 +1,24 @@
 <?php
 
+use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductSize;
 use App\Models\User;
 
-test('the product form includes its custom field styles', function () {
+test('the product form includes its custom field styles and the allergen/color sections', function () {
     $this->seed();
     $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
 
     $this->get(route('private.products.create'))
         ->assertOk()
         ->assertSee('Nombre visible para tus clientes', false)
-        ->assertDontSee('Alérgenos')
-        ->assertDontSee('Colores disponibles');
+        ->assertSee('Alérgenos declarados')
+        ->assertSee('Colores disponibles');
 });
 
 test('an admin can create a made-to-order product with sizes', function () {
@@ -240,4 +242,108 @@ test('an admin can archive a product without removing existing order items', fun
 
     $this->assertSoftDeleted('products', ['id' => $product->id]);
     expect(OrderItem::with('product')->findOrFail($item->id)->product)->not->toBeNull();
+});
+
+test('an admin can create a product with colors and allergens', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $category = Category::where('slug', 'tortas')->firstOrFail();
+    $allergen = Allergen::where('name', 'Gluten')->firstOrFail();
+
+    $response = $this->post(route('private.products.store'), [
+        'category_id' => $category->id,
+        'name' => 'Torta con colores',
+        'description' => 'Descripción completa del producto con colores.',
+        'storage_instructions' => 'Conservar refrigerada.',
+        'active' => 1,
+        'sizes' => [['label' => '18 cm', 'price' => 30000]],
+        'colors' => [['name' => 'Rosa pastel', 'hex' => '#F4D9D5']],
+        'allergens' => [$allergen->id],
+    ]);
+
+    $product = Product::where('name', 'Torta con colores')->with(['colors', 'allergens'])->firstOrFail();
+    $response->assertRedirect(route('private.products.edit', $product));
+    expect($product->colors)->toHaveCount(1)
+        ->and($product->colors->first()->name)->toBe('Rosa pastel')
+        ->and($product->colors->first()->hex)->toBe('#F4D9D5')
+        ->and($product->allergens->pluck('id')->all())->toBe([$allergen->id]);
+});
+
+test('an admin can unselect every allergen from a product', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $product = Product::where('is_custom', false)->with(['sizes', 'allergens'])->firstOrFail();
+    expect($product->allergens)->not->toBeEmpty();
+    $size = $product->sizes->firstOrFail();
+
+    $this->put(route('private.products.update', $product), [
+        'category_id' => $product->category_id,
+        'name' => $product->name,
+        'description' => $product->description,
+        'storage_instructions' => $product->storage_instructions,
+        'active' => 1,
+        'sizes' => [['id' => $size->id, 'label' => $size->label, 'price' => $size->price]],
+        // Sin "allergens": simula haber desmarcado todas las casillas.
+    ])->assertRedirect(route('private.products.edit', $product));
+
+    expect($product->fresh()->allergens)->toBeEmpty();
+});
+
+test('an admin can remove a color that was never ordered', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $product = Product::where('is_custom', false)->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+    $color = ProductColor::create(['product_id' => $product->id, 'name' => 'Celeste', 'hex' => '#A8C8E0']);
+
+    $this->put(route('private.products.update', $product), [
+        'category_id' => $product->category_id,
+        'name' => $product->name,
+        'description' => $product->description,
+        'storage_instructions' => $product->storage_instructions,
+        'active' => 1,
+        'sizes' => [['id' => $size->id, 'label' => $size->label, 'price' => $size->price]],
+        'colors' => [],
+    ])->assertRedirect(route('private.products.edit', $product));
+
+    expect(ProductColor::find($color->id))->toBeNull();
+});
+
+test('an admin cannot remove a color that was already ordered', function () {
+    $this->seed();
+    $this->actingAs(User::where('email', 'admin@gmail.com')->firstOrFail());
+    $product = Product::where('is_custom', false)->with('sizes')->firstOrFail();
+    $size = $product->sizes->firstOrFail();
+    $color = ProductColor::create(['product_id' => $product->id, 'name' => 'Celeste', 'hex' => '#A8C8E0']);
+    $order = Order::create([
+        'code' => 'DSN-2026-0099',
+        'customer_name' => 'Ada Lovelace',
+        'phone' => '11 1234 5678',
+        'delivery_type' => 'retiro',
+        'delivery_date' => now()->addDays(4),
+        'time_slot' => '15 a 18 h',
+        'payment_method' => 'transferencia',
+        'subtotal' => $size->price,
+        'deposit' => (int) ceil($size->price / 2),
+        'status' => Order::STATUS_PENDING,
+    ]);
+    $order->items()->create([
+        'product_id' => $product->id,
+        'product_size_id' => $size->id,
+        'product_color_id' => $color->id,
+        'quantity' => 1,
+        'unit_price' => $size->price,
+    ]);
+
+    $this->put(route('private.products.update', $product), [
+        'category_id' => $product->category_id,
+        'name' => $product->name,
+        'description' => $product->description,
+        'storage_instructions' => $product->storage_instructions,
+        'active' => 1,
+        'sizes' => [['id' => $size->id, 'label' => $size->label, 'price' => $size->price]],
+        'colors' => [],
+    ])->assertRedirect(route('private.products.edit', $product));
+
+    expect(ProductColor::find($color->id))->not->toBeNull();
 });

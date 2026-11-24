@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductSize;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProductAdminController extends Controller
 {
+    public function index(): View
+    {
+        return view('private.products.index', [
+            'products' => Product::with(['category', 'sizes'])->orderBy('category_id')->orderBy('name')->get(),
+        ]);
+    }
+
     public function create(): View
     {
         return view('private.products.form', $this->formData());
@@ -29,6 +37,7 @@ class ProductAdminController extends Controller
         $product = DB::transaction(function () use ($request, $data): Product {
             $product = Product::create($this->productAttributes($data));
             $this->saveVariants($product, $data);
+            $this->saveColors($product, $data);
             $this->saveRelations($product, $data);
             $this->saveImage($request, $product);
 
@@ -40,7 +49,7 @@ class ProductAdminController extends Controller
 
     public function edit(Product $product): View
     {
-        $product->load(['sizes', 'ingredients', 'allergens']);
+        $product->load(['sizes', 'ingredients', 'allergens', 'colors']);
 
         return view('private.products.form', $this->formData($product));
     }
@@ -52,6 +61,7 @@ class ProductAdminController extends Controller
         DB::transaction(function () use ($request, $data, $product): void {
             $product->update($this->productAttributes($data, $product));
             $this->saveVariants($product, $data);
+            $this->saveColors($product, $data);
             $this->saveRelations($product, $data);
             $this->saveImage($request, $product);
         });
@@ -66,12 +76,20 @@ class ProductAdminController extends Controller
         return to_route('private.products.index')->with('success', 'Producto archivado. Los pedidos existentes se conservaron.');
     }
 
+    public function destroyImage(Product $product): RedirectResponse
+    {
+        $product->clearImage();
+
+        return to_route('private.products.edit', $product)->with('success', 'Imagen quitada de '.$product->name.'.');
+    }
+
     /** @return array<string, mixed> */
     private function formData(?Product $product = null): array
     {
         return [
             'product' => $product,
             'categories' => Category::orderBy('order')->get(),
+            'allergens' => Allergen::orderBy('name')->get(),
         ];
     }
 
@@ -91,6 +109,10 @@ class ProductAdminController extends Controller
             'sizes.*.id' => ['nullable', 'integer', 'exists:product_sizes,id'],
             'sizes.*.label' => ['required', 'string', 'max:80'],
             'sizes.*.price' => ['required', 'integer', 'min:1', 'max:99999999'],
+            'colors' => ['nullable', 'array'],
+            'colors.*.id' => ['nullable', 'integer', 'exists:product_colors,id'],
+            'colors.*.name' => ['required', 'string', 'max:60'],
+            'colors.*.hex' => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'ingredients_text' => ['nullable', 'string', 'max:2000'],
             'allergens' => ['nullable', 'array'],
             'allergens.*' => ['integer', 'exists:allergens,id'],
@@ -98,6 +120,7 @@ class ProductAdminController extends Controller
             'sizes.required' => 'Agregá al menos un tamaño.',
             'sizes.*.label.required' => 'Cada tamaño necesita un nombre.',
             'sizes.*.price.required' => 'Cada tamaño necesita un precio.',
+            'colors.*.hex.regex' => 'Elegí un color válido.',
             'image.max' => 'La imagen no puede pesar más de 5 MB.',
         ]);
 
@@ -166,6 +189,33 @@ class ProductAdminController extends Controller
     }
 
     /** @param array<string, mixed> $data */
+    private function saveColors(Product $product, array $data): void
+    {
+        $colorIds = [];
+        foreach ($data['colors'] ?? [] as $index => $colorData) {
+            $color = ! empty($colorData['id'])
+                ? ProductColor::whereKey($colorData['id'])->where('product_id', $product->id)->first()
+                : null;
+            $color ??= new ProductColor(['product_id' => $product->id]);
+            $color->fill([
+                'name' => $colorData['name'],
+                'hex' => $colorData['hex'],
+                'sort_order' => $index,
+            ])->save();
+            $colorIds[] = $color->id;
+        }
+
+        ProductColor::where('product_id', $product->id)
+            ->whereNotIn('id', $colorIds)
+            ->get()
+            ->each(function (ProductColor $color): void {
+                if (! OrderItem::where('product_color_id', $color->id)->exists()) {
+                    $color->delete();
+                }
+            });
+    }
+
+    /** @param array<string, mixed> $data */
     private function saveRelations(Product $product, array $data): void
     {
         $ingredientIds = collect(preg_split('/[\r\n,]+/', trim((string) ($data['ingredients_text'] ?? '')), -1, PREG_SPLIT_NO_EMPTY))
@@ -178,25 +228,13 @@ class ProductAdminController extends Controller
             ->all();
 
         $product->ingredients()->sync($ingredientIds);
-        if (array_key_exists('allergens', $data)) {
-            $product->allergens()->sync($data['allergens']);
-        }
+        $product->allergens()->sync($data['allergens'] ?? []);
     }
 
     private function saveImage(Request $request, Product $product): void
     {
-        if (! $request->hasFile('image')) {
-            return;
-        }
-
-        $this->deleteStoredImage($product->getOriginal('image'));
-        $product->update(['image' => $request->file('image')->store('products', 'public')]);
-    }
-
-    private function deleteStoredImage(?string $image): void
-    {
-        if ($image && ! str_starts_with($image, 'http')) {
-            Storage::disk('public')->delete($image);
+        if ($request->hasFile('image')) {
+            $product->replaceImage($request->file('image'));
         }
     }
 }

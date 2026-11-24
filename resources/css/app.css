@@ -517,6 +517,37 @@ textarea:focus-visible {
         transform: translateY(-1px);
     }
 
+    .cake-ai-input {
+        border: 1px solid rgba(107, 45, 60, 0.18);
+        border-radius: 0.85rem;
+        background: #fbf5ee;
+        color: #3b2a2a;
+        font-size: 0.85rem;
+        padding: 0.7rem 0.85rem;
+        width: 100%;
+    }
+
+    .cake-ai-input:focus-visible {
+        border-color: #c98b8b;
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(201, 139, 139, 0.2);
+    }
+
+    .cake-ai-idea {
+        border: 1px solid rgba(107, 45, 60, 0.12);
+        border-radius: 0.9rem;
+        background: #fbf5ee;
+        padding: 0.65rem 0.8rem;
+    }
+
+    .cake-ai-idea-apply {
+        color: #6b2d3c;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
     .cake-color-option {
         align-items: center;
         border: 2px solid transparent;

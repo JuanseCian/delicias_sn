@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomizerOption;
 use App\Models\Product;
+use App\Services\CakeDesignAiService;
 use Illuminate\View\View;
 
 class PersonalizationController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(CakeDesignAiService $ai): View
     {
         $customProducts = Product::query()
             ->where('active', true)
@@ -33,6 +34,7 @@ class PersonalizationController extends Controller
         return view('personalizadas', [
             'customProducts' => $customProducts,
             'customizerOptions' => $customizerOptions,
+            'aiAvailable' => $ai->available(),
             'catalog' => [],
         ]);
     }

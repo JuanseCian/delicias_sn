@@ -8,6 +8,6 @@
 
 @section('content')
 <main class="pt-20">
-    <x-custom-cakes :products="$customProducts" :customizer-options="$customizerOptions" />
+    <x-custom-cakes :products="$customProducts" :customizer-options="$customizerOptions" :ai-available="$aiAvailable" />
 </main>
 @endsection

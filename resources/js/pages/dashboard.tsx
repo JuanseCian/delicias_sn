@@ -12,6 +12,10 @@ import {
     Store,
 } from 'lucide-react';
 import AdjustableGlassDashboard from '@/components/ui/adjustable-glass-dashboard';
+import { create as createProduct, index as productsIndex } from '@/routes/private/products';
+import { index as categoriesIndex } from '@/routes/private/categories';
+import { index as ordersIndex } from '@/routes/private/orders';
+import { index as reviewsIndex } from '@/routes/private/reviews';
 
 type Props = {
     stats: {
@@ -52,7 +56,7 @@ export default function Dashboard({ stats }: Props) {
                             </p>
                         </div>
                         <a
-                            href="/gestion-delicias-sn-privada/productos/nuevo"
+                            href={createProduct().url}
                             className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#6B2D3C] px-5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(107,45,60,0.18)] transition hover:-translate-y-0.5 hover:bg-[#3B2A2A]"
                         >
                             <PackagePlus className="size-4" />
@@ -129,7 +133,7 @@ export default function Dashboard({ stats }: Props) {
                                 </span>
                             </div>
                             <a
-                                href="/gestion-delicias-sn-privada/productos"
+                                href={productsIndex().url}
                                 className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#6B2D3C] transition hover:text-[#C98B8B]"
                             >
                                 Gestionar productos
@@ -145,21 +149,28 @@ export default function Dashboard({ stats }: Props) {
                             </h2>
                             <div className="mt-6 grid gap-3">
                                 <QuickAction
-                                    href="/gestion-delicias-sn-privada/productos"
+                                    href={productsIndex().url}
                                     icon={<ImagePlus className="size-4" />}
                                     title="Gestionar productos"
                                      detail="Editar datos, precios y fotos"
                                     native
                                 />
                                 <QuickAction
-                                    href="/gestion-delicias-sn-privada/pedidos"
+                                    href={categoriesIndex().url}
+                                    icon={<LayoutGrid className="size-4" />}
+                                    title="Gestionar categorías"
+                                    detail="Agregar, ordenar o quitar categorías"
+                                    native
+                                />
+                                <QuickAction
+                                    href={ordersIndex().url}
                                     icon={<ClipboardList className="size-4" />}
                                     title="Gestionar pedidos"
                                     detail="Pendientes, entregados y cancelados"
                                     native
                                 />
                                 <QuickAction
-                                    href="/gestion-delicias-sn-privada/valoraciones"
+                                    href={reviewsIndex().url}
                                     icon={<Star className="size-4" />}
                                     title="Revisar valoraciones"
                                     detail="Publicar estrellas y comentarios"

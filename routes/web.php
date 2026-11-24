@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CakeDesignIdeasController;
 use App\Http\Controllers\CakeDesignRequestController;
+use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\CustomizerAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\OrderAdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PersonalizationController;
 use App\Http\Controllers\ProductAdminController;
-use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\PublicCatalogController;
 use App\Http\Controllers\ReviewAdminController;
 use App\Http\Controllers\ReviewController;
@@ -37,14 +37,16 @@ Route::post('/personalizadas/ideas', [CakeDesignIdeasController::class, 'store']
     ->name('custom-design-ideas.store');
 
 Route::middleware(['auth', 'verified'])->prefix('gestion-delicias-sn-privada')->name('private.')->group(function () {
-    Route::get('/productos', [ProductImageController::class, 'index'])->name('products.index');
+    Route::get('/productos', [ProductAdminController::class, 'index'])->name('products.index');
     Route::get('/productos/nuevo', [ProductAdminController::class, 'create'])->name('products.create');
     Route::post('/productos', [ProductAdminController::class, 'store'])->name('products.store');
     Route::get('/productos/{product}/editar', [ProductAdminController::class, 'edit'])->name('products.edit');
     Route::put('/productos/{product}', [ProductAdminController::class, 'update'])->name('products.update');
     Route::delete('/productos/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
-    Route::post('/productos/{product}/imagen', [ProductImageController::class, 'store'])->name('products.image.store');
-    Route::delete('/productos/{product}/imagen', [ProductImageController::class, 'destroy'])->name('products.image.destroy');
+    Route::delete('/productos/{product}/imagen', [ProductAdminController::class, 'destroyImage'])->name('products.image.destroy');
+    Route::get('/categorias', [CategoryAdminController::class, 'index'])->name('categories.index');
+    Route::post('/categorias', [CategoryAdminController::class, 'store'])->name('categories.store');
+    Route::delete('/categorias/{category}', [CategoryAdminController::class, 'destroy'])->name('categories.destroy');
     Route::get('/pedidos', [OrderAdminController::class, 'index'])->name('orders.index');
     Route::patch('/pedidos/{order}', [OrderAdminController::class, 'update'])->name('orders.update');
     Route::get('/personalizadas', [CustomizerAdminController::class, 'index'])->name('customizer.index');

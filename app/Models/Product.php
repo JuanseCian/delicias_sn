@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['category_id', 'name', 'slug', 'short_description', 'description', 'image', 'storage_instructions', 'is_featured', 'is_custom', 'active'])]
 class Product extends Model
@@ -54,5 +56,24 @@ class Product extends Model
     public function getStartingPriceAttribute(): int
     {
         return (int) $this->sizes->min('price');
+    }
+
+    public function replaceImage(UploadedFile $file): void
+    {
+        $this->deleteStoredImage();
+        $this->update(['image' => $file->store('products', 'public')]);
+    }
+
+    public function clearImage(): void
+    {
+        $this->deleteStoredImage();
+        $this->update(['image' => null]);
+    }
+
+    private function deleteStoredImage(): void
+    {
+        if ($this->image && ! str_starts_with($this->image, 'http')) {
+            Storage::disk('public')->delete($this->image);
+        }
     }
 }

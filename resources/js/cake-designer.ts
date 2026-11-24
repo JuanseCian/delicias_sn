@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { store as storeDesignRequest } from '@/routes/custom-design-requests';
+import { store as storeDesignIdeas } from '@/routes/custom-design-ideas';
 
 type CakeOption = {
     id: number;
@@ -18,10 +20,37 @@ type CakeConfiguration = {
     template_id: number | null;
 };
 
+type CakeIdea = {
+    name: string;
+    description: string;
+    configuration: CakeConfiguration;
+};
+
 const storageKey = 'delicias-sn-cake-design';
 
 const colorFromOption = (option: CakeOption | undefined, fallback: string): string =>
     typeof option?.metadata.hex === 'string' ? option.metadata.hex : fallback;
+
+const csrfToken = (): string =>
+    document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+
+const postJson = async (url: string, payload: Record<string, unknown>): Promise<unknown> => {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify(payload),
+    });
+
+    if (!response.ok && response.status !== 422) {
+        throw new Error(`Request to ${url} failed with ${response.status}`);
+    }
+
+    return response.json();
+};
 
 export function initCakeDesigner(root: HTMLElement): void {
     const canvas = root.querySelector<HTMLCanvasElement>('[data-cake-canvas]');
@@ -413,6 +442,83 @@ export function initCakeDesigner(root: HTMLElement): void {
         const phone = root.dataset.whatsapp || '';
         const summary = `Hola Delicias Sn! Quiero consultar por una torta personalizada de ${selected('size')[0]?.name ?? ''}, con ${selected('coverage')[0]?.name ?? ''}, colores ${selected('color').map((option) => option.name).join(' y ')} y detalles: ${selected('topping').map((option) => option.name).join(', ') || 'a definir'}.`;
         link.href = `https://wa.me/${phone}?text=${encodeURIComponent(summary)}`;
+
+        // Guardamos la idea para que el panel admin la vea; si falla, no interrumpe el envío por WhatsApp.
+        postJson(storeDesignRequest().url, { configuration }).catch(() => undefined);
+    });
+
+    const aiForm = root.querySelector<HTMLFormElement>('[data-cake-ai-form]');
+    const aiStatus = root.querySelector<HTMLElement>('[data-cake-ai-status]');
+    const aiResults = root.querySelector<HTMLElement>('[data-cake-ai-results]');
+    const aiSubmit = root.querySelector<HTMLButtonElement>('[data-cake-ai-submit]');
+
+    const setAiStatus = (message: string): void => {
+        if (aiStatus) aiStatus.textContent = message;
+    };
+
+    const renderIdeas = (ideas: CakeIdea[]): void => {
+        if (!aiResults) return;
+        aiResults.innerHTML = '';
+
+        ideas.forEach((idea) => {
+            const card = document.createElement('article');
+            card.className = 'cake-ai-idea';
+
+            const name = document.createElement('p');
+            name.className = 'text-sm font-bold text-bordo';
+            name.textContent = idea.name;
+            card.appendChild(name);
+
+            const description = document.createElement('p');
+            description.className = 'mt-1 text-xs leading-5 text-ink/60';
+            description.textContent = idea.description;
+            card.appendChild(description);
+
+            const apply = document.createElement('button');
+            apply.type = 'button';
+            apply.className = 'cake-ai-idea-apply mt-2';
+            apply.textContent = 'Aplicar esta idea →';
+            apply.addEventListener('click', () => {
+                configuration = { ...idea.configuration };
+                updateButtons();
+                updateSummary();
+                persist();
+                renderCake();
+                setStatus(`Idea "${idea.name}" aplicada`);
+            });
+            card.appendChild(apply);
+
+            aiResults.appendChild(card);
+        });
+    };
+
+    aiForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const prompt = (new FormData(aiForm).get('prompt') as string | null)?.trim();
+        if (!prompt) return;
+
+        if (aiResults) aiResults.innerHTML = '';
+        setAiStatus('Buscando una combinación para tu idea...');
+        if (aiSubmit) aiSubmit.disabled = true;
+
+        postJson(storeDesignIdeas().url, { prompt })
+            .then((data) => {
+                const result = data as { available: boolean; message: string | null; ideas: CakeIdea[] };
+                if (!result.available) {
+                    setAiStatus(result.message ?? 'El asistente de ideas no está disponible.');
+                    return;
+                }
+                if (result.ideas.length === 0) {
+                    setAiStatus(result.message ?? 'No encontramos una combinación compatible.');
+                    return;
+                }
+                setAiStatus(`Encontramos ${result.ideas.length} idea${result.ideas.length > 1 ? 's' : ''} para vos:`);
+                renderIdeas(result.ideas);
+            })
+            .catch(() => setAiStatus('No pudimos conectar con el asistente. Probá de nuevo en un momento.'))
+            .finally(() => {
+                if (aiSubmit) aiSubmit.disabled = false;
+            });
     });
 
     const mobileSections = root.querySelectorAll<HTMLElement>('[data-cake-mobile-section]');

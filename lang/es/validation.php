@@ -236,6 +236,27 @@ return [
         'prompt' => 'descripción de la idea',
         'configuration' => 'configuración',
         'status' => 'estado',
+        'lead_time_hours' => 'anticipación en horas',
+        'order' => 'orden',
+
+        // Campos indexados (array.*.campo): sin esto, el mensaje muestra la
+        // clave cruda tal cual llega (por ejemplo "sizes.0.id").
+        'sizes.*.id' => 'tamaño',
+        'sizes.*.label' => 'tamaño',
+        'sizes.*.price' => 'precio',
+        'allergens.*' => 'alérgeno',
+        'items.*.product_id' => 'producto',
+        'items.*.product_size_id' => 'tamaño',
+        'items.*.color_id' => 'color',
+        'items.*.quantity' => 'cantidad',
+        'items.*.note' => 'nota',
+        'configuration.size_id' => 'tamaño',
+        'configuration.coverage_id' => 'cobertura',
+        'configuration.color_ids' => 'colores',
+        'configuration.color_ids.*' => 'color',
+        'configuration.topping_ids' => 'decoraciones',
+        'configuration.topping_ids.*' => 'decoración',
+        'configuration.template_id' => 'diseño',
     ],
 
 ];

@@ -12,6 +12,8 @@
         'active' => (bool) old('active', $product?->active ?? true),
         'ingredients_text' => old('ingredients_text', $product?->ingredients?->pluck('name')->implode("\n") ?? ''),
         'sizes' => old('sizes', $product?->sizes?->map(fn ($size) => ['id' => $size->id, 'label' => $size->label, 'price' => $size->price])->values()->all() ?: [['id' => '', 'label' => '', 'price' => '']]),
+        'colors' => old('colors', $product?->colors?->map(fn ($color) => ['id' => $color->id, 'name' => $color->name, 'hex' => $color->hex])->values()->all() ?? []),
+        'allergen_ids' => old('allergens', $product?->allergens?->pluck('id')->all() ?? []),
     ];
 @endphp
 
@@ -64,7 +66,7 @@
                     </div>
                     <div class="mt-6 grid gap-5 sm:grid-cols-2">
                         <label class="field-label">Nombre del producto<input x-model="name" name="name" required class="field-input" placeholder="Ej: Torta de chocolate"></label>
-                        <label class="field-label">Categoría<select x-model="category_id" name="category_id" required class="field-input"><option value="">Elegí una categoría</option>@foreach ($categories as $category)<option value="{{ $category->id }}">{{ $category->name }}</option>@endforeach</select></label>
+                        <label class="field-label">Categoría<select x-model="category_id" name="category_id" required class="field-input"><option value="">Elegí una categoría</option>@foreach ($categories as $category)<option value="{{ $category->id }}">{{ $category->name }}</option>@endforeach</select><a href="{{ route('private.categories.index') }}" class="text-xs font-bold text-[#6B2D3C] hover:underline">+ Nueva categoría</a></label>
                         <label class="field-label sm:col-span-2">Descripción<textarea x-model="description" name="description" required rows="5" class="field-input resize-y" placeholder="Contá sabores, rellenos y detalles del producto"></textarea></label>
                         <label class="field-label sm:col-span-2">Cómo conservarlo<textarea x-model="storage_instructions" name="storage_instructions" required rows="2" class="field-input resize-y" placeholder="Ej: conservar refrigerado y retirar 20 minutos antes"></textarea></label>
                     </div>
@@ -98,6 +100,23 @@
                         </div>
                     </section>
 
+                    <section class="rounded-[1.5rem] border border-[#263238]/10 bg-white p-6 shadow-[0_8px_24px_rgba(38,50,56,0.06)] sm:p-8">
+                        <div class="flex flex-col justify-between gap-3 border-b border-[#263238]/10 pb-5 sm:flex-row sm:items-end">
+                            <div><p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Opcional</p><h2 class="mt-1 text-xl font-bold text-[#263238]">Colores disponibles</h2><p class="mt-2 text-sm leading-6 text-[#263238]/60">Si este producto se puede pedir en distintos colores, agregalos acá. Si no, dejalo vacío.</p></div>
+                            <button type="button" @click="addColor()" class="rounded-xl bg-[#E9EFF0] px-4 py-2.5 text-sm font-bold text-[#263238] hover:bg-[#D8E2E4]">+ Agregar color</button>
+                        </div>
+                        <div class="mt-5 space-y-3">
+                            <template x-for="(color, index) in colors" :key="color.uid">
+                                <div class="grid gap-3 rounded-2xl bg-[#F5F1EC] p-4 sm:grid-cols-[auto_1fr_auto] sm:items-end">
+                                    <input type="hidden" :name="`colors[${index}][id]`" x-model="color.id">
+                                    <label class="field-label">Color<input x-model="color.hex" :name="`colors[${index}][hex]`" required type="color" class="h-12 w-16 cursor-pointer rounded-lg border-0 bg-transparent p-0"></label>
+                                    <label class="field-label">Nombre<input x-model="color.name" :name="`colors[${index}][name]`" required class="field-input" placeholder="Rosa pastel"></label>
+                                    <button type="button" @click="removeColor(index)" class="rounded-xl px-3 py-3 text-sm font-bold text-[#A85C22] hover:bg-[#FFF1EE]">Quitar</button>
+                                </div>
+                            </template>
+                            <p x-show="colors.length === 0" class="text-xs text-[#263238]/45">Todavía no agregaste ningún color.</p>
+                        </div>
+                    </section>
                 </div>
                 <div class="mt-5 flex justify-between rounded-2xl border border-[#263238]/10 bg-white p-3 shadow-[0_10px_30px_rgba(38,50,56,0.08)]">
                     <button type="button" @click="previousStep()" class="rounded-xl px-5 py-3 text-sm font-bold text-[#64747A] hover:bg-[#F5F1EC]">← Anterior</button>
@@ -109,11 +128,30 @@
                 <section class="grid gap-5 lg:grid-cols-2">
                     <div class="rounded-[1.5rem] border border-[#263238]/10 bg-white p-6 shadow-[0_8px_24px_rgba(38,50,56,0.06)] sm:p-8">
                         <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Información del producto</p><h2 class="mt-1 text-xl font-bold text-[#263238]">Ingredientes y alérgenos</h2><p class="mt-2 text-sm leading-6 text-[#263238]/60">Ayuda a tus clientes a conocer qué contiene el producto.</p>
-                        <label class="field-label mt-5">Ingredientes<textarea x-model="ingredients_text" name="ingredients_text" maxlength="2000" rows="5" class="field-input resize-y" placeholder="Harina 0000\nHuevos\nDulce de leche"></textarea><span class="text-xs font-medium text-[#64747A]">Escribí un ingrediente por línea o separalos con comas.</span></label>
+                        <label class="field-label mt-5">Ingredientes<textarea x-model="ingredients_text" name="ingredients_text" maxlength="2000" rows="5" class="field-input resize-y" placeholder="Harina 0000&#10;Huevos&#10;Dulce de leche"></textarea><span class="text-xs font-medium text-[#64747A]">Escribí un ingrediente por línea o separalos con comas.</span></label>
+
+                        @if ($allergens->isNotEmpty())
+                            <div class="mt-6 border-t border-[#263238]/10 pt-5">
+                                <p class="cake-designer-label text-[#64747A]">Alérgenos declarados</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    @foreach ($allergens as $allergen)
+                                        <label class="check-label">
+                                            <input type="checkbox" name="allergens[]" value="{{ $allergen->id }}" x-model="allergen_ids" class="check-input">
+                                            {{ $allergen->name }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="rounded-[1.5rem] border border-[#263238]/10 bg-white p-6 shadow-[0_8px_24px_rgba(38,50,56,0.06)] sm:p-8">
                         <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#64747A]">Imagen real</p><h2 class="mt-1 text-xl font-bold text-[#263238]">Foto del producto</h2><p class="mt-2 text-sm leading-6 text-[#263238]/60">Una foto clara ayuda a vender y se mostrará en la página.</p>
-                        @if ($product?->image)<img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }}" class="mt-5 aspect-[1.4] w-full rounded-2xl object-cover">@else<div class="mt-5 grid aspect-[1.4] place-items-center rounded-2xl bg-[#E9EFF0] text-center text-sm font-semibold text-[#64747A]">Todavía no hay una imagen cargada</div>@endif
+                        @if ($product?->image)
+                            <img src="{{ product_image_url($product->image) }}" alt="{{ $product->name }}" class="mt-5 aspect-[1.4] w-full rounded-2xl object-cover">
+                            <button type="submit" form="delete-image-form" onclick="return confirm('¿Quitar la imagen actual de este producto?')" class="mt-3 text-xs font-bold text-[#A85C22] hover:underline">Quitar imagen actual</button>
+                        @else
+                            <div class="mt-5 grid aspect-[1.4] place-items-center rounded-2xl bg-[#E9EFF0] text-center text-sm font-semibold text-[#64747A]">Todavía no hay una imagen cargada</div>
+                        @endif
                         <label class="field-label mt-5">Subir o reemplazar<input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-[#263238]/20 bg-[#F5F1EC] p-2.5"></label>
                     </div>
                 </section>
@@ -123,6 +161,13 @@
                 </div>
             </div>
         </form>
+
+        @if ($isEditing && $product->image)
+            <form id="delete-image-form" action="{{ route('private.products.image.destroy', $product) }}" method="POST" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endif
     </div>
 </main>
 @endsection

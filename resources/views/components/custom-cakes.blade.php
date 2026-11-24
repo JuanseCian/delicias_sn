@@ -23,6 +23,19 @@
                         <span class="rounded-full bg-blush px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-bordo">V1</span>
                     </div>
 
+                    @if ($aiAvailable ?? false)
+                        <div class="mt-6 rounded-2xl border border-bordo/15 bg-white p-4" data-cake-ai>
+                            <p class="cake-designer-label">Asistente de ideas</p>
+                            <p class="mt-1 text-[11px] leading-5 text-ink/50">Contanos tu idea y te sugerimos una combinación.</p>
+                            <form data-cake-ai-form class="mt-2 flex flex-col gap-2">
+                                <input type="text" name="prompt" required minlength="8" maxlength="2000" placeholder="Ej: torta infantil con flores rosa y frutillas" class="cake-ai-input">
+                                <button type="submit" data-cake-ai-submit class="rounded-xl bg-bordo px-4 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-50">Sugerir con IA</button>
+                            </form>
+                            <p data-cake-ai-status class="mt-2 text-xs leading-5 text-ink/55"></p>
+                            <div data-cake-ai-results class="mt-2 grid gap-2"></div>
+                        </div>
+                    @endif
+
                     @if (($optionGroups['template'] ?? collect())->isNotEmpty())
                         <div class="mt-6"><p class="cake-designer-label">Diseños rápidos</p><div class="mt-2 grid grid-cols-2 gap-2">@foreach ($optionGroups['template'] as $option)<button type="button" data-cake-option data-option-kind="template" data-option-id="{{ $option['id'] }}" class="cake-option"><span class="block font-semibold">{{ $option['name'] }}</span><span class="mt-0.5 block text-[10px] text-ink/50">{{ $option['description'] }}</span></button>@endforeach</div></div>
                     @endif
