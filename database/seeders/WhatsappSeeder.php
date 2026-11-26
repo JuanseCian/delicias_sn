@@ -15,7 +15,7 @@ class WhatsappSeeder extends Seeder
             ['key' => 'review_after_delivery'],
             [
                 'name' => 'Invitación a dejar una reseña',
-                'body' => '¡Hola {{nombre}}! Esperamos que hayas disfrutado tu pedido {{codigo}}. Nos encantaría conocer tu opinión: {{enlace_resena}}',
+                'body' => "¡Hola, {{nombre}}, ¿cómo estás?! 💗 Esperamos que hayas disfrutado tu pedido. Nos encantaría conocer tu opinión, por eso te invitamos a dejarnos una pequeña valoración en el siguiente link.\n\n{{enlace_resena}}\n\n¡Gracias por elegir Delicias SN! 🧁",
                 'is_active' => true,
             ],
         );
