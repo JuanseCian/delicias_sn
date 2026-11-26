@@ -4,7 +4,7 @@
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-intro relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center reveal">
         <p class="eyebrow hero-enter" style="--hero-enter-delay: 80ms">{{ config('delicias.christmas_theme_enabled') ? 'Edición navideña · Pastelería artesanal' : 'Pastelería artesanal' }}</p>
-        <h1 class="hero-enter mt-7 max-w-3xl font-display text-5xl leading-[0.92] tracking-[-0.055em] text-bordo sm:text-7xl lg:text-[7rem]" style="--hero-enter-delay: 180ms">Pastelería<br><span class="font-script text-[1.08em] font-normal tracking-normal text-rosa-viejo">artesanal en San Nicolás</span></h1>
+        <h1 class="hero-enter mt-7 max-w-3xl font-display text-5xl leading-[0.92] tracking-[-0.055em] text-bordo sm:text-7xl lg:text-[7rem]" style="--hero-enter-delay: 180ms">Endulzá<br><span class="font-script text-[1.08em] font-normal tracking-normal text-rosa-viejo">tus fiestas</span></h1>
         <p class="hero-enter mt-8 max-w-xl text-base leading-7 text-ink/65 sm:text-lg" style="--hero-enter-delay: 300ms">Tortas, cupcakes, cookies, boxes y mesas dulces hechos por encargo en San Nicolás de los Arroyos para cumpleaños y celebraciones.</p>
         <div class="hero-enter mt-9 flex flex-col justify-center gap-3 sm:flex-row" style="--hero-enter-delay: 430ms">
             <a href="#catalogo" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>

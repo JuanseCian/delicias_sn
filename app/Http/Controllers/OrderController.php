@@ -42,6 +42,8 @@ class OrderController extends Controller
                 'code' => sprintf('DSN-%s-%04d', $year, $number),
                 'customer_name' => $request->validated('customer_name'),
                 'phone' => $request->validated('phone'),
+                'whatsapp_consent_at' => now(),
+                'whatsapp_consent_ip' => $request->ip(),
                 'delivery_type' => $request->validated('delivery_type'),
                 'address' => $request->validated('address'),
                 'delivery_date' => $request->validated('delivery_date'),

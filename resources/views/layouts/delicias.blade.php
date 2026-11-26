@@ -1,5 +1,5 @@
 @php
-    $christmasThemeEnabled = config('delicias.christmas_theme_enabled');
+    $christmasThemeEnabled = config('delicias.christmas_theme_enabled') && ! $__env->hasSection('without_seasonal_theme');
     $seoTitle = trim($__env->yieldContent('title', 'Delicias SN | Pastelería artesanal en San Nicolás'));
     $seoDescription = trim($__env->yieldContent('description', 'Delicias SN es pastelería artesanal en San Nicolás de los Arroyos. Conocé tortas, cupcakes, cookies, boxes y mesas dulces para tus celebraciones.'));
     $seoCanonical = trim($__env->yieldContent('canonical', delicias_canonical_url()));

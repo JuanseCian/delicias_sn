@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\WhatsappAutomationService;
 use App\Services\WhatsAppMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use Throwable;
 
 class OrderAdminController extends Controller
 {
@@ -27,7 +27,7 @@ class OrderAdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, Order $order, WhatsAppMessage $whatsAppMessage): RedirectResponse
+    public function update(Request $request, Order $order, WhatsappAutomationService $automation): RedirectResponse
     {
         $data = $request->validate([
             'status' => ['required', Rule::in([
@@ -42,12 +42,14 @@ class OrderAdminController extends Controller
         $statusMessage = 'Estado del pedido actualizado.';
 
         if (! $wasDelivered && $order->status === Order::STATUS_DELIVERED && ! $order->review_invite_sent_at) {
-            try {
-                $whatsAppMessage->sendReviewInvitation($order->fresh());
-                $statusMessage .= ' La invitación para dejar una reseña fue enviada por WhatsApp.';
-            } catch (Throwable $exception) {
-                report($exception);
-                $statusMessage .= ' No se pudo enviar automáticamente la invitación de reseña; revisá la configuración de WhatsApp Cloud API.';
+            $message = $automation->dispatchForDelivered($order->fresh());
+
+            if ($message) {
+                $statusMessage .= ' La invitación para dejar una reseña quedó en cola de WhatsApp.';
+            } elseif (! $order->whatsapp_consent_at) {
+                $statusMessage .= ' No se programó WhatsApp porque el cliente no dio consentimiento.';
+            } else {
+                $statusMessage .= ' WhatsApp está deshabilitado o la automatización no está activa.';
             }
         }
 

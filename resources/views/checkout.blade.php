@@ -51,6 +51,11 @@
                         <span x-show="formErrors.address" x-text="formErrors.address" class="field-error" role="alert"></span>
                         @error('address')<span class="field-error" role="alert">{{ $message }}</span>@enderror
                     </label>
+                    <label class="flex items-start gap-3 sm:col-span-2">
+                        <input type="checkbox" name="whatsapp_consent" value="1" @checked(old('whatsapp_consent')) required class="mt-1 h-4 w-4 rounded border-bordo/30 text-bordo focus:ring-rosa-viejo">
+                        <span class="text-xs leading-5 text-ink/65">Acepto recibir por WhatsApp novedades relacionadas con este pedido, incluido el enlace para dejar una reseña. <span class="text-bordo">Podés revocar este consentimiento cuando quieras.</span></span>
+                    </label>
+                    @error('whatsapp_consent')<span class="field-error sm:col-span-2" role="alert">Para continuar, aceptá recibir comunicaciones de este pedido por WhatsApp.</span>@enderror
                 </div>
 
                 <div class="mt-9 flex items-center justify-between border-b border-bordo/10 pb-5">

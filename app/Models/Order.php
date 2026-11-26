@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
-#[Fillable(['code', 'customer_name', 'phone', 'delivery_type', 'address', 'delivery_date', 'time_slot', 'payment_method', 'subtotal', 'deposit', 'status', 'notes'])]
+#[Fillable(['code', 'customer_name', 'phone', 'whatsapp_consent_at', 'whatsapp_consent_ip', 'delivery_type', 'address', 'delivery_date', 'time_slot', 'payment_method', 'subtotal', 'deposit', 'status', 'notes'])]
 #[Hidden(['access_token'])]
 class Order extends Model
 {
@@ -47,6 +47,7 @@ class Order extends Model
             'subtotal' => 'integer',
             'deposit' => 'integer',
             'review_invite_sent_at' => 'datetime',
+            'whatsapp_consent_at' => 'datetime',
         ];
     }
 
@@ -58,6 +59,11 @@ class Order extends Model
     public function review(): HasOne
     {
         return $this->hasOne(Review::class);
+    }
+
+    public function whatsappMessages(): HasMany
+    {
+        return $this->hasMany(WhatsappMessage::class);
     }
 
     public function canBeReviewed(): bool

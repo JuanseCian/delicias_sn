@@ -123,5 +123,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(CakeCustomizerSeeder::class);
+        $this->call(WhatsappSeeder::class);
     }
 }

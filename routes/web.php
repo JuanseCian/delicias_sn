@@ -15,6 +15,9 @@ use App\Http\Controllers\PublicCatalogController;
 use App\Http\Controllers\ReviewAdminController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\WhatsappAdminController;
+use App\Http\Controllers\WhatsappWebhookController;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -35,6 +38,9 @@ Route::post('/personalizadas/solicitudes', [CakeDesignRequestController::class, 
 Route::post('/personalizadas/ideas', [CakeDesignIdeasController::class, 'store'])
     ->middleware('throttle:custom-design')
     ->name('custom-design-ideas.store');
+Route::post('/webhooks/evolution', WhatsappWebhookController::class)
+    ->withoutMiddleware([ValidateCsrfToken::class])
+    ->name('whatsapp.webhook');
 
 Route::middleware(['auth', 'verified'])->prefix('gestion-delicias-sn-privada')->name('private.')->group(function () {
     Route::get('/productos', [ProductAdminController::class, 'index'])->name('products.index');
@@ -54,6 +60,15 @@ Route::middleware(['auth', 'verified'])->prefix('gestion-delicias-sn-privada')->
     Route::patch('/personalizadas/opciones/{option}', [CustomizerAdminController::class, 'update'])->name('customizer.options.update');
     Route::get('/valoraciones', [ReviewAdminController::class, 'index'])->name('reviews.index');
     Route::patch('/valoraciones/{review}', [ReviewAdminController::class, 'update'])->name('reviews.update');
+    Route::get('/whatsapp', [WhatsappAdminController::class, 'index'])->name('whatsapp.index');
+    Route::post('/whatsapp/conectar', [WhatsappAdminController::class, 'connect'])->name('whatsapp.connect');
+    Route::get('/whatsapp/qr', [WhatsappAdminController::class, 'qr'])->name('whatsapp.qr');
+    Route::delete('/whatsapp/desconectar', [WhatsappAdminController::class, 'logout'])->name('whatsapp.logout');
+    Route::patch('/whatsapp/configuracion', [WhatsappAdminController::class, 'toggle'])->name('whatsapp.toggle');
+    Route::patch('/whatsapp/automatizaciones/{automation}', [WhatsappAdminController::class, 'updateAutomation'])->name('whatsapp.automations.update');
+    Route::put('/whatsapp/plantillas/{template}', [WhatsappAdminController::class, 'updateTemplate'])->name('whatsapp.templates.update');
+    Route::post('/whatsapp/prueba', [WhatsappAdminController::class, 'sendTest'])->name('whatsapp.test');
+    Route::post('/whatsapp/mensajes/{message}/reintentar', [WhatsappAdminController::class, 'retry'])->name('whatsapp.messages.retry');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

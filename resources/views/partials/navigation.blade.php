@@ -1,10 +1,11 @@
 @php
+    $christmasThemeEnabled ??= config('delicias.christmas_theme_enabled');
     $catalogHref = request()->routeIs('home') ? '#catalogo' : route('home').'#catalogo';
     $stepsHref = request()->routeIs('home') ? '#como-encargar' : route('home').'#como-encargar';
 @endphp
 
 <header class="fixed inset-x-0 top-0 z-40 px-3 pt-4 sm:px-6 lg:px-8" x-data="{ open: false }">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border {{ config('delicias.christmas_theme_enabled') ? 'border-pino/15 bg-nieve/90' : 'border-white/75 bg-crema/90' }} px-4 py-3 shadow-soft backdrop-blur-md sm:px-6" aria-label="Navegación principal">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border {{ $christmasThemeEnabled ? 'border-pino/15 bg-nieve/90' : 'border-white/75 bg-crema/90' }} px-4 py-3 shadow-soft backdrop-blur-md sm:px-6" aria-label="Navegación principal">
         <a href="{{ route('home') }}" class="group flex items-center gap-2" aria-label="Volver al inicio de Delicias Sn">
             <x-brand-mark size="h-10 w-10" class="shrink-0 transition-transform group-hover:rotate-6" />
                 <img src="{{ asset('img/delicias_nombre.png') }}" alt="Delicias SN" class="brand-wordmark h-10 w-32 object-contain object-left sm:w-40">
@@ -29,12 +30,12 @@
             </button>
         </div>
     </nav>
-    <div x-show="open" x-transition x-cloak class="mx-auto mt-2 max-w-7xl rounded-[1.35rem] border {{ config('delicias.christmas_theme_enabled') ? 'border-pino/15 bg-nieve' : 'border-white/70 bg-crema' }} p-3 shadow-soft lg:hidden">
+    <div x-show="open" x-transition x-cloak class="mx-auto mt-2 max-w-7xl rounded-[1.35rem] border {{ $christmasThemeEnabled ? 'border-pino/15 bg-nieve' : 'border-white/70 bg-crema' }} p-3 shadow-soft lg:hidden">
         <div class="grid gap-1 text-sm font-semibold text-ink/75">
-            <a @click="open = false" href="{{ $catalogHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ config('delicias.christmas_theme_enabled') ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Productos</a>
-            <a @click="open = false" href="{{ $stepsHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ config('delicias.christmas_theme_enabled') ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Cómo encargar</a>
-            <a @click="open = false" href="{{ route('reviews.public') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ config('delicias.christmas_theme_enabled') ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Opiniones</a>
-            <a @click="open = false" href="{{ route('faq') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ config('delicias.christmas_theme_enabled') ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Preguntas frecuentes</a>
+            <a @click="open = false" href="{{ $catalogHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Productos</a>
+            <a @click="open = false" href="{{ $stepsHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Cómo encargar</a>
+            <a @click="open = false" href="{{ route('reviews.public') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Opiniones</a>
+            <a @click="open = false" href="{{ route('faq') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Preguntas frecuentes</a>
         </div>
     </div>
 </header>

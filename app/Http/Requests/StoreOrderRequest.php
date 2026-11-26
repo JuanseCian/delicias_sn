@@ -53,6 +53,7 @@ class StoreOrderRequest extends FormRequest
             'items.*.note' => ['nullable', 'string', 'max:240'],
             'customer_name' => ['required', 'string', 'max:120'],
             'phone' => ['required', 'string', 'max:40'],
+            'whatsapp_consent' => ['accepted'],
             'delivery_type' => ['required', Rule::in(['envio', 'retiro'])],
             'address' => ['nullable', 'string', 'max:180', Rule::requiredIf(fn (): bool => $this->input('delivery_type') === 'envio')],
             'delivery_date' => [

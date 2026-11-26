@@ -11,6 +11,7 @@ return [
     'whatsapp_display' => env('DELICIAS_WHATSAPP_DISPLAY', '+54 9 336 401-2851'),
     'instagram' => env('DELICIAS_INSTAGRAM', '@delicias_.sn'),
     'hours' => env('DELICIAS_HOURS', 'Lunes a viernes de 13hs a 20hs · Sábados y domingos de 9hs a 20hs'),
+    'timezone' => env('DELICIAS_TIMEZONE', 'America/Argentina/Buenos_Aires'),
     'ga4_id' => env('DELICIAS_GA4_ID'),
     'faqs' => [
         ['question' => '¿Cómo se reserva una fecha?', 'answer' => 'Confirmamos la fecha después de recibir tus datos y una seña del 50% del total. Luego se coordina la entrega o el retiro.'],
