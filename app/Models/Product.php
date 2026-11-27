@@ -48,6 +48,11 @@ class Product extends Model
         return $this->belongsToMany(Allergen::class, 'product_allergen');
     }
 
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function getLeadTimeHoursAttribute(): int
     {
         return $this->category->lead_time_hours;

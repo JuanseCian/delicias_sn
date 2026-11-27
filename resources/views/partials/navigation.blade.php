@@ -1,6 +1,7 @@
 @php
     $christmasThemeEnabled ??= config('delicias.christmas_theme_enabled');
-    $catalogHref = request()->routeIs('home') ? '#catalogo' : route('home').'#catalogo';
+    $catalogHref = route('catalog.index');
+    $reviewsHref = request()->routeIs('home') ? '#opiniones' : route('home').'#opiniones';
     $stepsHref = request()->routeIs('home') ? '#como-encargar' : route('home').'#como-encargar';
 @endphp
 
@@ -14,7 +15,7 @@
         <div class="hidden items-center gap-7 text-sm font-semibold text-ink/70 lg:flex">
             <a href="{{ $catalogHref }}" class="christmas-nav-link transition-colors hover:text-bordo">Productos</a>
             <a href="{{ $stepsHref }}" class="christmas-nav-link transition-colors hover:text-bordo">Cómo encargar</a>
-            <a href="{{ route('reviews.public') }}" class="christmas-nav-link transition-colors hover:text-bordo">Opiniones</a>
+            <a href="{{ $reviewsHref }}" class="christmas-nav-link transition-colors hover:text-bordo">Opiniones</a>
             <a href="{{ route('faq') }}" class="christmas-nav-link transition-colors hover:text-bordo">Preguntas</a>
         </div>
 
@@ -34,7 +35,7 @@
         <div class="grid gap-1 text-sm font-semibold text-ink/75">
             <a @click="open = false" href="{{ $catalogHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Productos</a>
             <a @click="open = false" href="{{ $stepsHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Cómo encargar</a>
-            <a @click="open = false" href="{{ route('reviews.public') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Opiniones</a>
+            <a @click="open = false" href="{{ $reviewsHref }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Opiniones</a>
             <a @click="open = false" href="{{ route('faq') }}" class="christmas-nav-link rounded-2xl px-4 py-3 {{ $christmasThemeEnabled ? 'hover:bg-pino-claro' : 'hover:bg-blush' }}">Preguntas frecuentes</a>
         </div>
     </div>

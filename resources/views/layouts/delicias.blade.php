@@ -39,6 +39,10 @@
     @if (request()->routeIs('personalized'))
         @vite('resources/js/cake-designer-entry.ts')
     @endif
+    @if (request()->routeIs('home') || request()->routeIs('catalog.index'))
+        @viteReactRefresh
+        @vite('resources/js/product-rail.tsx')
+    @endif
     @include('partials.analytics')
     @include('partials.structured-data', ['schemas' => [
         [
@@ -71,7 +75,7 @@
     'delivery_date' => old('delivery_date', ''),
     'time_slot' => old('time_slot', '13 a 15 h'),
     'notes' => old('notes', ''),
-]), @js(delicias_time_slots()))" x-init="init()" class="bg-crema text-ink antialiased">
+]), @js(delicias_time_slots()))" x-init="init()" @delicias-open-product.window="openProduct($event.detail)" class="bg-crema text-ink antialiased">
     <div class="min-h-screen overflow-x-hidden">
         @if ($christmasThemeEnabled)
             <x-christmas-decorations :snow="config('delicias.christmas_snow_enabled')" />

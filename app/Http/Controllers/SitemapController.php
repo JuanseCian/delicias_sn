@@ -16,7 +16,7 @@ class SitemapController extends Controller
             ['loc' => $canonicalUrl.'/', 'lastmod' => null],
             ['loc' => $canonicalUrl.route('faq', [], false), 'lastmod' => null],
             ['loc' => $canonicalUrl.route('personalized', [], false), 'lastmod' => null],
-            ['loc' => $canonicalUrl.route('reviews.public', [], false), 'lastmod' => null],
+            ['loc' => $canonicalUrl.route('catalog.index', [], false), 'lastmod' => null],
         ])->merge($this->categoryUrls($canonicalUrl))
             ->merge($this->productUrls($canonicalUrl))
             ->unique('loc')

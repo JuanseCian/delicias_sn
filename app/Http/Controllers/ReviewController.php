@@ -12,19 +12,6 @@ use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
-    public function index(): View
-    {
-        $approvedReviews = Review::query()->where('approved', true);
-
-        return view('reviews.index', [
-            'reviews' => (clone $approvedReviews)->latest()->get(),
-            'stats' => [
-                'count' => (clone $approvedReviews)->count(),
-                'average' => round((float) ((clone $approvedReviews)->avg('rating') ?? 0), 1),
-            ],
-        ]);
-    }
-
     public function create(string $token): View
     {
         $order = Order::with('review')->where('access_token', $token)->firstOrFail();

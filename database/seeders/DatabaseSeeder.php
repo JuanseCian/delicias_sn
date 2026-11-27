@@ -31,10 +31,11 @@ class DatabaseSeeder extends Seeder
 
         $categories = collect([
             ['name' => 'Tortas', 'slug' => 'tortas', 'lead_time_hours' => 96, 'order' => 1],
-            ['name' => 'Cupcakes', 'slug' => 'cupcakes', 'lead_time_hours' => 48, 'order' => 2],
-            ['name' => 'Cookies', 'slug' => 'cookies', 'lead_time_hours' => 48, 'order' => 3],
-            ['name' => 'Boxes / cajas sorpresa', 'slug' => 'boxes', 'lead_time_hours' => 48, 'order' => 4],
-            ['name' => 'Mesas dulces para eventos', 'slug' => 'mesas-dulces', 'lead_time_hours' => 48, 'order' => 5],
+            ['name' => 'Tartas', 'slug' => 'tartas', 'lead_time_hours' => 72, 'order' => 2],
+            ['name' => 'Cupcakes', 'slug' => 'cupcakes', 'lead_time_hours' => 48, 'order' => 3],
+            ['name' => 'Cookies', 'slug' => 'cookies', 'lead_time_hours' => 48, 'order' => 4],
+            ['name' => 'Boxes / cajas sorpresa', 'slug' => 'boxes', 'lead_time_hours' => 48, 'order' => 5],
+            ['name' => 'Mesas dulces para eventos', 'slug' => 'mesas-dulces', 'lead_time_hours' => 48, 'order' => 6],
         ])->mapWithKeys(fn (array $category): array => [$category['slug'] => Category::updateOrCreate(
             ['slug' => $category['slug']],
             $category,
@@ -60,8 +61,10 @@ class DatabaseSeeder extends Seeder
         $products = [
             'tortas' => [
                 ['name' => 'Choco & dulce', 'slug' => 'choco-dulce', 'short_description' => 'Bizcochuelo húmedo, dulce de leche y ganache brillante.', 'description' => 'Capas de chocolate intenso, dulce de leche artesanal y una ganache sedosa que se corta con la cuchara. La favorita para celebrar sin vueltas.', 'image' => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85', 'storage_instructions' => 'Conservar refrigerada y retirar 20 minutos antes de servir.', 'ingredients' => ['Huevos de granja', 'Manteca de tambo', 'Chocolate semiamargo', 'Harina 0000', 'Dulce de leche'], 'allergens' => ['Gluten', 'Lácteos', 'Huevo', 'Soja'], 'sizes' => [['label' => '18 cm / 12 porciones', 'price' => 32000], ['label' => '22 cm / 20 porciones', 'price' => 47000], ['label' => '26 cm / 30 porciones', 'price' => 64000]]],
-                ['name' => 'Lemon pie de campo', 'slug' => 'lemon-pie-de-campo', 'short_description' => 'Base crocante, crema de limón y merengue dorado.', 'description' => 'El equilibrio perfecto entre ácido y dulce: crema de limón recién hecha sobre una base mantecosa y merengue italiano apenas tostado.', 'image' => 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1000&q=85', 'storage_instructions' => 'Guardar en heladera, en su caja, hasta 48 horas.', 'ingredients' => ['Huevos de granja', 'Manteca de tambo', 'Frutas de estación', 'Harina 0000'], 'allergens' => ['Gluten', 'Lácteos', 'Huevo'], 'sizes' => [['label' => '20 cm / 10 porciones', 'price' => 28000], ['label' => '24 cm / 16 porciones', 'price' => 39000]]],
                 ['name' => 'La que imaginás', 'slug' => 'torta-personalizada', 'short_description' => 'Diseñamos una torta única para tu historia.', 'description' => 'Colores, sabores, flores y detalles pensados para vos. Contanos tu idea y la convertimos en una torta que se roba todas las miradas.', 'image' => 'https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=1000&q=85', 'storage_instructions' => 'Mantener refrigerada y transportar sobre una superficie plana.', 'is_custom' => true, 'ingredients' => ['Huevos de granja', 'Manteca de tambo', 'Vainilla natural', 'Dulce de leche'], 'allergens' => ['Gluten', 'Lácteos', 'Huevo'], 'sizes' => [['label' => '18 cm / 12 porciones', 'price' => 42000], ['label' => '22 cm / 20 porciones', 'price' => 59000], ['label' => 'A medida', 'price' => 78000]]],
+            ],
+            'tartas' => [
+                ['name' => 'Lemon pie de campo', 'slug' => 'lemon-pie-de-campo', 'short_description' => 'Base crocante, crema de limón y merengue dorado.', 'description' => 'El equilibrio perfecto entre ácido y dulce: crema de limón recién hecha sobre una base mantecosa y merengue italiano apenas tostado.', 'image' => 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1000&q=85', 'storage_instructions' => 'Guardar en heladera, en su caja, hasta 48 horas.', 'ingredients' => ['Huevos de granja', 'Manteca de tambo', 'Frutas de estación', 'Harina 0000'], 'allergens' => ['Gluten', 'Lácteos', 'Huevo'], 'sizes' => [['label' => '20 cm / 10 porciones', 'price' => 28000], ['label' => '24 cm / 16 porciones', 'price' => 39000]]],
             ],
             'cupcakes' => [
                 ['name' => 'Cupcakes de la semana', 'slug' => 'cupcakes-de-la-semana', 'short_description' => 'Masa de vainilla, frosting de frutos rojos y flores de azúcar.', 'description' => 'Un bocado suave y perfumado, coronado con crema de frutos rojos. Vienen decorados a mano, uno por uno, para que cualquier día se sienta especial.', 'image' => 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=1000&q=85', 'storage_instructions' => 'Refrigerar y consumir idealmente dentro de las 48 horas.', 'is_featured' => true, 'ingredients' => ['Huevos de granja', 'Manteca de tambo', 'Frutas de estación', 'Harina 0000', 'Vainilla natural'], 'allergens' => ['Gluten', 'Lácteos', 'Huevo'], 'sizes' => [['label' => 'Caja x6', 'price' => 18000], ['label' => 'Caja x12', 'price' => 33000], ['label' => 'Caja x24', 'price' => 61000]]],
@@ -123,6 +126,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(CakeCustomizerSeeder::class);
+        $this->call(ReviewSeeder::class);
         $this->call(WhatsappSeeder::class);
     }
 }

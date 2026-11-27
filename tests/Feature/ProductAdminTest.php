@@ -91,12 +91,12 @@ test('an admin can select up to four featured products', function () {
     expect($candidate->fresh()->is_featured)->toBeFalse();
 });
 
-test('the home places featured products before the catalog', function () {
+test('the home places featured products before the most ordered rail', function () {
     $this->seed();
 
     $this->get(route('home'))
         ->assertOk()
-        ->assertSeeInOrder(['Selección de la casa', 'El mostrador']);
+        ->assertSeeInOrder(['Selección de la casa', 'Los más pedidos']);
 });
 
 test('the home hides categories without public products', function () {

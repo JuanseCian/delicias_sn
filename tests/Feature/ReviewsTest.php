@@ -22,21 +22,21 @@ function createOrderForReview(string $status = Order::STATUS_DELIVERED): Order
     ]);
 }
 
-test('the public reviews page includes the reviews section', function () {
+test('the home includes the reviews section', function () {
     $this->seed();
 
-    $this->get(route('reviews.public'))
+    $this->get(route('home'))
         ->assertOk()
         ->assertSee('opiniones', false)
         ->assertSee('Historias');
 });
 
-test('the public reviews page shows all approved reviews', function () {
+test('the home shows approved reviews and hides pending reviews', function () {
     $this->seed();
     Review::create(['name' => 'Visible', 'rating' => 5, 'comment' => 'Una opinión visible en la página.', 'approved' => true]);
     Review::create(['name' => 'Oculta', 'rating' => 5, 'comment' => 'Esta opinión todavía no se publica.', 'approved' => false]);
 
-    $this->get(route('reviews.public'))
+    $this->get(route('home'))
         ->assertOk()
         ->assertSee('Visible')
         ->assertDontSee('Oculta');
@@ -143,17 +143,17 @@ test('guessing the human-readable order code instead of the access token is reje
     expect(Review::count())->toBe(0);
 });
 
-test('only approved reviews are shown publicly', function () {
+test('only approved reviews are shown on the home', function () {
     $this->seed();
     Review::create(['name' => 'Publicado', 'rating' => 5, 'comment' => 'Una experiencia hermosa.', 'approved' => true]);
     Review::create(['name' => 'Pendiente', 'rating' => 1, 'comment' => 'Todavía no debe aparecer.', 'approved' => false]);
 
-    $this->get(route('reviews.public'))
+    $this->get(route('home'))
         ->assertSee('Publicado')
         ->assertDontSee('Pendiente');
 });
 
-test('all approved reviews are shown publicly', function () {
+test('all approved reviews are included in the home carousel', function () {
     $this->seed();
 
     foreach (range(1, 7) as $number) {
@@ -165,7 +165,7 @@ test('all approved reviews are shown publicly', function () {
         ]);
     }
 
-    $this->get(route('reviews.public'))
-        ->assertSee('Cliente 1')
+    $this->get(route('home'))
+        ->assertSee('Cliente 2')
         ->assertSee('Cliente 7');
 });

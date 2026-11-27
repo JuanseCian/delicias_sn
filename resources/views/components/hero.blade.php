@@ -7,7 +7,7 @@
         <h1 class="hero-enter mt-7 max-w-3xl font-display text-5xl leading-[0.92] tracking-[-0.055em] text-bordo sm:text-7xl lg:text-[7rem]" style="--hero-enter-delay: 180ms">Endulzá<br><span class="font-script text-[1.08em] font-normal tracking-normal text-rosa-viejo">tus fiestas</span></h1>
         <p class="hero-enter mt-8 max-w-xl text-base leading-7 text-ink/65 sm:text-lg" style="--hero-enter-delay: 300ms">Tortas, cupcakes, cookies, boxes y mesas dulces hechos por encargo en San Nicolás de los Arroyos para cumpleaños y celebraciones.</p>
         <div class="hero-enter mt-9 flex flex-col justify-center gap-3 sm:flex-row" style="--hero-enter-delay: 430ms">
-            <a href="#catalogo" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>
+            <a href="#mas-pedidos" class="btn-primary">Elegir algo rico <span aria-hidden="true">↓</span></a>
             <a href="https://wa.me/{{ config('delicias.whatsapp') }}?text={{ rawurlencode('¡Hola! Quiero encargar algo rico en Delicias Sn.') }}" target="_blank" rel="noopener" class="btn-secondary">Pedir por WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
         <div class="hero-enter mt-12 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs font-semibold text-ink/45" style="--hero-enter-delay: 560ms"><span class="h-px w-10 bg-rosa-viejo"></span><span>Retiro en Jujuy 422</span><span aria-hidden="true">·</span><span>Envíos coordinados</span></div>

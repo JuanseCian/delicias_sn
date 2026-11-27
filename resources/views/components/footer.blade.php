@@ -20,7 +20,7 @@
             <div>
                 <p class="text-base font-bold text-bordo">Comprar</p>
                 <div class="mt-5 space-y-3 text-sm text-ink/60">
-                    <a class="block transition hover:text-bordo" href="{{ request()->routeIs('home') ? '#catalogo' : route('home').'#catalogo' }}">Productos</a>
+                    <a class="block transition hover:text-bordo" href="{{ route('catalog.index') }}">Productos</a>
                     <a class="block transition hover:text-bordo" href="{{ request()->routeIs('home') ? '#como-encargar' : route('home').'#como-encargar' }}">Cómo encargar</a>
                     <a class="block transition hover:text-bordo" href="{{ route('checkout') }}">Carrito y pedido</a>
                 </div>

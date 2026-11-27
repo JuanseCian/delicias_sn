@@ -50,7 +50,7 @@
                     </div>
                     <p class="eyebrow mt-7">Un antojo pendiente</p>
                     <h3 class="mt-2 font-display text-3xl leading-tight text-bordo">Tu carrito está vacío</h3>
-                    <button type="button" @click="closeCart(); document.querySelector('#catalogo')?.scrollIntoView({ behavior: 'smooth' })" class="btn-primary mt-7 px-6">Explorar productos <span aria-hidden="true">↓</span></button>
+                    <a href="{{ route('catalog.index') }}" class="btn-primary mt-7 px-6">Explorar productos <span aria-hidden="true">↗</span></a>
                 </div>
             </template>
 

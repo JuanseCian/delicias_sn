@@ -38,7 +38,9 @@
     @if ($featured->isNotEmpty())
         <x-featured :featured="$featured" />
     @endif
-    <x-catalog :categories="$categories" :products="$products" />
+    <x-most-ordered :rail-products="$railProducts" :categories="$categories" />
+    <x-product-modal />
+    <x-reviews :reviews="$reviews" :stats="$stats" />
     <x-steps />
     <x-footer />
 @endsection

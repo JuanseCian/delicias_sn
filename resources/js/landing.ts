@@ -54,6 +54,75 @@ const defaultTimeSlots: TimeSlots = {
     weekend: ['9 a 12 h', '12 a 15 h', '15 a 18 h', '18 a 20 h'],
 };
 
+Alpine.data('autoCarousel', (total = 0, interval = 6000) => ({
+    active: 0,
+    total,
+    interval,
+    timer: null as number | null,
+    reducedMotion: false,
+
+    init() {
+        this.reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+        ).matches;
+        if (!this.reducedMotion) this.start();
+    },
+
+    destroy() {
+        this.stop();
+    },
+
+    start() {
+        this.stop();
+
+        if (this.total > 1 && !this.reducedMotion) {
+            this.timer = window.setInterval(() => this.next(), this.interval);
+        }
+    },
+
+    stop() {
+        if (this.timer !== null) {
+            window.clearInterval(this.timer);
+            this.timer = null;
+        }
+    },
+
+    pause() {
+        this.stop();
+    },
+
+    resume() {
+        this.start();
+    },
+
+    resumeIfFocusLeaves(event: FocusEvent) {
+        const carousel = event.currentTarget as HTMLElement;
+
+        if (
+            !(event.relatedTarget instanceof Node) ||
+            !carousel.contains(event.relatedTarget)
+        ) {
+            this.resume();
+        }
+    },
+
+    next() {
+        if (this.total < 2) return;
+
+        this.active = (this.active + 1) % this.total;
+    },
+
+    previous() {
+        if (this.total < 2) return;
+
+        this.active = (this.active - 1 + this.total) % this.total;
+    },
+
+    goTo(index: number) {
+        this.active = index;
+    },
+}));
+
 const normalizeTimeSlots = (value: unknown): TimeSlots => {
     const slots = (value ?? {}) as Partial<Record<keyof TimeSlots, unknown>>;
     const pick = (key: keyof TimeSlots): string[] =>
